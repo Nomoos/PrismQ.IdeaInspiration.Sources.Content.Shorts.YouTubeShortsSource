@@ -37,11 +37,49 @@ if not exist .env (
     echo Creating .env file from .env.example...
     copy .env.example .env
     echo.
-    echo IMPORTANT: Please edit the .env file and add your API credentials:
-    echo   - YOUTUBE_API_KEY
-    echo   - REDDIT_CLIENT_ID
-    echo   - REDDIT_CLIENT_SECRET
+    echo ========================================
+    echo Interactive Configuration (Optional)
+    echo ========================================
     echo.
+    echo Would you like to configure API credentials now?
+    echo (You can also edit .env file manually later)
+    echo.
+    set /p CONFIGURE="Configure now? (Y/N): "
+    
+    if /I "%CONFIGURE%"=="Y" (
+        echo.
+        echo Please provide your API credentials:
+        echo (Press Enter to skip any field)
+        echo.
+        
+        set /p YOUTUBE_KEY="YouTube API Key: "
+        set /p REDDIT_ID="Reddit Client ID: "
+        set /p REDDIT_SECRET="Reddit Client Secret: "
+        
+        echo.
+        echo Updating .env file...
+        
+        if not "%YOUTUBE_KEY%"=="" (
+            powershell -Command "(Get-Content .env) -replace 'YOUTUBE_API_KEY=.*', 'YOUTUBE_API_KEY=%YOUTUBE_KEY%' | Set-Content .env"
+        )
+        if not "%REDDIT_ID%"=="" (
+            powershell -Command "(Get-Content .env) -replace 'REDDIT_CLIENT_ID=.*', 'REDDIT_CLIENT_ID=%REDDIT_ID%' | Set-Content .env"
+        )
+        if not "%REDDIT_SECRET%"=="" (
+            powershell -Command "(Get-Content .env) -replace 'REDDIT_CLIENT_SECRET=.*', 'REDDIT_CLIENT_SECRET=%REDDIT_SECRET%' | Set-Content .env"
+        )
+        
+        echo Configuration saved!
+        echo.
+    ) else (
+        echo.
+        echo Skipping interactive configuration.
+        echo IMPORTANT: Please edit the .env file and add your API credentials:
+        echo   - YOUTUBE_API_KEY
+        echo   - REDDIT_CLIENT_ID
+        echo   - REDDIT_CLIENT_SECRET
+        echo.
+    )
 ) else (
     echo .env file already exists.
     echo.
@@ -52,8 +90,8 @@ echo Setup complete!
 echo ========================================
 echo.
 echo To get started:
-echo   1. Edit .env file with your API credentials
-echo   2. Run: python -m idea_collector.cli scrape
+echo   1. Run: quickstart.bat for interactive data collection
+echo   2. Or manually run: python -m idea_collector.cli scrape
 echo   3. View ideas: python -m idea_collector.cli list
 echo.
 echo For help: python -m idea_collector.cli --help
