@@ -76,12 +76,7 @@ class YouTubePlugin(SourcePlugin):
                     'title': snippet['title'],
                     'description': snippet.get('description', ''),
                     'tags': self._extract_tags(snippet),
-                    'metrics': {
-                        'views': int(statistics.get('viewCount', 0)),
-                        'likes': int(statistics.get('likeCount', 0)),
-                        'comments': int(statistics.get('commentCount', 0)),
-                        'favorites': int(statistics.get('favoriteCount', 0)),
-                    }
+                    'metrics': video  # Pass the full video data for UniversalMetrics
                 }
                 ideas.append(idea)
                 

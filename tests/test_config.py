@@ -16,8 +16,6 @@ def temp_env_file():
         f.write("REDDIT_CLIENT_ID=test_id\n")
         f.write("REDDIT_CLIENT_SECRET=test_secret\n")
         f.write("REDDIT_SUBREDDITS=test1,test2,test3\n")
-        f.write("SCORING_YOUTUBE=1.5,1.0,0.5\n")
-        f.write("SCORING_REDDIT=2.0,1.5,1.0\n")
         env_path = f.name
     
     yield env_path
@@ -56,7 +54,6 @@ def test_config_defaults():
         assert config.database_path == "ideas.db"
         assert config.youtube_max_results == 50
         assert config.reddit_limit == 100
-        assert len(config.default_score_weights) > 0
     finally:
         # Restore environment variables
         for var, value in env_backup.items():
@@ -70,27 +67,3 @@ def test_parse_list():
     
     result = Config._parse_list("")
     assert result == []
-
-
-def test_parse_floats():
-    """Test parsing comma-separated floats."""
-    result = Config._parse_floats("1.0,2.5,3.7")
-    assert result == [1.0, 2.5, 3.7]
-    
-    result = Config._parse_floats("invalid,data")
-    assert result == [1.0]  # Should return default
-
-
-def test_get_source_weights(temp_env_file):
-    """Test getting source-specific weights."""
-    config = Config(temp_env_file)
-    
-    youtube_weights = config.get_source_weights('youtube')
-    assert youtube_weights == [1.5, 1.0, 0.5]
-    
-    reddit_weights = config.get_source_weights('reddit')
-    assert reddit_weights == [2.0, 1.5, 1.0]
-    
-    # Test unknown source returns defaults
-    unknown_weights = config.get_source_weights('unknown')
-    assert unknown_weights == config.default_score_weights

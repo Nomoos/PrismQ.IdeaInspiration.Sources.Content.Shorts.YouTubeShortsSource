@@ -56,12 +56,7 @@ class RedditPlugin(SourcePlugin):
                         'title': post.title,
                         'description': post.selftext if post.selftext else post.url,
                         'tags': self._extract_tags(post, subreddit_name),
-                        'metrics': {
-                            'score': post.score,
-                            'ups': post.ups,
-                            'num_comments': post.num_comments,
-                            'upvote_ratio': post.upvote_ratio,
-                        }
+                        'metrics': post  # Pass the full post object for UniversalMetrics
                     }
                     ideas.append(idea)
                     
