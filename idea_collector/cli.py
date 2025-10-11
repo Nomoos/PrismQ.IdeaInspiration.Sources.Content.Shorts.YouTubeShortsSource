@@ -5,6 +5,7 @@ import sys
 from pathlib import Path
 from idea_collector.config import Config
 from idea_collector.database import Database
+from idea_collector.metrics import UniversalMetrics
 from idea_collector.sources.reddit_plugin import RedditPlugin
 from idea_collector.sources.youtube_plugin import YouTubePlugin
 
@@ -63,15 +64,28 @@ def scrape(source, env_file):
                 
                 # Process and save each idea
                 for idea in ideas:
-                    # Save to database with a simple placeholder score
+                    # Convert platform metrics to universal metrics
+                    if source_name == 'reddit':
+                        universal_metrics = UniversalMetrics.from_reddit(idea['metrics'])
+                    elif source_name == 'youtube':
+                        universal_metrics = UniversalMetrics.from_youtube(idea['metrics'])
+                    else:
+                        # Generic fallback - store metrics as-is
+                        universal_metrics = UniversalMetrics(
+                            platform=source_name,
+                            platform_specific=idea['metrics']
+                        )
+                        universal_metrics.calculate_derived_metrics()
+                    
+                    # Save to database with universal metrics
                     success = db.insert_idea(
                         source=source_name,
                         source_id=idea['source_id'],
                         title=idea['title'],
                         description=idea['description'],
                         tags=idea['tags'],
-                        score=1.0,  # Placeholder score
-                        score_dictionary={}  # Empty dictionary
+                        score=universal_metrics.engagement_rate or 0.0,  # Use engagement rate as score
+                        score_dictionary=universal_metrics.to_dict()
                     )
                     
                     if success:

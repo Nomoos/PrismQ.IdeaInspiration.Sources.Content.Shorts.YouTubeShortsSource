@@ -7,7 +7,13 @@ PrismQ.IdeaCollector is a standalone Python CLI that gathers idea inspirations f
 - **Multi-Source Scraping**: Extensible plugin architecture for scraping ideas from:
   - YouTube Shorts
   - Reddit (multiple subreddits)
-  - Easy to add more sources
+  - Easy to add more sources (Instagram, TikTok, Facebook ready)
+  
+- **Universal Metrics Collection**: Standardized metrics across all platforms
+  - Engagement metrics (views, likes, comments, shares)
+  - Calculated metrics (engagement rate, like-to-view ratio, etc.)
+  - Platform-specific metrics preserved
+  - See [METRICS.md](METRICS.md) for complete documentation
   
 - **Deduplication**: Automatically prevents duplicate ideas using (source, source_id) unique constraint
   
@@ -15,6 +21,7 @@ PrismQ.IdeaCollector is a standalone Python CLI that gathers idea inspirations f
   - Title
   - Description
   - Tags
+  - Universal metrics (JSON format)
   - Source information
   
 - **Simple Configuration**: Single `.env` file for all settings
