@@ -5,7 +5,7 @@ import sys
 from pathlib import Path
 from idea_collector.config import Config
 from idea_collector.database import Database
-from idea_collector.scoring import ScoringEngine
+from idea_collector.metrics import UniversalMetrics
 from idea_collector.sources.reddit_plugin import RedditPlugin
 from idea_collector.sources.youtube_plugin import YouTubePlugin
 
@@ -62,29 +62,30 @@ def scrape(source, env_file):
                 total_scraped += len(ideas)
                 click.echo(f"Found {len(ideas)} ideas from {source_name}")
                 
-                # Initialize scoring engine with source-specific weights
-                weights = config.get_source_weights(source_name)
-                scorer = ScoringEngine(weights)
-                
                 # Process and save each idea
                 for idea in ideas:
-                    # Calculate score
+                    # Convert platform metrics to universal metrics
                     if source_name == 'reddit':
-                        score, score_dict = scorer.calculate_reddit_score(idea['metrics'])
+                        universal_metrics = UniversalMetrics.from_reddit(idea['metrics'])
                     elif source_name == 'youtube':
-                        score, score_dict = scorer.calculate_youtube_score(idea['metrics'])
+                        universal_metrics = UniversalMetrics.from_youtube(idea['metrics'])
                     else:
-                        score, score_dict = scorer.calculate_score(idea['metrics'])
+                        # Generic fallback - store metrics as-is
+                        universal_metrics = UniversalMetrics(
+                            platform=source_name,
+                            platform_specific=idea['metrics']
+                        )
+                        universal_metrics.calculate_derived_metrics()
                     
-                    # Save to database
+                    # Save to database with universal metrics
                     success = db.insert_idea(
                         source=source_name,
                         source_id=idea['source_id'],
                         title=idea['title'],
                         description=idea['description'],
                         tags=idea['tags'],
-                        score=score,
-                        score_dictionary=score_dict
+                        score=universal_metrics.engagement_rate or 0.0,  # Use engagement rate as score
+                        score_dictionary=universal_metrics.to_dict()
                     )
                     
                     if success:
@@ -131,12 +132,12 @@ def list(env_file, limit, source):
         
         # Display ideas
         click.echo(f"\n{'='*80}")
-        click.echo(f"Top {len(ideas)} Ideas (sorted by score)")
+        click.echo(f"Collected Ideas ({len(ideas)} total)")
         click.echo(f"{'='*80}\n")
         
         for i, idea in enumerate(ideas, 1):
             click.echo(f"{i}. [{idea['source'].upper()}] {idea['title']}")
-            click.echo(f"   Score: {idea['score']:.2f} | ID: {idea['source_id']}")
+            click.echo(f"   ID: {idea['source_id']}")
             if idea['tags']:
                 click.echo(f"   Tags: {idea['tags']}")
             if idea['description']:
@@ -173,21 +174,16 @@ def stats(env_file):
         # Calculate statistics
         total = len(ideas)
         by_source = {}
-        total_score = 0
         
         for idea in ideas:
             source = idea['source']
             by_source[source] = by_source.get(source, 0) + 1
-            total_score += idea['score'] or 0
-        
-        avg_score = total_score / total if total > 0 else 0
         
         # Display statistics
         click.echo(f"\n{'='*50}")
         click.echo(f"Idea Collection Statistics")
         click.echo(f"{'='*50}\n")
-        click.echo(f"Total Ideas: {total}")
-        click.echo(f"Average Score: {avg_score:.2f}\n")
+        click.echo(f"Total Ideas: {total}\n")
         click.echo(f"Ideas by Source:")
         for source, count in sorted(by_source.items()):
             percentage = (count / total) * 100
