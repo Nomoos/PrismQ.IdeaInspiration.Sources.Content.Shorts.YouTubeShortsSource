@@ -1,6 +1,6 @@
 # PrismQ.IdeaCollector
 
-PrismQ.IdeaCollector is a standalone Python CLI that gathers idea inspirations from multiple sources like YouTube Shorts and Reddit, normalizes them into a SQLite database, and scores them based on engagement metrics.
+PrismQ.IdeaCollector is a standalone Python CLI that gathers idea inspirations from multiple sources like YouTube Shorts and Reddit, and stores them in a SQLite database for later analysis.
 
 ## Features
 
@@ -9,19 +9,17 @@ PrismQ.IdeaCollector is a standalone Python CLI that gathers idea inspirations f
   - Reddit (multiple subreddits)
   - Easy to add more sources
   
-- **Smart Scoring**: Calculates scores based on engagement metrics with per-source weight customization
-  
 - **Deduplication**: Automatically prevents duplicate ideas using (source, source_id) unique constraint
   
 - **SQLite Storage**: Stores ideas with complete metadata:
   - Title
   - Description
   - Tags
-  - Score
-  - Score dictionary (detailed scoring breakdown)
   - Source information
   
 - **Simple Configuration**: Single `.env` file for all settings
+
+- **Interactive Mode**: Quickstart scripts with interactive configuration for easy setup
 
 - **Windows Compatible**: Designed to work seamlessly on Windows systems
 
@@ -32,7 +30,52 @@ PrismQ.IdeaCollector is a standalone Python CLI that gathers idea inspirations f
 - Python 3.8 or higher
 - pip package manager
 
-### Setup
+### Quick Start (Recommended)
+
+#### Windows
+
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/PrismQDev/PrismQ.IdeaCollector.git
+   cd PrismQ.IdeaCollector
+   ```
+
+2. **Run setup**:
+   ```batch
+   setup.bat
+   ```
+
+3. **Run quickstart**:
+   ```batch
+   quickstart.bat
+   ```
+
+The quickstart script will guide you through:
+- Interactive configuration (if no .env file exists)
+- Choosing which sources to scrape
+- Viewing collected ideas
+
+#### Linux/Mac
+
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/PrismQDev/PrismQ.IdeaCollector.git
+   cd PrismQ.IdeaCollector
+   ```
+
+2. **Run setup**:
+   ```bash
+   chmod +x setup.sh
+   ./setup.sh
+   ```
+
+3. **Run quickstart**:
+   ```bash
+   chmod +x quickstart.sh
+   ./quickstart.sh
+   ```
+
+### Manual Setup
 
 1. **Clone the repository**:
    ```bash
@@ -75,22 +118,7 @@ REDDIT_CLIENT_SECRET=your_reddit_client_secret_here
 REDDIT_USER_AGENT=PrismQ.IdeaCollector/1.0
 REDDIT_SUBREDDITS=ideas,startup_ideas,SomebodyMakeThis
 REDDIT_LIMIT=100
-
-# Scoring Configuration (comma-separated weights)
-SCORING_YOUTUBE=1.0,0.8,0.6
-SCORING_REDDIT=1.0,0.9,0.7
-DEFAULT_SCORE_WEIGHTS=1.0,0.8,0.6
 ```
-
-### Scoring Weights
-
-The scoring system uses weighted components to calculate final scores:
-- First weight: View/engagement score
-- Second weight: Like/upvote score
-- Third weight: Comment score
-- Fourth weight (auto): Engagement rate
-
-You can customize weights per source to prioritize different metrics.
 
 ## Usage
 
@@ -188,7 +216,6 @@ class TwitterPlugin(SourcePlugin):
 3. Add configuration to `.env`:
 ```ini
 TWITTER_API_KEY=your_key
-SCORING_TWITTER=1.0,0.8,0.6
 ```
 
 4. Import and use in `cli.py`
@@ -216,21 +243,22 @@ PrismQ.IdeaCollector/
 │   ├── cli.py              # Command-line interface
 │   ├── config.py           # Configuration management
 │   ├── database.py         # Database operations
-│   ├── sources/
-│   │   ├── __init__.py     # Base plugin interface
-│   │   ├── reddit_plugin.py
-│   │   └── youtube_plugin.py
-│   └── scoring/
-│       └── __init__.py     # Scoring engine
+│   └── sources/
+│       ├── __init__.py     # Base plugin interface
+│       ├── reddit_plugin.py
+│       └── youtube_plugin.py
 ├── tests/
 │   ├── __init__.py
 │   ├── test_config.py
-│   ├── test_database.py
-│   └── test_scoring.py
+│   └── test_database.py
 ├── .env.example            # Example configuration
 ├── .gitignore
 ├── pyproject.toml          # Project metadata
 ├── requirements.txt        # Dependencies
+├── setup.bat               # Windows setup script
+├── setup.sh                # Linux/Mac setup script
+├── quickstart.bat          # Windows quickstart script
+├── quickstart.sh           # Linux/Mac quickstart script
 └── README.md
 ```
 

@@ -21,7 +21,7 @@ This guide will help you get PrismQ.IdeaCollector up and running on Windows.
      - Choose "script" as the app type
      - Note your client_id and client_secret
 
-## Installation Steps
+## Quick Start (Recommended)
 
 ### 1. Open Command Prompt or PowerShell
 
@@ -42,17 +42,31 @@ setup.bat
 This will:
 - Check if Python is installed
 - Install all required dependencies
-- Create a `.env` file from `.env.example`
+- Optionally configure API credentials interactively
 
-### 4. Configure Your API Keys
+### 4. Run the Quickstart Script
 
-Open the `.env` file in Notepad or your preferred text editor:
+```cmd
+quickstart.bat
+```
+
+The quickstart script will:
+- Create `.env` file if it doesn't exist
+- Allow you to configure API credentials interactively
+- Present an easy menu to scrape from different sources
+- List collected ideas
+
+## Manual Configuration
+
+If you prefer to configure manually:
+
+### 1. Open the `.env` file
 
 ```cmd
 notepad .env
 ```
 
-Update the following values with your API credentials:
+### 2. Update API credentials
 
 ```ini
 YOUTUBE_API_KEY=your_youtube_api_key_here
@@ -116,7 +130,6 @@ Edit `.env` to customize:
 
 - **Database location**: Change `DATABASE_PATH`
 - **Reddit subreddits**: Modify `REDDIT_SUBREDDITS` (comma-separated)
-- **Scoring weights**: Adjust `SCORING_YOUTUBE` and `SCORING_REDDIT`
 - **Results limit**: Change `YOUTUBE_MAX_RESULTS` and `REDDIT_LIMIT`
 
 Example:
@@ -168,6 +181,5 @@ Once you've collected some ideas:
 1. Review them using `python -m idea_collector.cli list`
 2. Check the SQLite database directly using tools like [DB Browser for SQLite](https://sqlitebrowser.org/)
 3. Export ideas for further analysis
-4. Customize scoring weights to match your preferences
 
 Happy idea collecting! 🚀
