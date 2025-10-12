@@ -30,6 +30,19 @@ PrismQ.IdeaCollector is a standalone Python CLI that gathers idea inspirations f
 
 - **Windows Compatible**: Designed to work seamlessly on Windows systems
 
+## Documentation
+
+For comprehensive documentation, see:
+
+- **[docs/](docs/)** - User and developer documentation
+  - [Contributing Guidelines](docs/CONTRIBUTING.md)
+  - [Metrics Documentation](docs/METRICS.md)
+  - [Windows Quickstart Guide](docs/WINDOWS_QUICKSTART.md)
+- **[issues/](issues/)** - Issue tracking and project planning
+  - [Known Issues](issues/KNOWN_ISSUES.md)
+  - [Project Roadmap](issues/ROADMAP.md)
+- **[scripts/](scripts/)** - Setup and utility scripts
+
 ## Installation
 
 ### Prerequisites
