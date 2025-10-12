@@ -7,6 +7,7 @@ from src.config import Config
 from src.database import Database
 from src.metrics import UniversalMetrics
 from src.sources.youtube_plugin import YouTubePlugin
+from src.sources.youtube_channel_plugin import YouTubeChannelPlugin
 
 
 @click.group()
@@ -76,6 +77,100 @@ def scrape(env_file):
     except Exception as e:
         click.echo(f"Error: {e}", err=True)
         sys.exit(1)
+
+
+@main.command('scrape-channel')
+@click.option('--env-file', '-e', type=click.Path(exists=True), 
+              help='Path to .env file')
+@click.option('--channel', '-c', help='YouTube channel URL, handle (@username), or ID')
+@click.option('--top', '-t', type=int, help='Number of shorts to scrape (default: config or 10)')
+def scrape_channel(env_file, channel, top):
+    """Scrape ideas from a specific YouTube channel's Shorts using yt-dlp.
+    
+    This command uses yt-dlp to scrape comprehensive metadata from a YouTube
+    channel's Shorts, including subtitles, video quality metrics, and detailed
+    engagement analytics.
+    
+    Examples:
+        python -m src.cli scrape-channel --channel @channelname
+        python -m src.cli scrape-channel --channel https://www.youtube.com/@channelname --top 20
+        python -m src.cli scrape-channel --channel UC1234567890 --top 15
+    """
+    try:
+        # Load configuration
+        config = Config(env_file)
+        
+        # Initialize database
+        db = Database(config.database_path)
+        
+        # Initialize YouTube channel plugin
+        try:
+            channel_plugin = YouTubeChannelPlugin(config)
+        except ValueError as e:
+            click.echo(f"Error: {e}", err=True)
+            click.echo("\nInstall yt-dlp with: pip install yt-dlp", err=True)
+            sys.exit(1)
+        
+        # Scrape from YouTube channel
+        total_scraped = 0
+        total_saved = 0
+        
+        # Determine channel URL
+        if channel:
+            channel_url = channel
+        elif config.youtube_channel_url:
+            channel_url = config.youtube_channel_url
+        else:
+            click.echo("Error: No channel specified. Use --channel or set YOUTUBE_CHANNEL_URL in .env", err=True)
+            sys.exit(1)
+        
+        # Determine number of shorts to scrape
+        shorts_count = top if top else config.youtube_channel_max_shorts
+        
+        click.echo(f"Scraping from YouTube channel: {channel_url}")
+        click.echo(f"Number of shorts to scrape: {shorts_count}")
+        click.echo("")
+        
+        try:
+            ideas = channel_plugin.scrape(channel_url=channel_url, top_n=shorts_count)
+            total_scraped = len(ideas)
+            click.echo(f"\nFound {len(ideas)} shorts from channel")
+            
+            # Process and save each idea
+            for idea in ideas:
+                # Convert platform metrics to universal metrics
+                universal_metrics = UniversalMetrics.from_youtube(idea['metrics'])
+                
+                # Save to database with universal metrics
+                success = db.insert_idea(
+                    source='youtube_channel',
+                    source_id=idea['source_id'],
+                    title=idea['title'],
+                    description=idea['description'],
+                    tags=idea['tags'],
+                    score=universal_metrics.engagement_rate or 0.0,
+                    score_dictionary=universal_metrics.to_dict()
+                )
+                
+                if success:
+                    total_saved += 1
+            
+        except Exception as e:
+            click.echo(f"Error scraping YouTube channel: {e}", err=True)
+            import traceback
+            traceback.print_exc()
+        
+        click.echo(f"\nScraping complete!")
+        click.echo(f"Total shorts found: {total_scraped}")
+        click.echo(f"Total shorts saved: {total_saved}")
+        click.echo(f"Database: {config.database_path}")
+        
+    except Exception as e:
+        click.echo(f"Error: {e}", err=True)
+        import traceback
+        traceback.print_exc()
+        sys.exit(1)
+
 
 
 @main.command()

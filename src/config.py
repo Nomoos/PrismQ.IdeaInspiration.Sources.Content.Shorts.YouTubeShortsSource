@@ -25,6 +25,10 @@ class Config:
         # Database configuration
         self.database_path = os.getenv("DATABASE_PATH", "ideas.db")
         
-        # YouTube configuration
+        # YouTube API configuration (for search-based scraping)
         self.youtube_api_key = os.getenv("YOUTUBE_API_KEY", "")
         self.youtube_max_results = int(os.getenv("YOUTUBE_MAX_RESULTS", "50"))
+        
+        # YouTube Channel configuration (for channel-based scraping with yt-dlp)
+        self.youtube_channel_url = os.getenv("YOUTUBE_CHANNEL_URL", "")
+        self.youtube_channel_max_shorts = int(os.getenv("YOUTUBE_CHANNEL_MAX_SHORTS", "10"))

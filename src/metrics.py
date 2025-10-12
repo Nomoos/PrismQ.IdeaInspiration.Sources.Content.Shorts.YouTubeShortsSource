@@ -117,6 +117,12 @@ class UniversalMetrics:
         snippet = snippet or video_data.get('snippet', {})
         statistics = statistics or video_data.get('statistics', {})
         content_details = video_data.get('contentDetails', {})
+        enhanced_metrics = video_data.get('enhanced_metrics', {})
+        
+        # Extract video quality metrics (from enhanced_metrics if available)
+        resolution = enhanced_metrics.get('resolution')
+        fps = enhanced_metrics.get('fps')
+        aspect_ratio = enhanced_metrics.get('aspect_ratio')
         
         metrics = cls(
             platform="youtube",
@@ -131,6 +137,15 @@ class UniversalMetrics:
             description_length=len(snippet.get('description', '')),
             tag_count=len(snippet.get('tags', [])),
             
+            # Video quality metrics
+            resolution=resolution,
+            fps=fps,
+            aspect_ratio=aspect_ratio,
+            has_subtitles=enhanced_metrics.get('subtitles_available', False),
+            
+            # Channel metrics
+            author_follower_count=enhanced_metrics.get('channel_follower_count'),
+            
             # Platform data
             upload_date=snippet.get('publishedAt'),
             categories=[snippet.get('categoryId')] if snippet.get('categoryId') else [],
@@ -141,6 +156,9 @@ class UniversalMetrics:
                 'channel_id': snippet.get('channelId'),
                 'channel_title': snippet.get('channelTitle'),
                 'duration': content_details.get('duration'),
+                'subtitle_text': enhanced_metrics.get('subtitle_text'),
+                'engagement_rate': enhanced_metrics.get('engagement_rate'),
+                'views_per_day': enhanced_metrics.get('views_per_day'),
             }
         )
         
