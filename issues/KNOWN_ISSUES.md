@@ -35,9 +35,9 @@ This document tracks known issues and their workarounds.
 **Problem**: Commands complete but no ideas are collected
 
 **Solution**:
-- Verify API credentials are correct
+- Verify YouTube API credentials are correct
 - Check internet connection
-- Ensure API services (YouTube, Reddit) are accessible
+- Ensure YouTube API service is accessible
 - Check API quotas haven't been exceeded
 
 #### Database Locked Error
@@ -49,13 +49,13 @@ This document tracks known issues and their workarounds.
 - Delete lock files if present
 
 #### Rate Limiting
-**Problem**: API rate limit errors
+**Problem**: YouTube API rate limit errors
 
 **Solution**:
-- Reduce `MAX_RESULTS` and `LIMIT` values in `.env`
+- Reduce `YOUTUBE_MAX_RESULTS` value in `.env`
 - Add delays between requests
 - YouTube API: 10,000 units/day quota
-- Reddit API: 60 requests/minute limit
+- Consider spreading requests across multiple days
 
 ### Installation Issues
 
@@ -79,12 +79,12 @@ This document tracks known issues and their workarounds.
 
 If you encounter an issue not listed here:
 
-1. Check [GitHub Issues](https://github.com/PrismQDev/PrismQ.IdeaCollector/issues)
-2. Use the [bug report template](../.github/ISSUE_TEMPLATE/bug_report.yml)
+1. Check [GitHub Issues](https://github.com/Nomoos/PrismQ.Idea.Sources.Content.Shorts.YouTubeShortsSource/issues)
+2. Open a new issue with detailed information
 3. Include error logs, environment details, and reproduction steps
 
 ## Getting Help
 
 - **Documentation**: See [README.md](../README.md)
 - **Contributing Guide**: See [CONTRIBUTING.md](../docs/CONTRIBUTING.md)
-- **Discussions**: Use [GitHub Discussions](https://github.com/PrismQDev/PrismQ.IdeaCollector/discussions)
+- **Discussions**: Use [GitHub Discussions](https://github.com/Nomoos/PrismQ.Idea.Sources.Content.Shorts.YouTubeShortsSource/discussions)

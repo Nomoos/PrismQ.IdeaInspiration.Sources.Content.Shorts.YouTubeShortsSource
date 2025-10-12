@@ -1,4 +1,4 @@
-"""Database models and schema for PrismQ.IdeaCollector."""
+"""Database models and schema for PrismQ.Idea.Sources.Content.Shorts.YouTubeShortsSource."""
 
 import sqlite3
 from typing import Optional, Dict, Any

@@ -1,4 +1,4 @@
-# Contributing to PrismQ.IdeaCollector
+# Contributing to PrismQ.Idea.Sources.Content.Shorts.YouTubeShortsSource
 
 Thank you for your interest in contributing to this PrismQ module!
 
@@ -75,8 +75,8 @@ Feature suggestions are welcome! Please use the feature request template and inc
 
 1. Clone your fork:
    ```bash
-   git clone https://github.com/YOUR-USERNAME/PrismQ.IdeaCollector.git
-   cd PrismQ.IdeaCollector
+   git clone https://github.com/YOUR-USERNAME/PrismQ.Idea.Sources.Content.Shorts.YouTubeShortsSource.git
+   cd PrismQ.Idea.Sources.Content.Shorts.YouTubeShortsSource
    ```
 
 2. Create and activate a virtual environment:
@@ -176,42 +176,51 @@ def scrape(self) -> List[Dict[str, Any]]:
 - Update configuration in `src/config.py`
 - CLI commands in `src/cli.py`
 
-## Adding New Source Plugins
+## Enhancing YouTube Shorts Functionality
 
-To add support for a new platform (e.g., TikTok, Instagram):
+This repository focuses specifically on YouTube Shorts scraping. To enhance functionality:
 
-1. Create a new file in `src/sources/` (e.g., `tiktok_plugin.py`)
+1. Update the YouTube plugin in `src/sources/youtube_plugin.py`
 
-2. Implement the `SourcePlugin` interface:
+2. Example enhancement:
    ```python
    from . import SourcePlugin
    from ..metrics import UniversalMetrics
    
-   class TikTokPlugin(SourcePlugin):
+   class YouTubePlugin(SourcePlugin):
        def get_source_name(self) -> str:
-           return "tiktok"
+           return "youtube"
        
        def scrape(self) -> List[Dict[str, Any]]:
-           # Implement scraping logic
+           # Enhance scraping logic
            pass
    ```
 
-3. Add a factory method to `UniversalMetrics` class in `src/metrics.py`:
+3. Update `UniversalMetrics` factory method in `src/metrics.py` if needed:
    ```python
    @classmethod
-   def from_tiktok(cls, video_data: Dict[str, Any]) -> 'UniversalMetrics':
-       # Map TikTok data to universal metrics
+   def from_youtube(cls, video_data: Dict[str, Any]) -> 'UniversalMetrics':
+       # Enhance metric mapping
        pass
    ```
 
-4. Update configuration in `.env.example` with new platform settings
+4. Update configuration in `.env.example` if new settings are needed
 
-5. Add tests for the new plugin in `tests/test_tiktok_plugin.py`
+5. Add tests for the enhancements in `tests/`
 
 6. Update documentation:
-   - Add platform to README.md features list
-   - Document metrics mapping in METRICS.md
+   - Update README.md features list
+   - Document new metrics in METRICS.md
    - Add usage examples
+
+## Adding Support for Other Platforms
+
+To add support for other platforms (TikTok, Instagram Reels, etc.), create a new repository following the PrismQ Idea Sources taxonomy:
+- `PrismQ.Idea.Sources.Content.Shorts.TikTokSource`
+- `PrismQ.Idea.Sources.Content.Shorts.InstagramReelsSource`
+- etc.
+
+See the [PrismQ.RepositoryTemplate](https://github.com/Nomoos/PrismQ.RepositoryTemplate) for module structure guidelines.
 
 ## Testing
 
@@ -259,4 +268,4 @@ If you have questions about contributing, please:
 - Open a discussion in the GitHub Discussions tab
 - Reach out to the maintainers
 
-Thank you for contributing to PrismQ.IdeaCollector! 🎉
+Thank you for contributing to PrismQ.Idea.Sources.Content.Shorts.YouTubeShortsSource! 🎉

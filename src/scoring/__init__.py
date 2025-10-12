@@ -1,4 +1,4 @@
-"""Scoring engine for PrismQ.IdeaCollector."""
+"""Scoring engine for PrismQ.Idea.Sources.Content.Shorts.YouTubeShortsSource."""
 
 from typing import Dict, Any, List, Optional
 

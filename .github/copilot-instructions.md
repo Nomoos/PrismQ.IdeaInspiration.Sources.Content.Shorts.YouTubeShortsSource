@@ -1,14 +1,15 @@
-# Copilot Instructions for PrismQ.IdeaCollector
+# Copilot Instructions for PrismQ.Idea.Sources.Content.Shorts.YouTubeShortsSource
 
-This file provides guidance for GitHub Copilot and developers on how to build, test, and run the PrismQ.IdeaCollector project.
+This file provides guidance for GitHub Copilot and developers on how to build, test, and run the PrismQ.Idea.Sources.Content.Shorts.YouTubeShortsSource project.
 
 ## Project Context
 
-PrismQ.IdeaCollector is a PrismQ module for AI-powered content generation. It's part of the PrismQ ecosystem which includes:
-- **PrismQ.IdeaCollector** - Gathering idea inspirations (this module)
+PrismQ.Idea.Sources.Content.Shorts.YouTubeShortsSource is a specialized PrismQ module for scraping YouTube Shorts content. It's part of the PrismQ Idea Sources ecosystem which includes:
+- **PrismQ.Idea.Sources.Content.Shorts.YouTubeShortsSource** - YouTube Shorts scraping (this module)
+- **PrismQ.Idea.Sources.Content.Forums.RedditSource** - Reddit scraping (separate module)
 - **StoryGenerator** - Automated story and video generation pipeline
 - **PrismQ.RepositoryTemplate** - Standardized template for PrismQ modules
-- Other specialized AI content generation modules
+- Other specialized content source modules
 
 ## Target Platform
 
@@ -21,7 +22,7 @@ All code should be optimized for:
 
 ## Project Overview
 
-PrismQ.IdeaCollector is a Python CLI tool that scrapes idea inspirations from multiple sources (YouTube Shorts, Reddit) and stores them in a SQLite database.
+PrismQ.Idea.Sources.Content.Shorts.YouTubeShortsSource is a Python CLI tool that scrapes idea inspirations from YouTube Shorts and stores them in a SQLite database.
 
 ## Development Environment Setup
 
@@ -36,8 +37,8 @@ PrismQ.IdeaCollector is a Python CLI tool that scrapes idea inspirations from mu
 
 ```bash
 # Clone the repository
-git clone https://github.com/Nomoos/PrismQ.IdeaCollector.git
-cd PrismQ.IdeaCollector
+git clone https://github.com/Nomoos/PrismQ.Idea.Sources.Content.Shorts.YouTubeShortsSource.git
+cd PrismQ.Idea.Sources.Content.Shorts.YouTubeShortsSource
 
 # Create and activate virtual environment
 python -m venv venv
@@ -54,7 +55,7 @@ pip install -r requirements.txt
 # Configure environment
 copy .env.example .env  # On Windows
 # cp .env.example .env  # On Linux
-# Edit .env and add your API credentials
+# Edit .env and add your YouTube API key
 ```
 
 ## Building the Project
@@ -70,12 +71,8 @@ pip install -e .
 ### Using Python Module
 
 ```bash
-# Scrape from all sources
+# Scrape from YouTube Shorts
 python -m src.cli scrape
-
-# Scrape from specific source
-python -m src.cli scrape --source reddit
-python -m src.cli scrape --source youtube
 
 # List collected ideas
 python -m src.cli list
@@ -140,7 +137,8 @@ mypy src/
 ## Project Structure
 
 ```
-PrismQ.IdeaCollector/
+```
+PrismQ.Idea.Sources.Content.Shorts.YouTubeShortsSource/
 ├── src/         # Main application code
 │   ├── __init__.py
 │   ├── cli.py              # CLI interface
@@ -150,7 +148,6 @@ PrismQ.IdeaCollector/
 │   ├── scoring/            # Scoring engine
 │   └── sources/            # Source plugins
 │       ├── __init__.py     # Base plugin interface
-│       ├── reddit_plugin.py
 │       └── youtube_plugin.py
 ├── tests/                  # Test suite
 ├── docs/                   # Documentation
@@ -206,15 +203,23 @@ def scrape(self) -> List[Dict[str, Any]]:
 
 ## Adding New Features
 
-### Adding a New Source Plugin
+### Extending YouTube Shorts Functionality
 
-1. Create a new file in `src/sources/` (e.g., `tiktok_plugin.py`)
-2. Inherit from the base plugin interface in `sources/__init__.py`
-3. Implement the `scrape()` method
-4. Add factory method to `UniversalMetrics` in `src/metrics.py`
-5. Register the plugin in `src/config.py`
-6. Add tests in `tests/test_sources.py`
-7. Update documentation in `docs/`
+1. Enhance the YouTube plugin in `src/sources/youtube_plugin.py`
+2. Update the `scrape()` method to add new capabilities
+3. Add any new configuration options to `src/config.py`
+4. Add factory method adjustments to `UniversalMetrics` if needed
+5. Add tests in `tests/`
+6. Update documentation in `docs/`
+
+### Adding Support for Other Platforms
+
+To add support for other content types (TikTok, Instagram Reels, etc.), create a new repository following the PrismQ Idea Sources taxonomy:
+- `PrismQ.Idea.Sources.Content.Shorts.TikTokSource`
+- `PrismQ.Idea.Sources.Content.Shorts.InstagramReelsSource`
+- etc.
+
+See the [PrismQ.RepositoryTemplate](https://github.com/Nomoos/PrismQ.RepositoryTemplate) for structure guidelines.
 
 ## Issue Tracking
 

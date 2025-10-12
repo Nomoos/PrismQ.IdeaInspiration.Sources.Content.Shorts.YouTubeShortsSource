@@ -1,16 +1,16 @@
-# PrismQ.IdeaCollector
+# PrismQ.Idea.Sources.Content.Shorts.YouTubeShortsSource
 
-A comprehensive PrismQ module that gathers idea inspirations from multiple sources like YouTube Shorts and Reddit, and stores them in a SQLite database for later analysis. Part of the PrismQ AI-powered content generation ecosystem.
+A PrismQ module for gathering idea inspirations from YouTube Shorts and storing them in a SQLite database for later analysis. Part of the PrismQ AI-powered content generation ecosystem.
 
 ## 🎯 Purpose
 
-This module serves as the idea collection component of the PrismQ ecosystem, gathering inspiration from various online sources to fuel automated content generation pipelines.
+This module serves as a specialized YouTube Shorts scraping component of the PrismQ Ideas Sources ecosystem. It focuses on gathering video content inspiration from YouTube Shorts to fuel automated content generation pipelines.
 
 ### Related PrismQ Projects
 
 - **[PrismQ.RepositoryTemplate](https://github.com/Nomoos/PrismQ.RepositoryTemplate)** - Template for PrismQ modules
 - **[StoryGenerator](https://github.com/Nomoos/StoryGenerator)** - Automated story and video generation pipeline
-- **Other PrismQ Modules** - Specialized tools for content generation
+- **Other PrismQ Idea Sources** - Specialized scrapers for different content types and platforms
 
 ## 💻 Target Platform
 
@@ -25,12 +25,12 @@ This module is optimized for:
 
 ## Features
 
-- **Multi-Source Scraping**: Extensible plugin architecture for scraping ideas from:
-  - YouTube Shorts
-  - Reddit (multiple subreddits)
-  - Easy to add more sources (Instagram, TikTok, Facebook ready)
+- **YouTube Shorts Scraping**: Specialized scraper for YouTube Shorts videos
+  - Filters for videos under 60 seconds
+  - Extracts video metadata and statistics
+  - Supports pagination and configurable result limits
   
-- **Universal Metrics Collection**: Standardized metrics across all platforms
+- **Universal Metrics Collection**: Standardized metrics for cross-platform analysis
   - Engagement metrics (views, likes, comments, shares)
   - Calculated metrics (engagement rate, like-to-view ratio, etc.)
   - Platform-specific metrics preserved
@@ -81,8 +81,8 @@ For comprehensive documentation, see:
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/PrismQDev/PrismQ.IdeaCollector.git
-   cd PrismQ.IdeaCollector
+   git clone https://github.com/Nomoos/PrismQ.Idea.Sources.Content.Shorts.YouTubeShortsSource.git
+   cd PrismQ.Idea.Sources.Content.Shorts.YouTubeShortsSource
    ```
 
 2. **Run setup**:
@@ -97,15 +97,15 @@ For comprehensive documentation, see:
 
 The quickstart script will guide you through:
 - Interactive configuration (if no .env file exists)
-- Choosing which sources to scrape
+- Scraping YouTube Shorts
 - Viewing collected ideas
 
 #### Linux/Mac
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/PrismQDev/PrismQ.IdeaCollector.git
-   cd PrismQ.IdeaCollector
+   git clone https://github.com/Nomoos/PrismQ.Idea.Sources.Content.Shorts.YouTubeShortsSource.git
+   cd PrismQ.Idea.Sources.Content.Shorts.YouTubeShortsSource
    ```
 
 2. **Run setup**:
@@ -124,8 +124,8 @@ The quickstart script will guide you through:
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/PrismQDev/PrismQ.IdeaCollector.git
-   cd PrismQ.IdeaCollector
+   git clone https://github.com/Nomoos/PrismQ.Idea.Sources.Content.Shorts.YouTubeShortsSource.git
+   cd PrismQ.Idea.Sources.Content.Shorts.YouTubeShortsSource
    ```
 
 2. **Install dependencies**:
@@ -143,7 +143,6 @@ The quickstart script will guide you through:
    
    - Edit `.env` and add your API credentials:
      - **YouTube API Key**: Get from [Google Cloud Console](https://console.cloud.google.com/)
-     - **Reddit API Credentials**: Get from [Reddit Apps](https://www.reddit.com/prefs/apps)
 
 ## Configuration
 
@@ -156,13 +155,6 @@ DATABASE_PATH=ideas.db
 # YouTube Configuration
 YOUTUBE_API_KEY=your_youtube_api_key_here
 YOUTUBE_MAX_RESULTS=50
-
-# Reddit Configuration
-REDDIT_CLIENT_ID=your_reddit_client_id_here
-REDDIT_CLIENT_SECRET=your_reddit_client_secret_here
-REDDIT_USER_AGENT=PrismQ.IdeaCollector/1.0
-REDDIT_SUBREDDITS=ideas,startup_ideas,SomebodyMakeThis
-REDDIT_LIMIT=100
 ```
 
 ### Universal Metrics for Cross-Platform Scoring
@@ -245,15 +237,9 @@ scores = engine.calculate_universal_content_score(metrics)
 
 ### Scrape Ideas
 
-Scrape ideas from all configured sources:
+Scrape YouTube Shorts ideas:
 ```bash
 python -m src.cli scrape
-```
-
-Scrape from a specific source:
-```bash
-python -m src.cli scrape --source reddit
-python -m src.cli scrape --source youtube
 ```
 
 Use a custom .env file:
@@ -275,7 +261,7 @@ python -m src.cli list --limit 50
 
 Filter by source:
 ```bash
-python -m src.cli list --source reddit
+python -m src.cli list --source youtube
 ```
 
 ### View Statistics
@@ -312,34 +298,20 @@ CREATE TABLE ideas (
 );
 ```
 
-## Extending with New Sources
+## Extending for Other Platforms
 
-To add a new source plugin:
+This repository is part of the PrismQ Idea Sources taxonomy. To add support for other platforms:
 
-1. Create a new file in `src/sources/` (e.g., `twitter_plugin.py`)
+1. Create a new repository following the naming pattern:
+   - `PrismQ.Idea.Sources.Content.Shorts.TikTokSource`
+   - `PrismQ.Idea.Sources.Content.Forums.RedditSource`
+   - etc.
 
-2. Implement the `SourcePlugin` interface:
+2. Implement the `SourcePlugin` interface
 
-```python
-from src.sources import SourcePlugin
+3. Use the universal metrics system for cross-platform compatibility
 
-class TwitterPlugin(SourcePlugin):
-    def get_source_name(self):
-        return "twitter"
-    
-    def scrape(self):
-        # Implement scraping logic
-        ideas = []
-        # ... scrape data ...
-        return ideas
-```
-
-3. Add configuration to `.env`:
-```ini
-TWITTER_API_KEY=your_key
-```
-
-4. Import and use in `cli.py`
+See the [PrismQ.RepositoryTemplate](https://github.com/Nomoos/PrismQ.RepositoryTemplate) for module structure guidelines.
 
 ## Development
 
@@ -358,7 +330,7 @@ pytest --cov=src --cov-report=html
 ### Project Structure
 
 ```
-PrismQ.IdeaCollector/
+PrismQ.Idea.Sources.Content.Shorts.YouTubeShortsSource/
 ├── src/         # Main application package
 │   ├── __init__.py
 │   ├── cli.py              # Command-line interface
@@ -368,7 +340,6 @@ PrismQ.IdeaCollector/
 │   ├── scoring/            # Scoring engine
 │   └── sources/            # Source plugins
 │       ├── __init__.py     # Base plugin interface
-│       ├── reddit_plugin.py
 │       └── youtube_plugin.py
 ├── tests/                  # Test suite
 │   ├── __init__.py
@@ -424,9 +395,9 @@ Contributions are welcome! Please see our [Contributing Guidelines](docs/CONTRIB
 - Coding standards
 
 For quick reference:
-- **Bug Reports**: Use our [bug report template](.github/ISSUE_TEMPLATE/bug_report.yml)
-- **Feature Requests**: Use our [feature request template](.github/ISSUE_TEMPLATE/feature_request.yml)
-- **Questions**: Start a [discussion](https://github.com/PrismQDev/PrismQ.IdeaCollector/discussions)
+- **Bug Reports**: Open an issue on GitHub
+- **Feature Requests**: Open an issue on GitHub
+- **Questions**: Start a [discussion](https://github.com/Nomoos/PrismQ.Idea.Sources.Content.Shorts.YouTubeShortsSource/discussions)
 
 ## Troubleshooting
 
@@ -440,13 +411,13 @@ For detailed troubleshooting, see:
 
 - **Module not found**: Make sure you're running commands from the project root directory
 - **Path issues**: Use forward slashes (/) or escaped backslashes (\\\\) in paths
-- **API errors**: Verify your API credentials in the `.env` file
+- **API errors**: Verify your YouTube API key in the `.env` file
 
 ### Common Issues
 
-- **No ideas scraped**: Check your API credentials and internet connection
+- **No ideas scraped**: Check your YouTube API credentials and internet connection
 - **Database locked**: Close any other processes accessing the database file
-- **Rate limiting**: YouTube and Reddit APIs have rate limits; reduce `MAX_RESULTS` and `LIMIT` values if needed
+- **Rate limiting**: YouTube API has rate limits; reduce `YOUTUBE_MAX_RESULTS` value if needed
 
 For more help, see the [full troubleshooting guide](issues/KNOWN_ISSUES.md).
 

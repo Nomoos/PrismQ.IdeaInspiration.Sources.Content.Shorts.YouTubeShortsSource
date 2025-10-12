@@ -1,6 +1,6 @@
 # Setup and Quickstart Scripts
 
-This folder contains installation and quickstart scripts for PrismQ.IdeaCollector.
+This folder contains installation and quickstart scripts for PrismQ.Idea.Sources.Content.Shorts.YouTubeShortsSource.
 
 ## Available Scripts
 
@@ -19,7 +19,7 @@ chmod +x scripts/setup.sh
 - Checks Python installation
 - Installs dependencies from requirements.txt
 - Creates .env file from .env.example
-- Optionally configures API credentials
+- Optionally configures YouTube API credentials
 
 #### `setup.bat` (Windows)
 Initial setup script for Windows.
@@ -33,7 +33,7 @@ scripts\setup.bat
 - Checks Python installation
 - Installs dependencies from requirements.txt
 - Creates .env file from .env.example
-- Guides through API configuration
+- Guides through YouTube API configuration
 
 ### Quickstart Scripts
 
@@ -48,7 +48,7 @@ chmod +x scripts/quickstart.sh
 
 **What it does**:
 - Verifies setup
-- Runs a sample scraping session
+- Runs a sample YouTube Shorts scraping session
 - Displays collected ideas
 - Shows statistics
 
@@ -62,7 +62,7 @@ scripts\quickstart.bat
 
 **What it does**:
 - Verifies setup
-- Runs a sample scraping session
+- Runs a sample YouTube Shorts scraping session
 - Displays collected ideas
 - Shows statistics
 
@@ -74,7 +74,7 @@ scripts\quickstart.bat
 chmod +x scripts/setup.sh
 ./scripts/setup.sh
 
-# 2. Configure .env file with your API keys
+# 2. Configure .env file with your YouTube API key
 nano .env
 
 # 3. Run quickstart
@@ -87,7 +87,7 @@ chmod +x scripts/quickstart.sh
 REM 1. Run setup
 scripts\setup.bat
 
-REM 2. Configure .env file with your API keys
+REM 2. Configure .env file with your YouTube API key
 notepad .env
 
 REM 3. Run quickstart
