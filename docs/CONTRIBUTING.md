@@ -136,16 +136,16 @@ def scrape(self) -> List[Dict[str, Any]]:
 
 ### File Organization
 
-- Keep source plugins in `src/sources/`
+- Keep source plugins in `idea_collector/sources/`
 - Add tests in `tests/` with `test_` prefix
-- Update configuration in `src/config.py`
-- CLI commands in `src/cli.py`
+- Update configuration in `idea_collector/config.py`
+- CLI commands in `idea_collector/cli.py`
 
 ## Adding New Source Plugins
 
 To add support for a new platform (e.g., TikTok, Instagram):
 
-1. Create a new file in `src/sources/` (e.g., `tiktok_plugin.py`)
+1. Create a new file in `idea_collector/sources/` (e.g., `tiktok_plugin.py`)
 
 2. Implement the `SourcePlugin` interface:
    ```python
@@ -161,7 +161,7 @@ To add support for a new platform (e.g., TikTok, Instagram):
            pass
    ```
 
-3. Add a factory method to `UniversalMetrics` class in `src/metrics.py`:
+3. Add a factory method to `UniversalMetrics` class in `idea_collector/metrics.py`:
    ```python
    @classmethod
    def from_tiktok(cls, video_data: Dict[str, Any]) -> 'UniversalMetrics':
@@ -187,7 +187,7 @@ To add support for a new platform (e.g., TikTok, Instagram):
 pytest
 
 # Run with coverage
-pytest --cov=src --cov-report=html
+pytest --cov=idea_collector --cov-report=html
 
 # Run specific test file
 pytest tests/test_database.py
@@ -220,7 +220,7 @@ def test_database_stores_idea():
 ## Questions?
 
 If you have questions about contributing, please:
-- Check the [README.md](README.md) for general documentation
+- Check the [README.md](../README.md) for general documentation
 - Open a discussion in the GitHub Discussions tab
 - Reach out to the maintainers
 

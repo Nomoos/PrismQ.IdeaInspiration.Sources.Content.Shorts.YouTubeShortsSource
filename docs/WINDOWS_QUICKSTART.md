@@ -36,7 +36,7 @@ cd C:\path\to\PrismQ.IdeaCollector
 ### 3. Run the Setup Script
 
 ```cmd
-setup.bat
+scripts\setup.bat
 ```
 
 This will:
@@ -47,7 +47,7 @@ This will:
 ### 4. Run the Quickstart Script
 
 ```cmd
-quickstart.bat
+scripts\quickstart.bat
 ```
 
 The quickstart script will:
@@ -170,7 +170,7 @@ Close any programs that might be accessing the database file (`ideas.db`).
 
 ## Getting Help
 
-For more detailed information, see the main `README.md` file.
+For more detailed information, see the main [README.md](../README.md) file.
 
 For issues and questions, please open an issue on the GitHub repository.
 

@@ -13,7 +13,7 @@ PrismQ.IdeaCollector is a standalone Python CLI that gathers idea inspirations f
   - Engagement metrics (views, likes, comments, shares)
   - Calculated metrics (engagement rate, like-to-view ratio, etc.)
   - Platform-specific metrics preserved
-  - See [METRICS.md](METRICS.md) for complete documentation
+  - See [METRICS.md](docs/METRICS.md) for complete documentation
   
 - **Deduplication**: Automatically prevents duplicate ideas using (source, source_id) unique constraint
   
@@ -49,12 +49,12 @@ PrismQ.IdeaCollector is a standalone Python CLI that gathers idea inspirations f
 
 2. **Run setup**:
    ```batch
-   setup.bat
+   scripts\setup.bat
    ```
 
 3. **Run quickstart**:
    ```batch
-   quickstart.bat
+   scripts\quickstart.bat
    ```
 
 The quickstart script will guide you through:
@@ -72,14 +72,14 @@ The quickstart script will guide you through:
 
 2. **Run setup**:
    ```bash
-   chmod +x setup.sh
-   ./setup.sh
+   chmod +x scripts/setup.sh
+   ./scripts/setup.sh
    ```
 
 3. **Run quickstart**:
    ```bash
-   chmod +x quickstart.sh
-   ./quickstart.sh
+   chmod +x scripts/quickstart.sh
+   ./scripts/quickstart.sh
    ```
 
 ### Manual Setup
@@ -321,27 +321,43 @@ pytest --cov=idea_collector --cov-report=html
 
 ```
 PrismQ.IdeaCollector/
-├── idea_collector/
+├── idea_collector/         # Main application package
 │   ├── __init__.py
 │   ├── cli.py              # Command-line interface
 │   ├── config.py           # Configuration management
 │   ├── database.py         # Database operations
-│   └── sources/
+│   ├── metrics.py          # Universal metrics system
+│   ├── scoring/            # Scoring engine
+│   └── sources/            # Source plugins
 │       ├── __init__.py     # Base plugin interface
 │       ├── reddit_plugin.py
 │       └── youtube_plugin.py
-├── tests/
+├── tests/                  # Test suite
 │   ├── __init__.py
 │   ├── test_config.py
-│   └── test_database.py
+│   ├── test_database.py
+│   ├── test_metrics.py
+│   └── test_scoring.py
+├── docs/                   # Documentation
+│   ├── README.md
+│   ├── CONTRIBUTING.md     # Contribution guidelines
+│   ├── METRICS.md          # Metrics documentation
+│   └── WINDOWS_QUICKSTART.md
+├── scripts/                # Setup and utility scripts
+│   ├── README.md
+│   ├── setup.bat           # Windows setup script
+│   ├── setup.sh            # Linux/Mac setup script
+│   ├── quickstart.bat      # Windows quickstart script
+│   └── quickstart.sh       # Linux/Mac quickstart script
+├── issues/                 # Issue tracking and planning
+│   ├── README.md
+│   ├── KNOWN_ISSUES.md     # Common problems and solutions
+│   └── ROADMAP.md          # Project roadmap
 ├── .env.example            # Example configuration
 ├── .gitignore
+├── LICENSE
 ├── pyproject.toml          # Project metadata
 ├── requirements.txt        # Dependencies
-├── setup.bat               # Windows setup script
-├── setup.sh                # Linux/Mac setup script
-├── quickstart.bat          # Windows quickstart script
-├── quickstart.sh           # Linux/Mac quickstart script
 └── README.md
 ```
 
@@ -355,11 +371,29 @@ This project is open source and available for use and modification.
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit pull requests or open issues for bugs and feature requests.
+Contributions are welcome! Please see our [Contributing Guidelines](docs/CONTRIBUTING.md) for details on:
+
+- Code of Conduct
+- How to report bugs
+- How to suggest features
+- Development setup
+- Pull request process
+- Coding standards
+
+For quick reference:
+- **Bug Reports**: Use our [bug report template](.github/ISSUE_TEMPLATE/bug_report.yml)
+- **Feature Requests**: Use our [feature request template](.github/ISSUE_TEMPLATE/feature_request.yml)
+- **Questions**: Start a [discussion](https://github.com/PrismQDev/PrismQ.IdeaCollector/discussions)
 
 ## Troubleshooting
 
-### Windows-Specific Issues
+For detailed troubleshooting, see:
+- [Known Issues](issues/KNOWN_ISSUES.md) - Common problems and solutions
+- [Windows Quickstart Guide](docs/WINDOWS_QUICKSTART.md#troubleshooting) - Windows-specific help
+
+### Quick Solutions
+
+#### Windows-Specific Issues
 
 - **Module not found**: Make sure you're running commands from the project root directory
 - **Path issues**: Use forward slashes (/) or escaped backslashes (\\\\) in paths
@@ -370,6 +404,8 @@ Contributions are welcome! Please feel free to submit pull requests or open issu
 - **No ideas scraped**: Check your API credentials and internet connection
 - **Database locked**: Close any other processes accessing the database file
 - **Rate limiting**: YouTube and Reddit APIs have rate limits; reduce `MAX_RESULTS` and `LIMIT` values if needed
+
+For more help, see the [full troubleshooting guide](issues/KNOWN_ISSUES.md).
 
 ## Support
 
