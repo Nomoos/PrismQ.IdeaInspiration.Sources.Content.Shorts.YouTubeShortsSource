@@ -2,14 +2,14 @@
 
 ## Overview
 
-PrismQ.IdeaCollector uses a **universal metrics schema** that standardizes data collection across multiple platforms:
-- YouTube
-- Reddit  
-- Instagram
-- TikTok
-- Facebook
+PrismQ.Idea.Sources.Content.Shorts.YouTubeShortsSource uses a **universal metrics schema** that standardizes data collection from YouTube Shorts. This schema is designed to be compatible with other PrismQ Idea Sources modules for cross-platform analysis:
+- YouTube Shorts (this module)
+- TikTok (separate module)
+- Instagram Reels (separate module)
+- Reddit (separate module)
+- Other platforms (as separate modules)
 
-This approach enables consistent analysis and comparison of content performance regardless of the source platform.
+This approach enables consistent analysis and comparison of content performance across different platforms in the PrismQ ecosystem.
 
 ## Core Metrics Collected
 
@@ -116,26 +116,23 @@ metrics_dict = metrics.to_dict()
 
 ## Platform-Specific Implementations
 
-### YouTube
+### YouTube Shorts (This Module)
 Uses the full YouTube API response to extract:
 - View, like, comment, favorite counts
 - Video duration, resolution, FPS
 - Title, description, tags
 - Channel information
 - Upload date
+- Filters for videos under 60 seconds
 
-### Reddit
-Uses PRAW post objects to extract:
-- Score (upvotes), upvote ratio
-- Comment count
-- Post title and content
-- Subreddit context
+### Other Platforms (Separate Modules)
+Other PrismQ Idea Sources modules implement similar patterns:
+- `PrismQ.Idea.Sources.Content.Forums.RedditSource` - Reddit posts
+- `PrismQ.Idea.Sources.Content.Shorts.TikTokSource` - TikTok videos
+- `PrismQ.Idea.Sources.Content.Shorts.InstagramReelsSource` - Instagram Reels
+- etc.
 
-### Instagram, TikTok, Facebook
-Ready-to-use factory methods available for when these platforms are added:
-- `UniversalMetrics.from_instagram()`
-- `UniversalMetrics.from_tiktok()`
-- `UniversalMetrics.from_facebook()`
+Each module implements the universal metrics schema for cross-platform compatibility.
 
 ## Benefits of Universal Metrics
 
@@ -157,16 +154,16 @@ Ready-to-use factory methods available for when these platforms are added:
 - **Industry Average**: 2-4%
 - **Good Performance**: > 4%
 
-## Adding New Platforms
+## Adding Support for Other Platforms
 
-To add a new platform:
+To add support for new platforms, create separate repositories following the PrismQ Idea Sources taxonomy:
 
-1. Create a new plugin in `src/sources/`
+1. Create a new repository (e.g., `PrismQ.Idea.Sources.Content.Shorts.TikTokSource`)
 2. Implement a `from_<platform>()` class method in `UniversalMetrics`
 3. Map platform-specific fields to universal schema
 4. Store any unique platform data in `platform_specific` field
 
-Example:
+Example for a TikTok module:
 ```python
 @classmethod
 def from_tiktok(cls, video_data: Dict[str, Any]) -> 'UniversalMetrics':
@@ -184,3 +181,5 @@ def from_tiktok(cls, video_data: Dict[str, Any]) -> 'UniversalMetrics':
     metrics.calculate_derived_metrics()
     return metrics
 ```
+
+See the [PrismQ.RepositoryTemplate](https://github.com/Nomoos/PrismQ.RepositoryTemplate) for module structure guidelines.
