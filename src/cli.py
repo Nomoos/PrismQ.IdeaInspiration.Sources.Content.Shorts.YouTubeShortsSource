@@ -84,7 +84,8 @@ def scrape(env_file):
               help='Path to .env file')
 @click.option('--channel', '-c', help='YouTube channel URL, handle (@username), or ID')
 @click.option('--top', '-t', type=int, help='Number of shorts to scrape (default: config or 10)')
-def scrape_channel(env_file, channel, top):
+@click.option('--story-only', is_flag=True, help='Only scrape videos detected as story videos')
+def scrape_channel(env_file, channel, top, story_only):
     """Scrape ideas from a specific YouTube channel's Shorts using yt-dlp.
     
     This command uses yt-dlp to scrape comprehensive metadata from a YouTube
@@ -99,6 +100,10 @@ def scrape_channel(env_file, channel, top):
     try:
         # Load configuration
         config = Config(env_file)
+        
+        # Override story_only from CLI if provided
+        if story_only:
+            config.youtube_channel_story_only = True
         
         # Initialize database
         db = Database(config.database_path)
@@ -129,6 +134,10 @@ def scrape_channel(env_file, channel, top):
         
         click.echo(f"Scraping from YouTube channel: {channel_url}")
         click.echo(f"Number of shorts to scrape: {shorts_count}")
+        if config.youtube_channel_story_only:
+            click.echo("Story-only mode: ENABLED (filtering out non-story videos)")
+        else:
+            click.echo("Story-only mode: DISABLED")
         click.echo("")
         
         try:

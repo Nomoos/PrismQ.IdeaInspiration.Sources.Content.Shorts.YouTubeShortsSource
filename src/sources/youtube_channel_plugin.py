@@ -11,6 +11,7 @@ from pathlib import Path
 from typing import List, Dict, Any, Optional
 from datetime import datetime
 from src.sources import SourcePlugin
+from src.story_detector import StoryDetector
 
 
 class YouTubeChannelPlugin(SourcePlugin):
@@ -31,6 +32,10 @@ class YouTubeChannelPlugin(SourcePlugin):
         # Check if yt-dlp is available
         if not self._check_ytdlp():
             raise ValueError("yt-dlp is not installed. Install with: pip install yt-dlp")
+        
+        # Initialize story detector
+        self.story_detector = StoryDetector()
+        self.story_only = getattr(config, 'youtube_channel_story_only', False)
     
     def get_source_name(self) -> str:
         """Get the name of this source.
@@ -348,6 +353,24 @@ class YouTubeChannelPlugin(SourcePlugin):
                     'channel_follower_count': metadata.get('channel_follower_count')
                 }
             }
+            
+            # Detect if this is a story video
+            is_story, confidence, indicators = self.story_detector.detect(
+                title=metadata.get('title', ''),
+                description=metadata.get('description', ''),
+                tags=metadata.get('tags', []),
+                subtitle_text=metadata.get('subtitle_text', '')
+            )
+            
+            # Add story detection to metrics
+            metrics['enhanced_metrics']['is_story_video'] = is_story
+            metrics['enhanced_metrics']['story_confidence_score'] = confidence
+            metrics['enhanced_metrics']['story_indicators'] = indicators
+            
+            # If story_only mode is enabled, filter out non-story videos
+            if self.story_only and not is_story:
+                print(f"    Skipped: Not a story (confidence: {confidence:.2f})")
+                return None
             
             # Extract tags
             tags = self._extract_tags(metadata)

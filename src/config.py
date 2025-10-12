@@ -32,3 +32,4 @@ class Config:
         # YouTube Channel configuration (for channel-based scraping with yt-dlp)
         self.youtube_channel_url = os.getenv("YOUTUBE_CHANNEL_URL", "")
         self.youtube_channel_max_shorts = int(os.getenv("YOUTUBE_CHANNEL_MAX_SHORTS", "10"))
+        self.youtube_channel_story_only = os.getenv("YOUTUBE_CHANNEL_STORY_ONLY", "false").lower() == "true"
