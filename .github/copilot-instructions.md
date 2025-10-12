@@ -2,6 +2,23 @@
 
 This file provides guidance for GitHub Copilot and developers on how to build, test, and run the PrismQ.IdeaCollector project.
 
+## Project Context
+
+PrismQ.IdeaCollector is a PrismQ module for AI-powered content generation. It's part of the PrismQ ecosystem which includes:
+- **PrismQ.IdeaCollector** - Gathering idea inspirations (this module)
+- **StoryGenerator** - Automated story and video generation pipeline
+- **PrismQ.RepositoryTemplate** - Standardized template for PrismQ modules
+- Other specialized AI content generation modules
+
+## Target Platform
+
+All code should be optimized for:
+- **Operating System**: Windows (primary), Linux (development only)
+- **GPU**: NVIDIA RTX 5090 (Ada Lovelace architecture, 32GB VRAM)
+- **CPU**: AMD Ryzen processor (multi-core)
+- **RAM**: 64GB DDR5
+- **Python**: 3.10 or higher
+
 ## Project Overview
 
 PrismQ.IdeaCollector is a Python CLI tool that scrapes idea inspirations from multiple sources (YouTube Shorts, Reddit) and stores them in a SQLite database.
@@ -10,26 +27,33 @@ PrismQ.IdeaCollector is a Python CLI tool that scrapes idea inspirations from mu
 
 ### Prerequisites
 
-- Python 3.8 or higher
+- Python 3.10 or higher (required)
 - pip package manager
 - Virtual environment (recommended)
+- Windows OS (recommended)
 
 ### Initial Setup
 
 ```bash
 # Clone the repository
-git clone https://github.com/PrismQDev/PrismQ.IdeaCollector.git
+git clone https://github.com/Nomoos/PrismQ.IdeaCollector.git
 cd PrismQ.IdeaCollector
 
 # Create and activate virtual environment
-python3 -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+python -m venv venv
+
+# On Windows
+venv\Scripts\activate
+
+# On Linux (development only)
+# source venv/bin/activate
 
 # Install dependencies
 pip install -r requirements.txt
 
 # Configure environment
-cp .env.example .env
+copy .env.example .env  # On Windows
+# cp .env.example .env  # On Linux
 # Edit .env and add your API credentials
 ```
 
@@ -143,10 +167,18 @@ PrismQ.IdeaCollector/
 ### Python Style
 
 - Follow PEP 8 style guide
-- Use type hints where appropriate
-- Add docstrings to all public functions and classes
+- Use type hints for all function parameters and return values
+- Add docstrings to all public functions and classes using Google style
 - Keep functions focused and concise (< 50 lines)
 - Use meaningful variable names
+
+### Performance Considerations
+
+- Optimize for potential GPU utilization on RTX 5090 (future features)
+- Consider memory constraints (32GB VRAM, 64GB RAM)
+- Use batch processing where applicable
+- Implement proper resource management for API calls
+- Profile performance-critical sections
 
 ### Example Function Structure
 
@@ -229,6 +261,40 @@ git mv issues/new/feature-name.md issues/wip/feature-name.md
 # Complete the issue
 git mv issues/wip/feature-name.md issues/done/feature-name.md
 ```
+
+## Integration with PrismQ Ecosystem
+
+### Module Compatibility
+
+- Follow consistent naming conventions across PrismQ modules
+- Use compatible data formats for inter-module communication
+- Document integration points with other PrismQ modules
+- Consider pipeline compatibility with StoryGenerator and other modules
+
+### Data Export
+
+- Ensure collected ideas can be easily exported for downstream modules
+- Maintain consistent schema for idea metadata
+- Support various output formats (JSON, CSV, database)
+
+## AI/ML Considerations
+
+### Future GPU Optimization
+
+When implementing AI-powered features:
+- Use mixed precision (FP16/BF16) for RTX 5090
+- Implement proper batch sizing for 32GB VRAM
+- Consider CUDA/cuDNN compatibility
+- Profile GPU memory usage
+- Use CUDA graphs for repetitive operations
+- Consider model quantization for efficiency
+
+### Dependencies for AI Features
+
+- Prefer well-maintained, GPU-accelerated libraries
+- Document version requirements clearly
+- Test compatibility with PyTorch/TensorFlow if using deep learning
+- Ensure CUDA toolkit version compatibility
 
 ## Common Development Tasks
 
