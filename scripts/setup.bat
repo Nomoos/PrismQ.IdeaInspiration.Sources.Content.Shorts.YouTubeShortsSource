@@ -60,13 +60,13 @@ if not exist .env (
         echo Updating .env file...
         
         if not "%YOUTUBE_KEY%"=="" (
-            powershell -Command "(Get-Content .env) -replace 'YOUTUBE_API_KEY=.*', 'YOUTUBE_API_KEY=%YOUTUBE_KEY%' | Set-Content .env"
+            powershell -Command "$key = '%YOUTUBE_KEY%'; (Get-Content .env) -replace 'YOUTUBE_API_KEY=.*', \"YOUTUBE_API_KEY=$key\" | Set-Content .env"
         )
         if not "%REDDIT_ID%"=="" (
-            powershell -Command "(Get-Content .env) -replace 'REDDIT_CLIENT_ID=.*', 'REDDIT_CLIENT_ID=%REDDIT_ID%' | Set-Content .env"
+            powershell -Command "$id = '%REDDIT_ID%'; (Get-Content .env) -replace 'REDDIT_CLIENT_ID=.*', \"REDDIT_CLIENT_ID=$id\" | Set-Content .env"
         )
         if not "%REDDIT_SECRET%"=="" (
-            powershell -Command "(Get-Content .env) -replace 'REDDIT_CLIENT_SECRET=.*', 'REDDIT_CLIENT_SECRET=%REDDIT_SECRET%' | Set-Content .env"
+            powershell -Command "$secret = '%REDDIT_SECRET%'; (Get-Content .env) -replace 'REDDIT_CLIENT_SECRET=.*', \"REDDIT_CLIENT_SECRET=$secret\" | Set-Content .env"
         )
         
         echo Configuration saved!

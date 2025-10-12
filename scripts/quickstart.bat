@@ -55,14 +55,15 @@ if not exist .env (
     echo Updating .env file...
     
     REM Update .env file with provided values
+    REM Use PowerShell for more robust string replacement
     if not "%YOUTUBE_KEY%"=="" (
-        powershell -Command "(Get-Content .env) -replace 'YOUTUBE_API_KEY=.*', 'YOUTUBE_API_KEY=%YOUTUBE_KEY%' | Set-Content .env"
+        powershell -Command "$key = '%YOUTUBE_KEY%'; (Get-Content .env) -replace 'YOUTUBE_API_KEY=.*', \"YOUTUBE_API_KEY=$key\" | Set-Content .env"
     )
     if not "%REDDIT_ID%"=="" (
-        powershell -Command "(Get-Content .env) -replace 'REDDIT_CLIENT_ID=.*', 'REDDIT_CLIENT_ID=%REDDIT_ID%' | Set-Content .env"
+        powershell -Command "$id = '%REDDIT_ID%'; (Get-Content .env) -replace 'REDDIT_CLIENT_ID=.*', \"REDDIT_CLIENT_ID=$id\" | Set-Content .env"
     )
     if not "%REDDIT_SECRET%"=="" (
-        powershell -Command "(Get-Content .env) -replace 'REDDIT_CLIENT_SECRET=.*', 'REDDIT_CLIENT_SECRET=%REDDIT_SECRET%' | Set-Content .env"
+        powershell -Command "$secret = '%REDDIT_SECRET%'; (Get-Content .env) -replace 'REDDIT_CLIENT_SECRET=.*', \"REDDIT_CLIENT_SECRET=$secret\" | Set-Content .env"
     )
     
     echo Configuration saved to .env
@@ -113,30 +114,40 @@ if "%CHOICE%"=="1" (
     echo.
     echo Scraping from all sources...
     python -m src.cli scrape
-) else if "%CHOICE%"=="2" (
-    echo.
-    echo Scraping from Reddit...
-    python -m src.cli scrape --source reddit
-) else if "%CHOICE%"=="3" (
-    echo.
-    echo Scraping from YouTube...
-    python -m src.cli scrape --source youtube
-) else if "%CHOICE%"=="4" (
-    echo.
-    echo Listing collected ideas...
-    python -m src.cli list
-) else if "%CHOICE%"=="5" (
-    echo.
-    echo Showing statistics...
-    python -m src.cli stats
-) else if "%CHOICE%"=="6" (
-    echo.
-    echo Exiting...
-    exit /b 0
 ) else (
-    echo.
-    echo Invalid choice. Exiting...
-    exit /b 1
+    if "%CHOICE%"=="2" (
+        echo.
+        echo Scraping from Reddit...
+        python -m src.cli scrape --source reddit
+    ) else (
+        if "%CHOICE%"=="3" (
+            echo.
+            echo Scraping from YouTube...
+            python -m src.cli scrape --source youtube
+        ) else (
+            if "%CHOICE%"=="4" (
+                echo.
+                echo Listing collected ideas...
+                python -m src.cli list
+            ) else (
+                if "%CHOICE%"=="5" (
+                    echo.
+                    echo Showing statistics...
+                    python -m src.cli stats
+                ) else (
+                    if "%CHOICE%"=="6" (
+                        echo.
+                        echo Exiting...
+                        exit /b 0
+                    ) else (
+                        echo.
+                        echo Invalid choice. Exiting...
+                        exit /b 1
+                    )
+                )
+            )
+        )
+    )
 )
 
 echo.
