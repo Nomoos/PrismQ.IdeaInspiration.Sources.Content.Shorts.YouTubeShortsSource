@@ -1,6 +1,6 @@
 # Documentation
 
-This folder contains comprehensive documentation for PrismQ.IdeaCollector.
+This folder contains comprehensive documentation for PrismQ.Idea.Sources.Content.Shorts.YouTubeShortsSource.
 
 ## Available Documentation
 
@@ -26,20 +26,19 @@ This folder contains comprehensive documentation for PrismQ.IdeaCollector.
 
 ### For Developers
 - [Development Setup](CONTRIBUTING.md#development-setup)
-- [Adding Source Plugins](CONTRIBUTING.md#adding-new-source-plugins)
+- [Enhancing YouTube Shorts Functionality](CONTRIBUTING.md#enhancing-youtube-shorts-functionality)
 - [Coding Standards](CONTRIBUTING.md#coding-standards)
 - [Testing Guidelines](CONTRIBUTING.md#testing)
 
 ### For Contributors
 - [Code of Conduct](CONTRIBUTING.md#code-of-conduct)
 - [Pull Request Process](CONTRIBUTING.md#pull-request-process)
-- [Issue Templates](../.github/ISSUE_TEMPLATE/)
 
 ## Getting Help
 
-- **Questions**: Use [GitHub Discussions](https://github.com/PrismQDev/PrismQ.IdeaCollector/discussions)
-- **Bug Reports**: Use [bug report template](../.github/ISSUE_TEMPLATE/bug_report.yml)
-- **Feature Requests**: Use [feature request template](../.github/ISSUE_TEMPLATE/feature_request.yml)
+- **Questions**: Use [GitHub Discussions](https://github.com/Nomoos/PrismQ.Idea.Sources.Content.Shorts.YouTubeShortsSource/discussions)
+- **Bug Reports**: Open an issue on GitHub
+- **Feature Requests**: Open an issue on GitHub
 
 ## Contributing to Documentation
 
