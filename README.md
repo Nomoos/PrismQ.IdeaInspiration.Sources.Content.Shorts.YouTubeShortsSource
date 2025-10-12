@@ -38,10 +38,12 @@ For comprehensive documentation, see:
   - [Contributing Guidelines](docs/CONTRIBUTING.md)
   - [Metrics Documentation](docs/METRICS.md)
   - [Windows Quickstart Guide](docs/WINDOWS_QUICKSTART.md)
-- **[issues/](issues/)** - Issue tracking and project planning
+- **[issues/](issues/)** - File-based issue tracking
+  - [Issue Tracking Guide](issues/README.md)
   - [Known Issues](issues/KNOWN_ISSUES.md)
   - [Project Roadmap](issues/ROADMAP.md)
 - **[scripts/](scripts/)** - Setup and utility scripts
+- **[.github/copilot-instructions.md](.github/copilot-instructions.md)** - Build, test, and development guide
 
 ## Installation
 
