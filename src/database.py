@@ -136,6 +136,10 @@ class Database:
         allowed_columns = {'id', 'source', 'source_id', 'title', 'score', 'created_at', 'updated_at'}
         allowed_directions = {'ASC', 'DESC', ''}
         
+        # Check for SQL injection attempts (semicolons, comments, etc.)
+        if ';' in order_by or '--' in order_by or '/*' in order_by or 'DROP' in order_by.upper():
+            raise ValueError(f"Invalid order_by clause: potentially malicious input detected")
+        
         # Parse order_by clause
         order_parts = order_by.strip().split()
         if len(order_parts) == 0:
@@ -154,9 +158,8 @@ class Database:
                 raise ValueError(f"Invalid order direction: {direction}")
             order_by = f"{column} {direction}"
         else:
-            # For multiple columns like "source, score DESC", validate each part
-            # Simplified: just use default for complex cases
-            order_by = 'score DESC'
+            # For complex cases, just use default for security
+            raise ValueError(f"Invalid order_by clause: too complex")
         
         cursor = self.connection.cursor()
         query = f"SELECT * FROM ideas ORDER BY {order_by}"
