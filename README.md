@@ -26,7 +26,7 @@ This module is optimized for:
 ## Features
 
 - **YouTube Shorts Scraping**: Specialized scraper for YouTube Shorts videos
-  - Filters for videos under 60 seconds
+  - Filters for videos up to 3 minutes (180 seconds)
   - Extracts video metadata and statistics
   - Supports pagination and configurable result limits
   

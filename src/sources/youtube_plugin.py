@@ -41,7 +41,7 @@ class YouTubePlugin(SourcePlugin):
         
         try:
             # Search for YouTube Shorts
-            # Note: YouTube Shorts are typically videos under 60 seconds
+            # Note: YouTube Shorts are videos up to 3 minutes (180 seconds)
             search_response = self.youtube.search().list(
                 q='#Shorts OR #YouTubeShorts ideas startup business',
                 part='id,snippet',
@@ -63,7 +63,7 @@ class YouTubePlugin(SourcePlugin):
             ).execute()
             
             for video in videos_response.get('items', []):
-                # Filter for actual Shorts (< 60 seconds)
+                # Filter for actual Shorts (<= 3 minutes / 180 seconds)
                 duration = video['contentDetails']['duration']
                 if not self._is_short(duration):
                     continue
@@ -114,10 +114,10 @@ class YouTubePlugin(SourcePlugin):
 
     @staticmethod
     def _is_short(duration: str) -> bool:
-        """Check if video duration indicates a Short (< 60 seconds).
+        """Check if video duration indicates a Short (<= 3 minutes / 180 seconds).
         
         Args:
-            duration: ISO 8601 duration string (e.g., 'PT45S', 'PT1M30S')
+            duration: ISO 8601 duration string (e.g., 'PT45S', 'PT1M30S', 'PT2M45S')
             
         Returns:
             True if video is a Short
@@ -133,4 +133,4 @@ class YouTubePlugin(SourcePlugin):
         seconds = int(match.group(2) or 0)
         
         total_seconds = minutes * 60 + seconds
-        return total_seconds <= 60
+        return total_seconds <= 180
