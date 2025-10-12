@@ -1,4 +1,4 @@
-# In Progress
+# Work In Progress (WIP)
 
 This folder contains issues currently being worked on.
 
@@ -12,8 +12,8 @@ This folder contains issues currently being worked on.
 
 - Update the issue file with progress notes
 - Add commit hashes as you make progress
-- Move to `review/` when ready for testing: `git mv issues/in-progress/issue-name.md issues/review/issue-name.md`
-- Move to `blocked/` if you encounter blockers: `git mv issues/in-progress/issue-name.md issues/blocked/issue-name.md`
+- Move to `done/` when completed: `git mv issues/wip/issue-name.md issues/done/issue-name.md`
+- Move back to `new/` if you need to pause work: `git mv issues/wip/issue-name.md issues/new/issue-name.md`
 
 ## Need Help?
 

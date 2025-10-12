@@ -2,7 +2,7 @@
 
 from typing import List, Dict, Any
 import praw
-from idea_collector.sources import SourcePlugin
+from src.sources import SourcePlugin
 
 
 class RedditPlugin(SourcePlugin):

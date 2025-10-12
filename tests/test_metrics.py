@@ -1,7 +1,7 @@
 """Tests for universal metrics module."""
 
 import pytest
-from idea_collector.metrics import UniversalMetrics
+from src.metrics import UniversalMetrics
 
 
 def test_universal_metrics_initialization():

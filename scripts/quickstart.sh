@@ -113,27 +113,27 @@ case $CHOICE in
     1)
         echo
         echo "Scraping from all sources..."
-        python3 -m idea_collector.cli scrape
+        python3 -m src.cli scrape
         ;;
     2)
         echo
         echo "Scraping from Reddit..."
-        python3 -m idea_collector.cli scrape --source reddit
+        python3 -m src.cli scrape --source reddit
         ;;
     3)
         echo
         echo "Scraping from YouTube..."
-        python3 -m idea_collector.cli scrape --source youtube
+        python3 -m src.cli scrape --source youtube
         ;;
     4)
         echo
         echo "Listing collected ideas..."
-        python3 -m idea_collector.cli list
+        python3 -m src.cli list
         ;;
     5)
         echo
         echo "Showing statistics..."
-        python3 -m idea_collector.cli stats
+        python3 -m src.cli stats
         ;;
     6)
         echo

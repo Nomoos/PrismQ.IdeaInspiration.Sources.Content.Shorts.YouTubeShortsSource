@@ -3,7 +3,7 @@
 import pytest
 import tempfile
 import os
-from idea_collector.config import Config
+from src.config import Config
 
 
 @pytest.fixture

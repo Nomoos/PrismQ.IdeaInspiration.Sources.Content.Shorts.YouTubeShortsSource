@@ -7,7 +7,7 @@ This document tracks known issues and their workarounds.
 ### Windows-Specific Issues
 
 #### Module Not Found Error
-**Problem**: `ModuleNotFoundError: No module named 'idea_collector'`
+**Problem**: `ModuleNotFoundError: No module named 'src'`
 
 **Solution**: 
 - Ensure you're running commands from the project root directory

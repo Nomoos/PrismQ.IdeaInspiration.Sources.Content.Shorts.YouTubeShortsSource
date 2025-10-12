@@ -47,20 +47,20 @@ pip install -e .
 
 ```bash
 # Scrape from all sources
-python -m idea_collector.cli scrape
+python -m src.cli scrape
 
 # Scrape from specific source
-python -m idea_collector.cli scrape --source reddit
-python -m idea_collector.cli scrape --source youtube
+python -m src.cli scrape --source reddit
+python -m src.cli scrape --source youtube
 
 # List collected ideas
-python -m idea_collector.cli list
+python -m src.cli list
 
 # View statistics
-python -m idea_collector.cli stats
+python -m src.cli stats
 
 # Clear database
-python -m idea_collector.cli clear
+python -m src.cli clear
 ```
 
 ### Using Quick Start Scripts
@@ -84,7 +84,7 @@ scripts\quickstart.bat   # Windows
 pytest
 
 # Run with coverage
-pytest --cov=idea_collector --cov-report=html
+pytest --cov=src --cov-report=html
 
 # Run specific test file
 pytest tests/test_database.py
@@ -104,20 +104,20 @@ pytest tests/test_database.py::test_function_name
 
 ```bash
 # Run flake8 (if configured)
-flake8 idea_collector/
+flake8 src/
 
 # Run black for formatting (if configured)
-black idea_collector/ tests/
+black src/ tests/
 
 # Type checking with mypy (if configured)
-mypy idea_collector/
+mypy src/
 ```
 
 ## Project Structure
 
 ```
 PrismQ.IdeaCollector/
-├── idea_collector/         # Main application code
+├── src/         # Main application code
 │   ├── __init__.py
 │   ├── cli.py              # CLI interface
 │   ├── config.py           # Configuration management
@@ -133,9 +133,7 @@ PrismQ.IdeaCollector/
 ├── scripts/                # Setup scripts
 ├── issues/                 # File-based issue tracking
 │   ├── new/                # Newly reported issues
-│   ├── in-progress/        # Issues being worked on
-│   ├── review/             # Issues awaiting review
-│   ├── blocked/            # Blocked issues
+│   ├── wip/                # Issues being worked on (Work In Progress)
 │   └── done/               # Completed issues
 └── .github/                # GitHub configuration
 ```
@@ -169,20 +167,20 @@ def scrape(self) -> List[Dict[str, Any]]:
 
 ### File Organization
 
-- Keep source plugins in `idea_collector/sources/`
+- Keep source plugins in `src/sources/`
 - Add tests in `tests/` with `test_` prefix
-- Update configuration in `idea_collector/config.py`
-- CLI commands in `idea_collector/cli.py`
+- Update configuration in `src/config.py`
+- CLI commands in `src/cli.py`
 
 ## Adding New Features
 
 ### Adding a New Source Plugin
 
-1. Create a new file in `idea_collector/sources/` (e.g., `tiktok_plugin.py`)
+1. Create a new file in `src/sources/` (e.g., `tiktok_plugin.py`)
 2. Inherit from the base plugin interface in `sources/__init__.py`
 3. Implement the `scrape()` method
-4. Add factory method to `UniversalMetrics` in `idea_collector/metrics.py`
-5. Register the plugin in `idea_collector/config.py`
+4. Add factory method to `UniversalMetrics` in `src/metrics.py`
+5. Register the plugin in `src/config.py`
 6. Add tests in `tests/test_sources.py`
 7. Update documentation in `docs/`
 
@@ -193,9 +191,7 @@ def scrape(self) -> List[Dict[str, Any]]:
 Issues are tracked using markdown files in `issues/` directory, organized by state:
 
 - `issues/new/` - Newly reported issues
-- `issues/in-progress/` - Issues currently being worked on
-- `issues/review/` - Issues awaiting review
-- `issues/blocked/` - Issues that are blocked
+- `issues/wip/` - Issues currently being worked on (Work In Progress)
 - `issues/done/` - Completed issues
 
 ### Issue File Format
@@ -228,13 +224,10 @@ Move issue files between state folders as work progresses:
 
 ```bash
 # Start working on an issue
-git mv issues/new/feature-name.md issues/in-progress/feature-name.md
-
-# Move to review
-git mv issues/in-progress/feature-name.md issues/review/feature-name.md
+git mv issues/new/feature-name.md issues/wip/feature-name.md
 
 # Complete the issue
-git mv issues/review/feature-name.md issues/done/feature-name.md
+git mv issues/wip/feature-name.md issues/done/feature-name.md
 ```
 
 ## Common Development Tasks
@@ -243,10 +236,10 @@ git mv issues/review/feature-name.md issues/done/feature-name.md
 
 ```bash
 # Check environment configuration
-python -c "from idea_collector.config import Config; c = Config(); print(c.__dict__)"
+python -c "from src.config import Config; c = Config(); print(c.__dict__)"
 
 # Test database connection
-python -c "from idea_collector.database import Database; db = Database(':memory:'); print('OK')"
+python -c "from src.database import Database; db = Database(':memory:'); print('OK')"
 ```
 
 ### Reset Database
@@ -256,7 +249,7 @@ python -c "from idea_collector.database import Database; db = Database(':memory:
 rm ideas.db
 
 # Or use the CLI
-python -m idea_collector.cli clear
+python -m src.cli clear
 ```
 
 ### Update Dependencies

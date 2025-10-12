@@ -92,8 +92,8 @@ echo "========================================"
 echo
 echo "To get started:"
 echo "  1. Run: ./quickstart.sh for interactive data collection"
-echo "  2. Or manually run: python3 -m idea_collector.cli scrape"
-echo "  3. View ideas: python3 -m idea_collector.cli list"
+echo "  2. Or manually run: python3 -m src.cli scrape"
+echo "  3. View ideas: python3 -m src.cli list"
 echo
-echo "For help: python3 -m idea_collector.cli --help"
+echo "For help: python3 -m src.cli --help"
 echo

@@ -9,9 +9,7 @@ Issues are tracked as Markdown files organized into state folders:
 ```
 issues/
 ├── new/          # Newly reported issues
-├── in-progress/  # Issues currently being worked on
-├── review/       # Issues awaiting review
-├── blocked/      # Issues that cannot proceed
+├── wip/          # Issues being worked on (Work In Progress)
 ├── done/         # Completed issues
 ├── KNOWN_ISSUES.md
 └── ROADMAP.md
@@ -49,31 +47,22 @@ As work progresses, move issue files between folders:
 
 ```bash
 # Start working on an issue
-git mv issues/new/feature-name.md issues/in-progress/feature-name.md
-
-# Move to review
-git mv issues/in-progress/feature-name.md issues/review/feature-name.md
-
-# Mark as blocked
-git mv issues/in-progress/feature-name.md issues/blocked/feature-name.md
+git mv issues/new/feature-name.md issues/wip/feature-name.md
 
 # Complete the issue
-git mv issues/review/feature-name.md issues/done/feature-name.md
+git mv issues/wip/feature-name.md issues/done/feature-name.md
+
+# Return to new if pausing work
+git mv issues/wip/feature-name.md issues/new/feature-name.md
 ```
 
 ## Issue States
 
 ### new/
-Newly reported issues that haven't been triaged or started yet.
+Newly reported issues that haven't been started yet.
 
-### in-progress/
-Issues currently being worked on by a contributor.
-
-### review/
-Issues with completed work awaiting review or testing.
-
-### blocked/
-Issues that cannot proceed due to dependencies, decisions needed, or external factors.
+### wip/
+Issues currently being worked on (Work In Progress).
 
 ### done/
 Completed and closed issues. Keep for reference.
@@ -91,8 +80,8 @@ This file-based system complements GitHub Issues:
 ### By State
 Browse folders directly:
 - `issues/new/` - Issues ready to be picked up
-- `issues/in-progress/` - Active work
-- `issues/blocked/` - Issues needing help
+- `issues/wip/` - Active work
+- `issues/done/` - Completed
 
 ### By Topic
 Use `grep` to search across all issues:
@@ -102,7 +91,7 @@ Use `grep` to search across all issues:
 grep -r "API" issues/
 
 # Find all bug-related issues
-grep -r "bug" issues/new/ issues/in-progress/
+grep -r "bug" issues/new/ issues/wip/
 ```
 
 ## Contributing
@@ -110,10 +99,9 @@ grep -r "bug" issues/new/ issues/in-progress/
 If you want to work on an issue:
 
 1. Check `issues/new/` for available issues
-2. Move the issue to `issues/in-progress/` when you start
+2. Move the issue to `issues/wip/` when you start
 3. Update the issue file with your progress and notes
-4. When ready for review, move to `issues/review/`
-5. After approval, move to `issues/done/`
+4. When complete, move to `issues/done/`
 
 See [CONTRIBUTING.md](../docs/CONTRIBUTING.md) for full guidelines.
 

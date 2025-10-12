@@ -176,7 +176,7 @@ The scoring engine now supports **universal metrics** that can be used to score 
 #### Using Universal Metrics in Code
 
 ```python
-from idea_collector.scoring import ScoringEngine
+from src.scoring import ScoringEngine
 
 engine = ScoringEngine()
 
@@ -224,49 +224,49 @@ scores = engine.calculate_universal_content_score(metrics)
 
 Scrape ideas from all configured sources:
 ```bash
-python -m idea_collector.cli scrape
+python -m src.cli scrape
 ```
 
 Scrape from a specific source:
 ```bash
-python -m idea_collector.cli scrape --source reddit
-python -m idea_collector.cli scrape --source youtube
+python -m src.cli scrape --source reddit
+python -m src.cli scrape --source youtube
 ```
 
 Use a custom .env file:
 ```bash
-python -m idea_collector.cli scrape --env-file /path/to/.env
+python -m src.cli scrape --env-file /path/to/.env
 ```
 
 ### List Ideas
 
 List the top ideas (default: 20):
 ```bash
-python -m idea_collector.cli list
+python -m src.cli list
 ```
 
 Show more results:
 ```bash
-python -m idea_collector.cli list --limit 50
+python -m src.cli list --limit 50
 ```
 
 Filter by source:
 ```bash
-python -m idea_collector.cli list --source reddit
+python -m src.cli list --source reddit
 ```
 
 ### View Statistics
 
 View collection statistics:
 ```bash
-python -m idea_collector.cli stats
+python -m src.cli stats
 ```
 
 ### Clear Database
 
 Clear all collected ideas:
 ```bash
-python -m idea_collector.cli clear
+python -m src.cli clear
 ```
 
 ## Database Schema
@@ -293,12 +293,12 @@ CREATE TABLE ideas (
 
 To add a new source plugin:
 
-1. Create a new file in `idea_collector/sources/` (e.g., `twitter_plugin.py`)
+1. Create a new file in `src/sources/` (e.g., `twitter_plugin.py`)
 
 2. Implement the `SourcePlugin` interface:
 
 ```python
-from idea_collector.sources import SourcePlugin
+from src.sources import SourcePlugin
 
 class TwitterPlugin(SourcePlugin):
     def get_source_name(self):
@@ -329,14 +329,14 @@ pytest
 
 With coverage:
 ```bash
-pytest --cov=idea_collector --cov-report=html
+pytest --cov=src --cov-report=html
 ```
 
 ### Project Structure
 
 ```
 PrismQ.IdeaCollector/
-├── idea_collector/         # Main application package
+├── src/         # Main application package
 │   ├── __init__.py
 │   ├── cli.py              # Command-line interface
 │   ├── config.py           # Configuration management
@@ -364,7 +364,10 @@ PrismQ.IdeaCollector/
 │   ├── setup.sh            # Linux/Mac setup script
 │   ├── quickstart.bat      # Windows quickstart script
 │   └── quickstart.sh       # Linux/Mac quickstart script
-├── issues/                 # Issue tracking and planning
+├── issues/                 # File-based issue tracking
+│   ├── new/                # Newly reported issues
+│   ├── wip/                # Work in progress
+│   ├── done/               # Completed issues
 │   ├── README.md
 │   ├── KNOWN_ISSUES.md     # Common problems and solutions
 │   └── ROADMAP.md          # Project roadmap
