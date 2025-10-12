@@ -56,14 +56,19 @@ EOF
     echo "Updating .env file..."
     
     # Update .env file with provided values
+    # Use a more robust sed approach to handle special characters
     if [ ! -z "$YOUTUBE_KEY" ]; then
-        sed -i.bak "s|YOUTUBE_API_KEY=.*|YOUTUBE_API_KEY=$YOUTUBE_KEY|" .env
+        # Escape special characters in the value
+        ESCAPED_KEY=$(printf '%s\n' "$YOUTUBE_KEY" | sed 's/[&/\]/\\&/g')
+        sed -i.bak "s|YOUTUBE_API_KEY=.*|YOUTUBE_API_KEY=$ESCAPED_KEY|" .env
     fi
     if [ ! -z "$REDDIT_ID" ]; then
-        sed -i.bak "s|REDDIT_CLIENT_ID=.*|REDDIT_CLIENT_ID=$REDDIT_ID|" .env
+        ESCAPED_ID=$(printf '%s\n' "$REDDIT_ID" | sed 's/[&/\]/\\&/g')
+        sed -i.bak "s|REDDIT_CLIENT_ID=.*|REDDIT_CLIENT_ID=$ESCAPED_ID|" .env
     fi
     if [ ! -z "$REDDIT_SECRET" ]; then
-        sed -i.bak "s|REDDIT_CLIENT_SECRET=.*|REDDIT_CLIENT_SECRET=$REDDIT_SECRET|" .env
+        ESCAPED_SECRET=$(printf '%s\n' "$REDDIT_SECRET" | sed 's/[&/\]/\\&/g')
+        sed -i.bak "s|REDDIT_CLIENT_SECRET=.*|REDDIT_CLIENT_SECRET=$ESCAPED_SECRET|" .env
     fi
     
     # Remove backup files

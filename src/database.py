@@ -126,14 +126,48 @@ class Database:
         
         Args:
             limit: Maximum number of results
-            order_by: SQL ORDER BY clause
+            order_by: SQL ORDER BY clause (validated for safety)
             
         Returns:
             List of idea dictionaries
         """
+        # Validate order_by to prevent SQL injection
+        # Only allow safe column names and ASC/DESC
+        allowed_columns = {'id', 'source', 'source_id', 'title', 'score', 'created_at', 'updated_at'}
+        allowed_directions = {'ASC', 'DESC', ''}
+        
+        # Check for SQL injection attempts (semicolons, comments, etc.)
+        if ';' in order_by or '--' in order_by or '/*' in order_by or 'DROP' in order_by.upper():
+            raise ValueError(f"Invalid order_by clause: potentially malicious input detected")
+        
+        # Parse order_by clause
+        order_parts = order_by.strip().split()
+        if len(order_parts) == 0:
+            order_by = 'score DESC'
+        elif len(order_parts) == 1:
+            column = order_parts[0].lower()
+            if column not in allowed_columns:
+                raise ValueError(f"Invalid order_by column: {column}")
+            order_by = f"{column} DESC"
+        elif len(order_parts) == 2:
+            column = order_parts[0].lower()
+            direction = order_parts[1].upper()
+            if column not in allowed_columns:
+                raise ValueError(f"Invalid order_by column: {column}")
+            if direction not in allowed_directions:
+                raise ValueError(f"Invalid order direction: {direction}")
+            order_by = f"{column} {direction}"
+        else:
+            # For complex cases, just use default for security
+            raise ValueError(f"Invalid order_by clause: too complex")
+        
         cursor = self.connection.cursor()
         query = f"SELECT * FROM ideas ORDER BY {order_by}"
+        
         if limit:
+            # Validate limit is an integer
+            if not isinstance(limit, int) or limit < 0:
+                raise ValueError(f"Invalid limit value: {limit}")
             query += f" LIMIT {limit}"
         
         cursor.execute(query)
