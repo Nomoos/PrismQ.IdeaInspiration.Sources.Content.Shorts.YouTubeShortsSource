@@ -13,7 +13,7 @@ PrismQ.IdeaCollector is a standalone Python CLI that gathers idea inspirations f
   - Engagement metrics (views, likes, comments, shares)
   - Calculated metrics (engagement rate, like-to-view ratio, etc.)
   - Platform-specific metrics preserved
-  - See [METRICS.md](METRICS.md) for complete documentation
+  - See [METRICS.md](docs/METRICS.md) for complete documentation
   
 - **Deduplication**: Automatically prevents duplicate ideas using (source, source_id) unique constraint
   
@@ -29,6 +29,21 @@ PrismQ.IdeaCollector is a standalone Python CLI that gathers idea inspirations f
 - **Interactive Mode**: Quickstart scripts with interactive configuration for easy setup
 
 - **Windows Compatible**: Designed to work seamlessly on Windows systems
+
+## Documentation
+
+For comprehensive documentation, see:
+
+- **[docs/](docs/)** - User and developer documentation
+  - [Contributing Guidelines](docs/CONTRIBUTING.md)
+  - [Metrics Documentation](docs/METRICS.md)
+  - [Windows Quickstart Guide](docs/WINDOWS_QUICKSTART.md)
+- **[issues/](issues/)** - File-based issue tracking
+  - [Issue Tracking Guide](issues/README.md)
+  - [Known Issues](issues/KNOWN_ISSUES.md)
+  - [Project Roadmap](issues/ROADMAP.md)
+- **[scripts/](scripts/)** - Setup and utility scripts
+- **[.github/copilot-instructions.md](.github/copilot-instructions.md)** - Build, test, and development guide
 
 ## Installation
 
@@ -49,12 +64,12 @@ PrismQ.IdeaCollector is a standalone Python CLI that gathers idea inspirations f
 
 2. **Run setup**:
    ```batch
-   setup.bat
+   scripts\setup.bat
    ```
 
 3. **Run quickstart**:
    ```batch
-   quickstart.bat
+   scripts\quickstart.bat
    ```
 
 The quickstart script will guide you through:
@@ -72,14 +87,14 @@ The quickstart script will guide you through:
 
 2. **Run setup**:
    ```bash
-   chmod +x setup.sh
-   ./setup.sh
+   chmod +x scripts/setup.sh
+   ./scripts/setup.sh
    ```
 
 3. **Run quickstart**:
    ```bash
-   chmod +x quickstart.sh
-   ./quickstart.sh
+   chmod +x scripts/quickstart.sh
+   ./scripts/quickstart.sh
    ```
 
 ### Manual Setup
@@ -161,7 +176,7 @@ The scoring engine now supports **universal metrics** that can be used to score 
 #### Using Universal Metrics in Code
 
 ```python
-from idea_collector.scoring import ScoringEngine
+from src.scoring import ScoringEngine
 
 engine = ScoringEngine()
 
@@ -209,49 +224,49 @@ scores = engine.calculate_universal_content_score(metrics)
 
 Scrape ideas from all configured sources:
 ```bash
-python -m idea_collector.cli scrape
+python -m src.cli scrape
 ```
 
 Scrape from a specific source:
 ```bash
-python -m idea_collector.cli scrape --source reddit
-python -m idea_collector.cli scrape --source youtube
+python -m src.cli scrape --source reddit
+python -m src.cli scrape --source youtube
 ```
 
 Use a custom .env file:
 ```bash
-python -m idea_collector.cli scrape --env-file /path/to/.env
+python -m src.cli scrape --env-file /path/to/.env
 ```
 
 ### List Ideas
 
 List the top ideas (default: 20):
 ```bash
-python -m idea_collector.cli list
+python -m src.cli list
 ```
 
 Show more results:
 ```bash
-python -m idea_collector.cli list --limit 50
+python -m src.cli list --limit 50
 ```
 
 Filter by source:
 ```bash
-python -m idea_collector.cli list --source reddit
+python -m src.cli list --source reddit
 ```
 
 ### View Statistics
 
 View collection statistics:
 ```bash
-python -m idea_collector.cli stats
+python -m src.cli stats
 ```
 
 ### Clear Database
 
 Clear all collected ideas:
 ```bash
-python -m idea_collector.cli clear
+python -m src.cli clear
 ```
 
 ## Database Schema
@@ -278,12 +293,12 @@ CREATE TABLE ideas (
 
 To add a new source plugin:
 
-1. Create a new file in `idea_collector/sources/` (e.g., `twitter_plugin.py`)
+1. Create a new file in `src/sources/` (e.g., `twitter_plugin.py`)
 
 2. Implement the `SourcePlugin` interface:
 
 ```python
-from idea_collector.sources import SourcePlugin
+from src.sources import SourcePlugin
 
 class TwitterPlugin(SourcePlugin):
     def get_source_name(self):
@@ -314,34 +329,53 @@ pytest
 
 With coverage:
 ```bash
-pytest --cov=idea_collector --cov-report=html
+pytest --cov=src --cov-report=html
 ```
 
 ### Project Structure
 
 ```
 PrismQ.IdeaCollector/
-├── idea_collector/
+├── src/         # Main application package
 │   ├── __init__.py
 │   ├── cli.py              # Command-line interface
 │   ├── config.py           # Configuration management
 │   ├── database.py         # Database operations
-│   └── sources/
+│   ├── metrics.py          # Universal metrics system
+│   ├── scoring/            # Scoring engine
+│   └── sources/            # Source plugins
 │       ├── __init__.py     # Base plugin interface
 │       ├── reddit_plugin.py
 │       └── youtube_plugin.py
-├── tests/
+├── tests/                  # Test suite
 │   ├── __init__.py
 │   ├── test_config.py
-│   └── test_database.py
+│   ├── test_database.py
+│   ├── test_metrics.py
+│   └── test_scoring.py
+├── docs/                   # Documentation
+│   ├── README.md
+│   ├── CONTRIBUTING.md     # Contribution guidelines
+│   ├── METRICS.md          # Metrics documentation
+│   └── WINDOWS_QUICKSTART.md
+├── scripts/                # Setup and utility scripts
+│   ├── README.md
+│   ├── setup.bat           # Windows setup script
+│   ├── setup.sh            # Linux/Mac setup script
+│   ├── quickstart.bat      # Windows quickstart script
+│   └── quickstart.sh       # Linux/Mac quickstart script
+├── issues/                 # File-based issue tracking
+│   ├── new/                # Newly reported issues
+│   ├── wip/                # Work in progress
+│   ├── done/               # Completed issues
+│   ├── README.md
+│   ├── KNOWN_ISSUES.md     # Common problems and solutions
+│   └── ROADMAP.md          # Project roadmap
 ├── .env.example            # Example configuration
 ├── .gitignore
+├── LICENSE
 ├── pyproject.toml          # Project metadata
 ├── requirements.txt        # Dependencies
-├── setup.bat               # Windows setup script
-├── setup.sh                # Linux/Mac setup script
-├── quickstart.bat          # Windows quickstart script
-├── quickstart.sh           # Linux/Mac quickstart script
 └── README.md
 ```
 
@@ -355,11 +389,29 @@ This project is open source and available for use and modification.
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit pull requests or open issues for bugs and feature requests.
+Contributions are welcome! Please see our [Contributing Guidelines](docs/CONTRIBUTING.md) for details on:
+
+- Code of Conduct
+- How to report bugs
+- How to suggest features
+- Development setup
+- Pull request process
+- Coding standards
+
+For quick reference:
+- **Bug Reports**: Use our [bug report template](.github/ISSUE_TEMPLATE/bug_report.yml)
+- **Feature Requests**: Use our [feature request template](.github/ISSUE_TEMPLATE/feature_request.yml)
+- **Questions**: Start a [discussion](https://github.com/PrismQDev/PrismQ.IdeaCollector/discussions)
 
 ## Troubleshooting
 
-### Windows-Specific Issues
+For detailed troubleshooting, see:
+- [Known Issues](issues/KNOWN_ISSUES.md) - Common problems and solutions
+- [Windows Quickstart Guide](docs/WINDOWS_QUICKSTART.md#troubleshooting) - Windows-specific help
+
+### Quick Solutions
+
+#### Windows-Specific Issues
 
 - **Module not found**: Make sure you're running commands from the project root directory
 - **Path issues**: Use forward slashes (/) or escaped backslashes (\\\\) in paths
@@ -370,6 +422,8 @@ Contributions are welcome! Please feel free to submit pull requests or open issu
 - **No ideas scraped**: Check your API credentials and internet connection
 - **Database locked**: Close any other processes accessing the database file
 - **Rate limiting**: YouTube and Reddit APIs have rate limits; reduce `MAX_RESULTS` and `LIMIT` values if needed
+
+For more help, see the [full troubleshooting guide](issues/KNOWN_ISSUES.md).
 
 ## Support
 

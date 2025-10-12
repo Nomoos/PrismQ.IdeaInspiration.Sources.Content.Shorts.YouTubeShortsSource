@@ -91,10 +91,10 @@ echo ========================================
 echo.
 echo To get started:
 echo   1. Run: quickstart.bat for interactive data collection
-echo   2. Or manually run: python -m idea_collector.cli scrape
-echo   3. View ideas: python -m idea_collector.cli list
+echo   2. Or manually run: python -m src.cli scrape
+echo   3. View ideas: python -m src.cli list
 echo.
-echo For help: python -m idea_collector.cli --help
+echo For help: python -m src.cli --help
 echo.
 
 pause

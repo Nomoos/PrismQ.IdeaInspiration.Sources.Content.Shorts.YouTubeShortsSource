@@ -3,11 +3,11 @@
 import click
 import sys
 from pathlib import Path
-from idea_collector.config import Config
-from idea_collector.database import Database
-from idea_collector.metrics import UniversalMetrics
-from idea_collector.sources.reddit_plugin import RedditPlugin
-from idea_collector.sources.youtube_plugin import YouTubePlugin
+from src.config import Config
+from src.database import Database
+from src.metrics import UniversalMetrics
+from src.sources.reddit_plugin import RedditPlugin
+from src.sources.youtube_plugin import YouTubePlugin
 
 
 @click.group()

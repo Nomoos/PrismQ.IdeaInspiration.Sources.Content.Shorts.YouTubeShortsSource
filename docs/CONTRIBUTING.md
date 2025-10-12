@@ -220,7 +220,7 @@ def test_database_stores_idea():
 ## Questions?
 
 If you have questions about contributing, please:
-- Check the [README.md](README.md) for general documentation
+- Check the [README.md](../README.md) for general documentation
 - Open a discussion in the GitHub Discussions tab
 - Reach out to the maintainers
 

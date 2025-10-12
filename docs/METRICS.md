@@ -93,7 +93,7 @@ Metrics are stored in the database in two ways:
 ## Usage Example
 
 ```python
-from idea_collector.metrics import UniversalMetrics
+from src.metrics import UniversalMetrics
 
 # From YouTube
 youtube_data = {...}  # YouTube API response
@@ -161,7 +161,7 @@ Ready-to-use factory methods available for when these platforms are added:
 
 To add a new platform:
 
-1. Create a new plugin in `idea_collector/sources/`
+1. Create a new plugin in `src/sources/`
 2. Implement a `from_<platform>()` class method in `UniversalMetrics`
 3. Map platform-specific fields to universal schema
 4. Store any unique platform data in `platform_specific` field

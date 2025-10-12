@@ -112,23 +112,23 @@ set /p CHOICE="Enter your choice (1-6): "
 if "%CHOICE%"=="1" (
     echo.
     echo Scraping from all sources...
-    python -m idea_collector.cli scrape
+    python -m src.cli scrape
 ) else if "%CHOICE%"=="2" (
     echo.
     echo Scraping from Reddit...
-    python -m idea_collector.cli scrape --source reddit
+    python -m src.cli scrape --source reddit
 ) else if "%CHOICE%"=="3" (
     echo.
     echo Scraping from YouTube...
-    python -m idea_collector.cli scrape --source youtube
+    python -m src.cli scrape --source youtube
 ) else if "%CHOICE%"=="4" (
     echo.
     echo Listing collected ideas...
-    python -m idea_collector.cli list
+    python -m src.cli list
 ) else if "%CHOICE%"=="5" (
     echo.
     echo Showing statistics...
-    python -m idea_collector.cli stats
+    python -m src.cli stats
 ) else if "%CHOICE%"=="6" (
     echo.
     echo Exiting...

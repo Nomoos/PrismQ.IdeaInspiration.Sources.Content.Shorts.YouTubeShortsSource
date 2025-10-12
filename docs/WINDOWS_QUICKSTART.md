@@ -36,7 +36,7 @@ cd C:\path\to\PrismQ.IdeaCollector
 ### 3. Run the Setup Script
 
 ```cmd
-setup.bat
+scripts\setup.bat
 ```
 
 This will:
@@ -47,7 +47,7 @@ This will:
 ### 4. Run the Quickstart Script
 
 ```cmd
-quickstart.bat
+scripts\quickstart.bat
 ```
 
 The quickstart script will:
@@ -82,46 +82,46 @@ Save and close the file.
 
 Scrape from all sources (YouTube and Reddit):
 ```cmd
-python -m idea_collector.cli scrape
+python -m src.cli scrape
 ```
 
 Scrape from Reddit only:
 ```cmd
-python -m idea_collector.cli scrape --source reddit
+python -m src.cli scrape --source reddit
 ```
 
 Scrape from YouTube only:
 ```cmd
-python -m idea_collector.cli scrape --source youtube
+python -m src.cli scrape --source youtube
 ```
 
 ### View Collected Ideas
 
 List top 20 ideas:
 ```cmd
-python -m idea_collector.cli list
+python -m src.cli list
 ```
 
 List top 50 ideas:
 ```cmd
-python -m idea_collector.cli list --limit 50
+python -m src.cli list --limit 50
 ```
 
 View only Reddit ideas:
 ```cmd
-python -m idea_collector.cli list --source reddit
+python -m src.cli list --source reddit
 ```
 
 ### View Statistics
 
 ```cmd
-python -m idea_collector.cli stats
+python -m src.cli stats
 ```
 
 ### Clear All Ideas
 
 ```cmd
-python -m idea_collector.cli clear
+python -m src.cli clear
 ```
 
 ## Configuration Options
@@ -147,9 +147,9 @@ Python is not in your PATH. Either:
 - Reinstall Python and check "Add Python to PATH" during installation
 - Or manually add Python to your PATH in System Environment Variables
 
-### "No module named 'idea_collector'"
+### "No module named 'src'"
 
-Make sure you're running commands from the project root directory where `idea_collector` folder exists.
+Make sure you're running commands from the project root directory where `src` folder exists.
 
 ### "API Error" or "No ideas scraped"
 
@@ -170,7 +170,7 @@ Close any programs that might be accessing the database file (`ideas.db`).
 
 ## Getting Help
 
-For more detailed information, see the main `README.md` file.
+For more detailed information, see the main [README.md](../README.md) file.
 
 For issues and questions, please open an issue on the GitHub repository.
 
@@ -178,7 +178,7 @@ For issues and questions, please open an issue on the GitHub repository.
 
 Once you've collected some ideas:
 
-1. Review them using `python -m idea_collector.cli list`
+1. Review them using `python -m src.cli list`
 2. Check the SQLite database directly using tools like [DB Browser for SQLite](https://sqlitebrowser.org/)
 3. Export ideas for further analysis
 

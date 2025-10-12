@@ -1,7 +1,7 @@
 """Tests for scoring engine."""
 
 import pytest
-from idea_collector.scoring import ScoringEngine
+from src.scoring import ScoringEngine
 
 
 def test_scoring_engine_initialization():

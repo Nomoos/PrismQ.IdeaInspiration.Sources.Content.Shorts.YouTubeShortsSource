@@ -25,4 +25,4 @@ dev = [
 ]
 
 [project.scripts]
-idea-collector = "idea_collector.cli:main"
+idea-collector = "src.cli:main"
