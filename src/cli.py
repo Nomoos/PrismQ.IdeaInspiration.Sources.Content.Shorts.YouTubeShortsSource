@@ -8,6 +8,7 @@ from src.database import Database
 from src.metrics import UniversalMetrics
 from src.sources.youtube_plugin import YouTubePlugin
 from src.sources.youtube_channel_plugin import YouTubeChannelPlugin
+from src.sources.youtube_trending_plugin import YouTubeTrendingPlugin
 
 
 @click.group()
@@ -166,6 +167,189 @@ def scrape_channel(env_file, channel, top, story_only):
             
         except Exception as e:
             click.echo(f"Error scraping YouTube channel: {e}", err=True)
+            import traceback
+            traceback.print_exc()
+        
+        click.echo(f"\nScraping complete!")
+        click.echo(f"Total shorts found: {total_scraped}")
+        click.echo(f"Total shorts saved: {total_saved}")
+        click.echo(f"Database: {config.database_path}")
+        
+    except Exception as e:
+        click.echo(f"Error: {e}", err=True)
+        import traceback
+        traceback.print_exc()
+        sys.exit(1)
+
+
+@main.command('scrape-trending')
+@click.option('--env-file', '-e', type=click.Path(exists=True), 
+              help='Path to .env file')
+@click.option('--top', '-t', type=int, help='Number of shorts to scrape (default: config or 10)')
+@click.option('--story-only', is_flag=True, help='Only scrape videos detected as story videos')
+def scrape_trending(env_file, top, story_only):
+    """Scrape ideas from YouTube trending Shorts using yt-dlp.
+    
+    This command scrapes Shorts from the YouTube trending page without requiring
+    an API key. Uses yt-dlp for comprehensive metadata extraction.
+    
+    Examples:
+        python -m src.cli scrape-trending
+        python -m src.cli scrape-trending --top 15
+        python -m src.cli scrape-trending --story-only
+    """
+    try:
+        # Load configuration
+        config = Config(env_file)
+        
+        # Override story_only from CLI if provided
+        if story_only:
+            config.youtube_trending_story_only = True
+        
+        # Initialize database
+        db = Database(config.database_path)
+        
+        # Initialize YouTube trending plugin
+        try:
+            trending_plugin = YouTubeTrendingPlugin(config)
+        except ValueError as e:
+            click.echo(f"Error: {e}", err=True)
+            click.echo("\nInstall yt-dlp with: pip install yt-dlp", err=True)
+            sys.exit(1)
+        
+        # Scrape from trending
+        total_scraped = 0
+        total_saved = 0
+        
+        # Determine number of shorts to scrape
+        shorts_count = top if top else getattr(config, 'youtube_trending_max_shorts', 10)
+        
+        click.echo(f"Scraping from YouTube trending")
+        click.echo(f"Number of shorts to scrape: {shorts_count}")
+        if getattr(config, 'youtube_trending_story_only', False):
+            click.echo("Story-only mode: ENABLED (filtering out non-story videos)")
+        else:
+            click.echo("Story-only mode: DISABLED")
+        click.echo("")
+        
+        try:
+            ideas = trending_plugin.scrape_trending(top_n=shorts_count)
+            total_scraped = len(ideas)
+            click.echo(f"\nFound {len(ideas)} shorts from trending")
+            
+            # Process and save each idea
+            for idea in ideas:
+                # Convert platform metrics to universal metrics
+                universal_metrics = UniversalMetrics.from_youtube(idea['metrics'])
+                
+                # Save to database with universal metrics
+                success = db.insert_idea(
+                    source='youtube_trending',
+                    source_id=idea['source_id'],
+                    title=idea['title'],
+                    description=idea['description'],
+                    tags=idea['tags'],
+                    score=universal_metrics.engagement_rate or 0.0,
+                    score_dictionary=universal_metrics.to_dict()
+                )
+                
+                if success:
+                    total_saved += 1
+            
+        except Exception as e:
+            click.echo(f"Error scraping YouTube trending: {e}", err=True)
+            import traceback
+            traceback.print_exc()
+        
+        click.echo(f"\nScraping complete!")
+        click.echo(f"Total shorts found: {total_scraped}")
+        click.echo(f"Total shorts saved: {total_saved}")
+        click.echo(f"Database: {config.database_path}")
+        
+    except Exception as e:
+        click.echo(f"Error: {e}", err=True)
+        import traceback
+        traceback.print_exc()
+        sys.exit(1)
+
+
+@main.command('scrape-keyword')
+@click.option('--env-file', '-e', type=click.Path(exists=True), 
+              help='Path to .env file')
+@click.option('--keyword', '-k', required=True, help='Search keyword')
+@click.option('--top', '-t', type=int, help='Number of shorts to scrape (default: config or 10)')
+@click.option('--story-only', is_flag=True, help='Only scrape videos detected as story videos')
+def scrape_keyword(env_file, keyword, top, story_only):
+    """Scrape ideas from YouTube by keyword search using yt-dlp.
+    
+    This command searches for Shorts using keywords without requiring an API key.
+    Uses yt-dlp for comprehensive metadata extraction.
+    
+    Examples:
+        python -m src.cli scrape-keyword --keyword "startup ideas"
+        python -m src.cli scrape-keyword --keyword "business tips" --top 20
+        python -m src.cli scrape-keyword --keyword "story time" --story-only
+    """
+    try:
+        # Load configuration
+        config = Config(env_file)
+        
+        # Override story_only from CLI if provided
+        if story_only:
+            config.youtube_keyword_story_only = True
+        
+        # Initialize database
+        db = Database(config.database_path)
+        
+        # Initialize YouTube trending plugin (handles both trending and keyword)
+        try:
+            trending_plugin = YouTubeTrendingPlugin(config)
+        except ValueError as e:
+            click.echo(f"Error: {e}", err=True)
+            click.echo("\nInstall yt-dlp with: pip install yt-dlp", err=True)
+            sys.exit(1)
+        
+        # Scrape from keyword
+        total_scraped = 0
+        total_saved = 0
+        
+        # Determine number of shorts to scrape
+        shorts_count = top if top else getattr(config, 'youtube_keyword_max_shorts', 10)
+        
+        click.echo(f"Scraping from YouTube with keyword: '{keyword}'")
+        click.echo(f"Number of shorts to scrape: {shorts_count}")
+        if getattr(config, 'youtube_keyword_story_only', False):
+            click.echo("Story-only mode: ENABLED (filtering out non-story videos)")
+        else:
+            click.echo("Story-only mode: DISABLED")
+        click.echo("")
+        
+        try:
+            ideas = trending_plugin.scrape_by_keyword(keyword, top_n=shorts_count)
+            total_scraped = len(ideas)
+            click.echo(f"\nFound {len(ideas)} shorts for keyword: '{keyword}'")
+            
+            # Process and save each idea
+            for idea in ideas:
+                # Convert platform metrics to universal metrics
+                universal_metrics = UniversalMetrics.from_youtube(idea['metrics'])
+                
+                # Save to database with universal metrics
+                success = db.insert_idea(
+                    source='youtube_keyword',
+                    source_id=idea['source_id'],
+                    title=idea['title'],
+                    description=idea['description'],
+                    tags=idea['tags'],
+                    score=universal_metrics.engagement_rate or 0.0,
+                    score_dictionary=universal_metrics.to_dict()
+                )
+                
+                if success:
+                    total_saved += 1
+            
+        except Exception as e:
+            click.echo(f"Error scraping YouTube keyword: {e}", err=True)
             import traceback
             traceback.print_exc()
         
