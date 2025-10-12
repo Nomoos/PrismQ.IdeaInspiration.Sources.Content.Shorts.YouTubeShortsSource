@@ -25,10 +25,27 @@ This module is optimized for:
 
 ## Features
 
-- **YouTube Shorts Scraping**: Specialized scraper for YouTube Shorts videos
-  - Filters for videos up to 3 minutes (180 seconds)
-  - Extracts video metadata and statistics
+- **YouTube Shorts Scraping**: Two powerful scraping modes
+  - **Search-based scraping**: Uses YouTube API to search for Shorts by keywords
+  - **Channel-based scraping**: Uses yt-dlp to scrape Shorts from specific YouTube channels
+  - Filters for videos up to 3 minutes (180 seconds) 
+  - Validates vertical format (height > width) for true Shorts
+  - Extracts comprehensive video metadata and statistics
   - Supports pagination and configurable result limits
+  
+- **Enhanced Metadata Extraction** (channel scraping with yt-dlp):
+  - **Subtitle extraction and parsing**: Automatic subtitle download and conversion to plain text
+  - **Video quality metrics**: Resolution, FPS, aspect ratio
+  - **Engagement analytics**: Views per day/hour, engagement rates, like-to-view ratios
+  - **Channel information**: Channel ID, name, subscriber count
+  - **Content analysis**: Title/description length, tag counts
+  
+- **Story Detection**: AI-powered content classification
+  - Detects story-based videos using keyword analysis
+  - Analyzes title, description, tags, and subtitles
+  - Weighted confidence scoring (0-1 scale)
+  - Optional story-only filtering mode
+  - Identifies anti-patterns (tutorials, gameplay, reviews)
   
 - **Universal Metrics Collection**: Standardized metrics for cross-platform analysis
   - Engagement metrics (views, likes, comments, shares)
@@ -43,6 +60,7 @@ This module is optimized for:
   - Description
   - Tags
   - Universal metrics (JSON format)
+  - Enhanced metrics (story detection, engagement analytics)
   - Source information
   
 - **Simple Configuration**: Single `.env` file for all settings
@@ -152,10 +170,47 @@ Edit the `.env` file to customize the application:
 # Database Configuration
 DATABASE_PATH=ideas.db
 
-# YouTube Configuration
+# YouTube API Configuration (for search-based scraping)
 YOUTUBE_API_KEY=your_youtube_api_key_here
 YOUTUBE_MAX_RESULTS=50
+
+# YouTube Channel Configuration (for channel-based scraping with yt-dlp)
+# Example: https://www.youtube.com/@channelname or @channelname or UC1234567890
+YOUTUBE_CHANNEL_URL=
+YOUTUBE_CHANNEL_MAX_SHORTS=10
+YOUTUBE_CHANNEL_STORY_ONLY=false
 ```
+
+### Scraping Modes
+
+#### Search-Based Scraping (YouTube API)
+Uses YouTube Data API v3 to search for Shorts by keywords. Requires an API key.
+
+```bash
+python -m src.cli scrape
+```
+
+#### Channel-Based Scraping (yt-dlp)
+Uses yt-dlp to scrape comprehensive metadata from specific YouTube channels. No API key required, but requires yt-dlp to be installed.
+
+```bash
+# Scrape from a specific channel
+python -m src.cli scrape-channel --channel @channelname
+
+# Scrape with story detection filtering
+python -m src.cli scrape-channel --channel @channelname --story-only
+
+# Scrape a specific number of shorts
+python -m src.cli scrape-channel --channel @channelname --top 20
+```
+
+**Advantages of channel scraping:**
+- Comprehensive metadata including subtitles
+- Video quality metrics (resolution, FPS, aspect ratio)
+- Engagement analytics (views per day/hour)
+- Story detection with confidence scoring
+- No API quota limits
+- Works with channel URLs, handles (@username), or channel IDs
 
 ### Universal Metrics for Cross-Platform Scoring
 
@@ -237,7 +292,8 @@ scores = engine.calculate_universal_content_score(metrics)
 
 ### Scrape Ideas
 
-Scrape YouTube Shorts ideas:
+#### Search-Based Scraping
+Scrape YouTube Shorts ideas using YouTube API search:
 ```bash
 python -m src.cli scrape
 ```
@@ -246,6 +302,37 @@ Use a custom .env file:
 ```bash
 python -m src.cli scrape --env-file /path/to/.env
 ```
+
+#### Channel-Based Scraping
+Scrape YouTube Shorts from a specific channel using yt-dlp:
+
+```bash
+# Basic usage with channel handle
+python -m src.cli scrape-channel --channel @channelname
+
+# Using full channel URL
+python -m src.cli scrape-channel --channel https://www.youtube.com/@channelname
+
+# Using channel ID
+python -m src.cli scrape-channel --channel UC1234567890
+
+# Scrape specific number of shorts
+python -m src.cli scrape-channel --channel @channelname --top 20
+
+# Filter for story videos only
+python -m src.cli scrape-channel --channel @channelname --story-only
+
+# Combine options
+python -m src.cli scrape-channel --channel @channelname --top 15 --story-only
+```
+
+**Channel scraping features:**
+- Extracts subtitles and converts to plain text
+- Captures video quality metrics (resolution, FPS, aspect ratio)
+- Calculates engagement metrics (views per day/hour)
+- Detects story videos with confidence scoring
+- Filters for true Shorts (≤3 min, vertical format)
+- No API quota limits
 
 ### List Ideas
 
