@@ -1,6 +1,27 @@
 # PrismQ.IdeaCollector
 
-PrismQ.IdeaCollector is a standalone Python CLI that gathers idea inspirations from multiple sources like YouTube Shorts and Reddit, and stores them in a SQLite database for later analysis.
+A comprehensive PrismQ module that gathers idea inspirations from multiple sources like YouTube Shorts and Reddit, and stores them in a SQLite database for later analysis. Part of the PrismQ AI-powered content generation ecosystem.
+
+## 🎯 Purpose
+
+This module serves as the idea collection component of the PrismQ ecosystem, gathering inspiration from various online sources to fuel automated content generation pipelines.
+
+### Related PrismQ Projects
+
+- **[PrismQ.RepositoryTemplate](https://github.com/Nomoos/PrismQ.RepositoryTemplate)** - Template for PrismQ modules
+- **[StoryGenerator](https://github.com/Nomoos/StoryGenerator)** - Automated story and video generation pipeline
+- **Other PrismQ Modules** - Specialized tools for content generation
+
+## 💻 Target Platform
+
+This module is optimized for:
+- **Operating System**: Windows (primary), Linux (development support)
+- **GPU**: NVIDIA RTX 5090 (32GB VRAM) for AI workloads
+- **CPU**: AMD Ryzen processor (multi-core)
+- **RAM**: 64GB DDR5
+- **Python**: 3.10 or higher
+
+> **Note for Linux users**: Limited Linux support is available for development purposes. macOS is not officially supported.
 
 ## Features
 
@@ -49,8 +70,10 @@ For comprehensive documentation, see:
 
 ### Prerequisites
 
-- Python 3.8 or higher
+- Python 3.10 or higher (required)
 - pip package manager
+- Windows OS (recommended)
+- NVIDIA GPU with CUDA support (optional, for future AI features)
 
 ### Quick Start (Recommended)
 
@@ -385,7 +408,9 @@ This project was inspired by [Nomoos/StoryGenerator](https://github.com/Nomoos/S
 
 ## License
 
-This project is open source and available for use and modification.
+This project is proprietary software. See [LICENSE](LICENSE) file for details.
+
+**All Rights Reserved** - Copyright (c) 2025 PrismQ
 
 ## Contributing
 

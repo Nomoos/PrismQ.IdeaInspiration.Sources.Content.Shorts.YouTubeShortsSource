@@ -27,6 +27,15 @@ issues/
 ## Description
 Detailed description of the issue or feature request.
 
+## Type
+Bug | Feature | Enhancement
+
+## Priority
+High | Medium | Low
+
+## Target Platform
+Windows | NVIDIA RTX 5090 | AMD Ryzen | 64GB RAM
+
 ## Steps to Reproduce (for bugs)
 1. Step one
 2. Step two
@@ -35,6 +44,7 @@ Detailed description of the issue or feature request.
 ## Notes
 - Any additional context
 - Related issues or discussions
+- Hardware/platform considerations
 
 ## Links
 - PR: #123

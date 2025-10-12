@@ -1,6 +1,18 @@
 # Contributing to PrismQ.IdeaCollector
 
-Thank you for considering contributing to PrismQ.IdeaCollector! We welcome contributions from the community.
+Thank you for your interest in contributing to this PrismQ module!
+
+## Development Environment
+
+### System Requirements
+
+- **Operating System**: Windows (primary), Linux (development only)
+- **GPU**: NVIDIA RTX 5090 (32GB VRAM)
+- **CPU**: AMD Ryzen processor (multi-core)
+- **RAM**: 64GB DDR5
+- **Python**: 3.10 or higher
+
+> **Note**: While development on Linux is supported, the primary target platform is Windows with high-end hardware for AI workloads.
 
 ## Table of Contents
 
@@ -24,7 +36,7 @@ Before creating bug reports, please check the existing issues to avoid duplicate
 - A clear and descriptive title
 - Steps to reproduce the issue
 - Expected vs. actual behavior
-- Your environment (OS, Python version, etc.)
+- Your environment (OS, Python version, GPU/CPU specs)
 - Error logs or screenshots if applicable
 
 Use the bug report template provided in the issue tracker.
@@ -37,6 +49,7 @@ Feature suggestions are welcome! Please use the feature request template and inc
 - Why this feature would be useful
 - Any alternative solutions you've considered
 - Whether you're willing to work on implementing it
+- Hardware/platform considerations
 
 ### Contributing Code
 
@@ -52,9 +65,11 @@ Feature suggestions are welcome! Please use the feature request template and inc
 
 ### Prerequisites
 
-- Python 3.8 or higher
+- Python 3.10 or higher (required)
 - pip package manager
 - Virtual environment (recommended)
+- Windows OS (recommended)
+- NVIDIA GPU with CUDA support (optional, for future AI features)
 
 ### Setup Steps
 
@@ -68,10 +83,10 @@ Feature suggestions are welcome! Please use the feature request template and inc
    ```bash
    python -m venv venv
    
-   # On Windows
+   # On Windows (primary platform)
    venv\Scripts\activate
    
-   # On Linux/Mac
+   # On Linux (development only)
    source venv/bin/activate
    ```
 
@@ -83,7 +98,12 @@ Feature suggestions are welcome! Please use the feature request template and inc
 
 4. Set up configuration:
    ```bash
+   # On Windows
+   copy .env.example .env
+   
+   # On Linux
    cp .env.example .env
+   
    # Edit .env with your API credentials
    ```
 
@@ -113,9 +133,24 @@ Feature suggestions are welcome! Please use the feature request template and inc
 ### Python Style
 
 - Follow PEP 8 style guide
-- Use meaningful variable and function names
-- Add docstrings to functions and classes
-- Keep functions focused and concise
+- Use type hints for all function parameters and return values
+- Add docstrings to all public functions and classes using Google style
+- Keep functions small and focused (< 50 lines)
+- Write meaningful commit messages
+
+### Performance Considerations
+
+- Optimize for potential GPU utilization on RTX 5090 (future features)
+- Consider memory constraints (32GB VRAM, 64GB RAM)
+- Use batch processing where applicable
+- Test on the target platform when possible
+
+### Testing
+
+- Write unit tests for all new functionality
+- Ensure all tests pass before submitting PR
+- Aim for high test coverage (>80%)
+- Test on Windows platform when possible
 
 ### Example Code Style
 

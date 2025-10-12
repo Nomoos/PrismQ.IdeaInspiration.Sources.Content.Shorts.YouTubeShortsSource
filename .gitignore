@@ -27,25 +27,119 @@ env/
 
 # Environment variables
 .env
-.env.bak
 
-# IDEs
+# IDEs - Visual Studio Code
 .vscode/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# IDEs - JetBrains (PyCharm, Rider, IntelliJ IDEA, WebStorm, etc.)
 .idea/
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/usage.statistics.xml
+.idea/**/dictionaries
+.idea/**/shelf
+.idea/**/contentModel.xml
+.idea/**/dataSources/
+.idea/**/dataSources.ids
+.idea/**/dataSources.local.xml
+.idea/**/sqlDataSources.xml
+.idea/**/dynamic.xml
+.idea/**/uiDesigner.xml
+.idea/**/dbnavigator.xml
+.idea/**/gradle.xml
+.idea/**/libraries
+*.iws
+*.iml
+*.ipr
+out/
+.idea_modules/
+
+# IDEs - Vim/Emacs
 *.swp
 *.swo
 *~
+.netrwhist
 
 # Database
 *.db
 *.sqlite
 *.sqlite3
+*.db-shm
+*.db-wal
+*.db-journal
+
+# C# / .NET
+bin/
+obj/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.dll
+*.exe
+!*.exe.config
+*.mdb
+*.opendb
+*.VC.db
+*.VC.VC.opendb
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+.vs/
+*.pidb.meta
+*.pdb.meta
+*.mdb.meta
+
+# NuGet Packages
+*.nupkg
+*.snupkg
+**/[Pp]ackages/*
+!**/[Pp]ackages/build/
+project.lock.json
+project.fragment.lock.json
+artifacts/
 
 # Test coverage
 .coverage
 htmlcov/
 .pytest_cache/
+coverage.xml
+*.cover
+*.py,cover
+TestResults/
 
 # OS
 .DS_Store
 Thumbs.db
+
+# Logs
+*.log
+
+# Project specific
+data/
+output/
+temp/
+cache/
+models/
