@@ -1,24 +1,23 @@
 # Project Roadmap
 
-This document outlines planned features and improvements for PrismQ.IdeaCollector.
+This document outlines planned features and improvements for PrismQ.Idea.Sources.Content.Shorts.YouTubeShortsSource.
 
 ## Current Version: 1.0.0
 
 ### Completed Features
 - ✅ YouTube Shorts integration
-- ✅ Reddit integration
 - ✅ SQLite database storage
 - ✅ CLI interface
 - ✅ Universal metrics system
 - ✅ Scoring engine
-- ✅ Cross-platform support (Windows, Linux, macOS)
+- ✅ Cross-platform support (Windows, Linux)
 
 ## Planned Features
 
 ### Version 1.1.0 (Next Release)
 
 #### High Priority
-- [ ] **TikTok Integration**: Add TikTok as a content source
+- [ ] **Enhanced YouTube Shorts Filtering**: Advanced filters for duration, engagement, etc.
 - [ ] **Export Functionality**: Export ideas to CSV/JSON
 - [ ] **Enhanced Filtering**: Filter by date range, scores, tags
 - [ ] **Batch Operations**: Process multiple queries efficiently
@@ -36,12 +35,11 @@ This document outlines planned features and improvements for PrismQ.IdeaCollecto
 
 ### Version 1.2.0 (Future)
 
-#### New Source Plugins
-- [ ] Instagram Reels
-- [ ] Twitter/X
-- [ ] Podcast platforms (Spotify, Apple Podcasts)
-- [ ] HackerNews
-- [ ] Product Hunt
+#### YouTube Shorts Enhancements
+- [ ] Trending Shorts detection
+- [ ] Channel performance analysis
+- [ ] Hashtag trend tracking
+- [ ] Audio/music trend detection
 
 #### Advanced Features
 - [ ] AI-powered idea categorization
@@ -95,9 +93,17 @@ Want to work on a feature from this roadmap?
 
 Have suggestions for the roadmap? 
 
-- Open a [feature request](https://github.com/PrismQDev/PrismQ.IdeaCollector/issues/new?template=feature_request.yml)
-- Start a [discussion](https://github.com/PrismQDev/PrismQ.IdeaCollector/discussions)
+- Open an issue on GitHub
+- Start a [discussion](https://github.com/Nomoos/PrismQ.Idea.Sources.Content.Shorts.YouTubeShortsSource/discussions)
 - Comment on existing roadmap items
+
+## Related Modules
+
+For other content sources, see the PrismQ Idea Sources ecosystem:
+- **PrismQ.Idea.Sources.Content.Shorts.TikTokSource** - TikTok videos
+- **PrismQ.Idea.Sources.Content.Shorts.InstagramReelsSource** - Instagram Reels
+- **PrismQ.Idea.Sources.Content.Forums.RedditSource** - Reddit posts
+- Other specialized modules
 
 ---
 
