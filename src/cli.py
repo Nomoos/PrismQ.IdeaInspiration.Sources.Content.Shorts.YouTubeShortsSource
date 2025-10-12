@@ -1,4 +1,4 @@
-"""Command-line interface for PrismQ.IdeaCollector."""
+"""Command-line interface for PrismQ.Idea.Sources.Content.Shorts.YouTubeShortsSource."""
 
 import click
 import sys
@@ -6,24 +6,21 @@ from pathlib import Path
 from src.config import Config
 from src.database import Database
 from src.metrics import UniversalMetrics
-from src.sources.reddit_plugin import RedditPlugin
 from src.sources.youtube_plugin import YouTubePlugin
 
 
 @click.group()
 @click.version_option(version='1.0.0')
 def main():
-    """PrismQ.IdeaCollector - Gather idea inspirations from multiple sources."""
+    """PrismQ YouTube Shorts Source - Gather idea inspirations from YouTube Shorts."""
     pass
 
 
 @main.command()
-@click.option('--source', '-s', type=click.Choice(['reddit', 'youtube', 'all']), 
-              default='all', help='Source to scrape ideas from')
 @click.option('--env-file', '-e', type=click.Path(exists=True), 
               help='Path to .env file')
-def scrape(source, env_file):
-    """Scrape ideas from configured sources."""
+def scrape(env_file):
+    """Scrape ideas from YouTube Shorts."""
     try:
         # Load configuration
         config = Config(env_file)
@@ -31,68 +28,45 @@ def scrape(source, env_file):
         # Initialize database
         db = Database(config.database_path)
         
-        # Determine which sources to scrape
-        sources_to_scrape = []
-        if source == 'all' or source == 'reddit':
-            try:
-                sources_to_scrape.append(RedditPlugin(config))
-            except ValueError as e:
-                click.echo(f"Warning: Skipping Reddit - {e}", err=True)
-        
-        if source == 'all' or source == 'youtube':
-            try:
-                sources_to_scrape.append(YouTubePlugin(config))
-            except ValueError as e:
-                click.echo(f"Warning: Skipping YouTube - {e}", err=True)
-        
-        if not sources_to_scrape:
-            click.echo("Error: No valid sources configured. Check your .env file.", err=True)
+        # Initialize YouTube plugin
+        try:
+            youtube_plugin = YouTubePlugin(config)
+        except ValueError as e:
+            click.echo(f"Error: {e}", err=True)
             sys.exit(1)
         
-        # Scrape from each source
+        # Scrape from YouTube
         total_scraped = 0
         total_saved = 0
         
-        for plugin in sources_to_scrape:
-            source_name = plugin.get_source_name()
-            click.echo(f"Scraping from {source_name}...")
+        click.echo("Scraping from YouTube Shorts...")
+        
+        try:
+            ideas = youtube_plugin.scrape()
+            total_scraped = len(ideas)
+            click.echo(f"Found {len(ideas)} ideas from YouTube Shorts")
             
-            try:
-                ideas = plugin.scrape()
-                total_scraped += len(ideas)
-                click.echo(f"Found {len(ideas)} ideas from {source_name}")
+            # Process and save each idea
+            for idea in ideas:
+                # Convert platform metrics to universal metrics
+                universal_metrics = UniversalMetrics.from_youtube(idea['metrics'])
                 
-                # Process and save each idea
-                for idea in ideas:
-                    # Convert platform metrics to universal metrics
-                    if source_name == 'reddit':
-                        universal_metrics = UniversalMetrics.from_reddit(idea['metrics'])
-                    elif source_name == 'youtube':
-                        universal_metrics = UniversalMetrics.from_youtube(idea['metrics'])
-                    else:
-                        # Generic fallback - store metrics as-is
-                        universal_metrics = UniversalMetrics(
-                            platform=source_name,
-                            platform_specific=idea['metrics']
-                        )
-                        universal_metrics.calculate_derived_metrics()
-                    
-                    # Save to database with universal metrics
-                    success = db.insert_idea(
-                        source=source_name,
-                        source_id=idea['source_id'],
-                        title=idea['title'],
-                        description=idea['description'],
-                        tags=idea['tags'],
-                        score=universal_metrics.engagement_rate or 0.0,  # Use engagement rate as score
-                        score_dictionary=universal_metrics.to_dict()
-                    )
-                    
-                    if success:
-                        total_saved += 1
+                # Save to database with universal metrics
+                success = db.insert_idea(
+                    source='youtube',
+                    source_id=idea['source_id'],
+                    title=idea['title'],
+                    description=idea['description'],
+                    tags=idea['tags'],
+                    score=universal_metrics.engagement_rate or 0.0,  # Use engagement rate as score
+                    score_dictionary=universal_metrics.to_dict()
+                )
                 
-            except Exception as e:
-                click.echo(f"Error scraping {source_name}: {e}", err=True)
+                if success:
+                    total_saved += 1
+            
+        except Exception as e:
+            click.echo(f"Error scraping YouTube Shorts: {e}", err=True)
         
         click.echo(f"\nScraping complete!")
         click.echo(f"Total ideas found: {total_scraped}")
