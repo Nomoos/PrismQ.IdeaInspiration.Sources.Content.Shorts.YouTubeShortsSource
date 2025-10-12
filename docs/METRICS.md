@@ -123,7 +123,7 @@ Uses the full YouTube API response to extract:
 - Title, description, tags
 - Channel information
 - Upload date
-- Filters for videos under 60 seconds
+- Filters for videos up to 3 minutes (180 seconds)
 
 ### Other Platforms (Separate Modules)
 Other PrismQ Idea Sources modules implement similar patterns:
