@@ -164,7 +164,7 @@ def scrape(self) -> List[Dict[str, Any]]:
             - title: Idea title
             - description: Idea description
             - tags: Tags or categories
-            - metrics: Dictionary of metrics for scoring
+            - metrics: Dictionary of metrics
     """
     pass
 ```

@@ -42,13 +42,6 @@ This module is optimized for:
   - **Channel information**: Channel ID, name, subscriber count
   - **Content analysis**: Title/description length, tag counts
   
-- **Story Detection**: AI-powered content classification
-  - Detects story-based videos using keyword analysis
-  - Analyzes title, description, tags, and subtitles
-  - Weighted confidence scoring (0-1 scale)
-  - Optional story-only filtering mode
-  - Identifies anti-patterns (tutorials, gameplay, reviews)
-  
 - **Universal Metrics Collection**: Standardized metrics for cross-platform analysis
   - Engagement metrics (views, likes, comments, shares)
   - Calculated metrics (engagement rate, like-to-view ratio, etc.)
@@ -62,7 +55,7 @@ This module is optimized for:
   - Description
   - Tags
   - Universal metrics (JSON format)
-  - Enhanced metrics (story detection, engagement analytics)
+  - Enhanced metrics (engagement analytics)
   - Source information
   
 - **Simple Configuration**: Single `.env` file for all settings
