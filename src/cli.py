@@ -22,8 +22,22 @@ def main():
 @click.option('--env-file', '-e', type=click.Path(exists=True), 
               help='Path to .env file')
 def scrape(env_file):
-    """Scrape ideas from YouTube Shorts."""
+    """Scrape ideas from YouTube Shorts (YouTube API - Legacy).
+    
+    ⚠️  NOT RECOMMENDED: Use scrape-channel, scrape-trending, or scrape-keyword instead.
+    These yt-dlp methods provide richer metadata and no API quota limits.
+    
+    This command uses YouTube Data API v3 and is kept for backward compatibility.
+    """
     try:
+        # Warn user about better alternatives
+        click.echo("⚠️  WARNING: You're using the legacy YouTube API scraper.", err=True)
+        click.echo("   Consider using these yt-dlp-based alternatives instead:", err=True)
+        click.echo("   - scrape-channel: Scrape from specific channels", err=True)
+        click.echo("   - scrape-trending: Scrape from trending page", err=True)
+        click.echo("   - scrape-keyword: Search by keywords", err=True)
+        click.echo("   Benefits: No API limits, richer metadata, subtitles, story detection", err=True)
+        click.echo("", err=True)
         # Load configuration
         config = Config(env_file)
         

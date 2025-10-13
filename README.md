@@ -193,14 +193,9 @@ YOUTUBE_KEYWORD_STORY_ONLY=false
 
 ### Scraping Modes
 
-#### Search-Based Scraping (YouTube API)
-Uses YouTube Data API v3 to search for Shorts by keywords. Requires an API key.
+> **⚠️ Recommendation**: Use yt-dlp-based methods (channel, trending, keyword) for data mining. They provide richer metadata, no API quota limits, and don't require an API key. The API-based `scrape` command is maintained for backward compatibility only.
 
-```bash
-python -m src.cli scrape
-```
-
-#### Channel-Based Scraping (yt-dlp)
+#### Channel-Based Scraping (yt-dlp) ⭐ **Recommended**
 Uses yt-dlp to scrape comprehensive metadata from specific YouTube channels. No API key required, but requires yt-dlp to be installed.
 
 ```bash
@@ -214,7 +209,7 @@ python -m src.cli scrape-channel --channel @channelname --story-only
 python -m src.cli scrape-channel --channel @channelname --top 20
 ```
 
-#### Trending Scraping (yt-dlp)
+#### Trending Scraping (yt-dlp) ⭐ **Recommended**
 Uses yt-dlp to scrape Shorts from YouTube trending page. No API key required.
 
 ```bash
@@ -225,7 +220,7 @@ python -m src.cli scrape-trending
 python -m src.cli scrape-trending --story-only --top 15
 ```
 
-#### Keyword Scraping (yt-dlp)
+#### Keyword Scraping (yt-dlp) ⭐ **Recommended**
 Uses yt-dlp to search and scrape Shorts by keywords. No API key required.
 
 ```bash
@@ -239,13 +234,29 @@ python -m src.cli scrape-keyword --keyword "business tips" --top 20
 python -m src.cli scrape-keyword --keyword "story time" --story-only
 ```
 
-**Advantages of yt-dlp scraping (channel, trending, keyword):**
-- Comprehensive metadata including subtitles
-- Video quality metrics (resolution, FPS, aspect ratio)
-- Engagement analytics (views per day/hour)
-- Story detection with confidence scoring
-- No API quota limits
-- Works without YouTube API key
+#### Search-Based Scraping (YouTube API) - Legacy
+Uses YouTube Data API v3 to search for Shorts by keywords. **Not recommended for data mining** - use yt-dlp methods instead. Kept for backward compatibility.
+
+**Limitations:**
+- Requires YouTube API key
+- Subject to 10,000 units/day quota
+- Limited metadata (no subtitles, quality metrics, or enhanced analytics)
+- Cannot access trending page
+
+```bash
+python -m src.cli scrape
+```
+
+---
+
+**Why yt-dlp methods are recommended (channel, trending, keyword):**
+- ✅ Comprehensive metadata including subtitles
+- ✅ Video quality metrics (resolution, FPS, aspect ratio)
+- ✅ Engagement analytics (views per day/hour)
+- ✅ Story detection with confidence scoring
+- ✅ No API quota limits
+- ✅ Works without YouTube API key
+- ✅ Direct access to trending page
 
 ### Universal Metrics for Cross-Platform Scoring
 
@@ -327,18 +338,9 @@ scores = engine.calculate_universal_content_score(metrics)
 
 ### Scrape Ideas
 
-#### Search-Based Scraping
-Scrape YouTube Shorts ideas using YouTube API search:
-```bash
-python -m src.cli scrape
-```
+> **⚠️ Recommendation**: Use yt-dlp-based commands (channel, trending, keyword) for best results. They provide richer metadata and no API limits.
 
-Use a custom .env file:
-```bash
-python -m src.cli scrape --env-file /path/to/.env
-```
-
-#### Channel-Based Scraping
+#### Channel-Based Scraping ⭐ **Recommended**
 Scrape YouTube Shorts from a specific channel using yt-dlp:
 
 ```bash
@@ -415,6 +417,34 @@ python -m src.cli scrape-keyword --keyword "tech news" --top 15 --story-only
 - Automatic Shorts filtering
 - Story detection filtering available
 - Same rich metadata as other yt-dlp modes
+
+---
+
+#### Search-Based Scraping (YouTube API - Legacy)
+**⚠️ NOT RECOMMENDED**: Use yt-dlp methods above instead. This command is kept for backward compatibility.
+
+```bash
+# Basic API-based search (legacy)
+python -m src.cli scrape
+
+# Use a custom .env file
+python -m src.cli scrape --env-file /path/to/.env
+```
+
+**Limitations:**
+- Requires YouTube API key (subject to 10,000 units/day quota)
+- Limited metadata (no subtitles, quality metrics, or enhanced analytics)
+- Cannot access trending page or specific channels
+- Less comprehensive than yt-dlp methods
+
+**Why yt-dlp is better:**
+- ✅ No API quota limits
+- ✅ Richer metadata (subtitles, quality metrics, engagement analytics)
+- ✅ Story detection with confidence scoring
+- ✅ Works without API key
+- ✅ Direct trending and channel access
+
+---
 
 ### List Ideas
 
