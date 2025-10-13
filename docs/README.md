@@ -10,7 +10,7 @@ This folder contains comprehensive documentation for PrismQ.Idea.Sources.Content
 
 ### Developer Documentation
 - **[Contributing Guidelines](CONTRIBUTING.md)**: How to contribute to the project
-- **[Metrics Documentation](METRICS.md)**: Universal metrics system and scoring
+- **[Metrics Documentation](METRICS.md)**: Universal metrics system
 
 ### Additional Resources
 - **[Known Issues](../issues/KNOWN_ISSUES.md)**: Common problems and solutions

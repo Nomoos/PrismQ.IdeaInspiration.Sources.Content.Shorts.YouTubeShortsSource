@@ -11,7 +11,6 @@ from pathlib import Path
 from typing import List, Dict, Any, Optional
 from datetime import datetime
 from src.sources import SourcePlugin
-from src.story_detector import StoryDetector
 
 
 class YouTubeTrendingPlugin(SourcePlugin):
@@ -32,10 +31,6 @@ class YouTubeTrendingPlugin(SourcePlugin):
         # Check if yt-dlp is available
         if not self._check_ytdlp():
             raise ValueError("yt-dlp is not installed. Install with: pip install yt-dlp")
-        
-        # Initialize story detector
-        self.story_detector = StoryDetector()
-        self.story_only = getattr(config, 'youtube_trending_story_only', False)
     
     def get_source_name(self) -> str:
         """Get the name of this source.
@@ -388,19 +383,7 @@ class YouTubeTrendingPlugin(SourcePlugin):
                 height = metadata['height']
                 aspect_ratio = f"{width}:{height}"
             
-            # Detect if this is a story video
-            is_story, confidence, indicators = self.story_detector.detect(
-                title=metadata.get('title', ''),
-                description=metadata.get('description', ''),
-                tags=metadata.get('tags', []),
-                subtitle_text=metadata.get('subtitle_text', '')
-            )
-            
-            # If story_only mode is enabled, filter out non-story videos
-            if self.story_only and not is_story:
-                print(f"    Skipped: Not a story (confidence: {confidence:.2f})")
-                return None
-            
+
             # Build comprehensive metrics for UniversalMetrics
             metrics = {
                 'id': metadata.get('id'),

@@ -99,8 +99,7 @@ def scrape(env_file):
               help='Path to .env file')
 @click.option('--channel', '-c', help='YouTube channel URL, handle (@username), or ID')
 @click.option('--top', '-t', type=int, help='Number of shorts to scrape (default: config or 10)')
-@click.option('--story-only', is_flag=True, help='Only scrape videos detected as story videos')
-def scrape_channel(env_file, channel, top, story_only):
+def scrape_channel(env_file, channel, top):
     """Scrape ideas from a specific YouTube channel's Shorts using yt-dlp.
     
     This command uses yt-dlp to scrape comprehensive metadata from a YouTube
@@ -115,10 +114,6 @@ def scrape_channel(env_file, channel, top, story_only):
     try:
         # Load configuration
         config = Config(env_file)
-        
-        # Override story_only from CLI if provided
-        if story_only:
-            config.youtube_channel_story_only = True
         
         # Initialize database
         db = Database(config.database_path)
@@ -149,10 +144,6 @@ def scrape_channel(env_file, channel, top, story_only):
         
         click.echo(f"Scraping from YouTube channel: {channel_url}")
         click.echo(f"Number of shorts to scrape: {shorts_count}")
-        if config.youtube_channel_story_only:
-            click.echo("Story-only mode: ENABLED (filtering out non-story videos)")
-        else:
-            click.echo("Story-only mode: DISABLED")
         click.echo("")
         
         try:
@@ -200,8 +191,7 @@ def scrape_channel(env_file, channel, top, story_only):
 @click.option('--env-file', '-e', type=click.Path(exists=True), 
               help='Path to .env file')
 @click.option('--top', '-t', type=int, help='Number of shorts to scrape (default: config or 10)')
-@click.option('--story-only', is_flag=True, help='Only scrape videos detected as story videos')
-def scrape_trending(env_file, top, story_only):
+def scrape_trending(env_file, top):
     """Scrape ideas from YouTube trending Shorts using yt-dlp.
     
     This command scrapes Shorts from the YouTube trending page without requiring
@@ -210,15 +200,10 @@ def scrape_trending(env_file, top, story_only):
     Examples:
         python -m src.cli scrape-trending
         python -m src.cli scrape-trending --top 15
-        python -m src.cli scrape-trending --story-only
     """
     try:
         # Load configuration
         config = Config(env_file)
-        
-        # Override story_only from CLI if provided
-        if story_only:
-            config.youtube_trending_story_only = True
         
         # Initialize database
         db = Database(config.database_path)
@@ -240,10 +225,6 @@ def scrape_trending(env_file, top, story_only):
         
         click.echo(f"Scraping from YouTube trending")
         click.echo(f"Number of shorts to scrape: {shorts_count}")
-        if getattr(config, 'youtube_trending_story_only', False):
-            click.echo("Story-only mode: ENABLED (filtering out non-story videos)")
-        else:
-            click.echo("Story-only mode: DISABLED")
         click.echo("")
         
         try:
@@ -292,8 +273,7 @@ def scrape_trending(env_file, top, story_only):
               help='Path to .env file')
 @click.option('--keyword', '-k', required=True, help='Search keyword')
 @click.option('--top', '-t', type=int, help='Number of shorts to scrape (default: config or 10)')
-@click.option('--story-only', is_flag=True, help='Only scrape videos detected as story videos')
-def scrape_keyword(env_file, keyword, top, story_only):
+def scrape_keyword(env_file, keyword, top):
     """Scrape ideas from YouTube by keyword search using yt-dlp.
     
     This command searches for Shorts using keywords without requiring an API key.
@@ -302,15 +282,10 @@ def scrape_keyword(env_file, keyword, top, story_only):
     Examples:
         python -m src.cli scrape-keyword --keyword "startup ideas"
         python -m src.cli scrape-keyword --keyword "business tips" --top 20
-        python -m src.cli scrape-keyword --keyword "story time" --story-only
     """
     try:
         # Load configuration
         config = Config(env_file)
-        
-        # Override story_only from CLI if provided
-        if story_only:
-            config.youtube_keyword_story_only = True
         
         # Initialize database
         db = Database(config.database_path)
@@ -332,10 +307,6 @@ def scrape_keyword(env_file, keyword, top, story_only):
         
         click.echo(f"Scraping from YouTube with keyword: '{keyword}'")
         click.echo(f"Number of shorts to scrape: {shorts_count}")
-        if getattr(config, 'youtube_keyword_story_only', False):
-            click.echo("Story-only mode: ENABLED (filtering out non-story videos)")
-        else:
-            click.echo("Story-only mode: DISABLED")
         click.echo("")
         
         try:
