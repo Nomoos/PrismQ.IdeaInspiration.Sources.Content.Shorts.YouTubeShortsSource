@@ -89,16 +89,26 @@ Daily quota: **10,000 units**
 
 ### Should I use YouTube API or yt-dlp?
 
+**What YouTube API provides:**
+- ✅ Basic fields: title, description, tags, views, likes, comments
+- ❌ NO subtitles (text extraction)
+- ❌ NO quality metrics (resolution, FPS, aspect ratio)
+- ❌ 10K quota/day limit
+
+**What yt-dlp provides:**
+- ✅ All YouTube API fields PLUS:
+- ✅ Subtitles (full text extraction)
+- ✅ Quality metrics (resolution, FPS, aspect ratio, codecs)
+- ✅ Unlimited (no quota)
+
 ```
 Use YouTube API if:
 ❌ You need to do it (maintained for compatibility only)
 
 Use yt-dlp if:
-✅ You want comprehensive metadata
-✅ You need subtitles
+✅ You want comprehensive metadata (subtitles, quality)
 ✅ You want to avoid quota limits
 ✅ You're doing bulk collection
-✅ You want quality metrics
 ✅ You need channel or trending data
 ```
 

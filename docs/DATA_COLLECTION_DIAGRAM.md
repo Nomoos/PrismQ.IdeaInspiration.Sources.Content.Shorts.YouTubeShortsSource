@@ -254,12 +254,12 @@ Legend:
 ┌──────────────────────────────────────────────────────────────────┐
 │                   YouTube Data API v3                            │
 ├──────────────────────────────────────────────────────────────────┤
-│  Pros:                          │  Cons:                         │
+│  Provides:                      │  Missing:                      │
+│  ✓ Title, description, tags    │  ✗ Subtitles (text)            │
+│  ✓ Views, likes, comments      │  ✗ Quality metrics (res/FPS)   │
+│  ✓ Channel info, upload date   │  ✗ Enhanced analytics          │
 │  ✓ Official & stable           │  ✗ 10,000 units/day limit      │
-│  ✓ Well documented             │  ✗ Limited metadata            │
-│  ✓ Structured data             │  ✗ No subtitles                │
-│  ✓ Reliable                    │  ✗ No quality metrics          │
-│                                 │  ✗ No engagement analytics     │
+│  ✓ Fast & reliable             │                                │
 ├──────────────────────────────────────────────────────────────────┤
 │  Best for: Backward compatibility, specific queries              │
 └──────────────────────────────────────────────────────────────────┘

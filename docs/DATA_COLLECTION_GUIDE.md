@@ -365,11 +365,22 @@ SQLite can easily handle this! ✅
 
 ### Q: Should I use YouTube API or yt-dlp?
 
-**A:** Use yt-dlp for 95% of cases. It provides:
-- More comprehensive data
-- No quota limits
-- Subtitles and quality metrics
-- Better for bulk collection
+**A:** Use yt-dlp for 95% of cases.
+
+**YouTube API provides:**
+- ✅ Title, description, tags
+- ✅ Views, likes, comments, favorites
+- ✅ Channel info, upload date
+- ❌ NO subtitles (text extraction)
+- ❌ NO quality metrics (resolution, FPS)
+- ❌ 10K quota/day limit
+
+**yt-dlp provides:**
+- ✅ All YouTube API fields PLUS
+- ✅ Subtitles (full text extraction)
+- ✅ Quality metrics (resolution, FPS, aspect ratio, codecs)
+- ✅ Unlimited (no quota)
+- ✅ Better for bulk collection
 
 Use API only for:
 - Backward compatibility

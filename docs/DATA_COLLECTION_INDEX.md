@@ -226,10 +226,11 @@ This documentation suite answers the question: **"What data we collecting now? W
 
 | Aspect | YouTube API | yt-dlp |
 |--------|-------------|--------|
-| **Fields** | ~15 basic | 40+ enhanced |
+| **Basic Fields** | ✅ Yes (title, description, tags, views, likes, comments) | ✅ Yes (all API fields + more) |
+| **Total Fields** | ~15-20 fields | 40+ enhanced fields |
 | **Quota** | 10K/day limit | Unlimited |
-| **Subtitles** | ❌ No | ✅ Yes |
-| **Quality Metrics** | ❌ No | ✅ Yes |
+| **Subtitles** | ❌ No | ✅ Yes (full text extraction) |
+| **Quality Metrics** | ❌ No (no resolution, FPS, aspect ratio) | ✅ Yes (resolution, FPS, aspect ratio, codecs) |
 | **Speed** | Fast | Slower |
 | **Reliability** | Very stable | Stable |
 | **Cost** | Free (quota limit) | Free |

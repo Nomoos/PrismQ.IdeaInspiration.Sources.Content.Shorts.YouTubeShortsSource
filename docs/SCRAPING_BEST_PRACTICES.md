@@ -303,6 +303,16 @@ Risk level: 🔴 Medium-High
 
 **Status:** ✅ Official, stable
 
+**What it provides:**
+- ✅ Title, description, tags
+- ✅ Views, likes, comments, favorites
+- ✅ Channel info, upload date, categories
+
+**What it's missing:**
+- ❌ Subtitles (no text extraction)
+- ❌ Quality metrics (no resolution, FPS, aspect ratio)
+- ❌ Enhanced analytics (calculated metrics)
+
 **Pros:**
 - ✅ Official Google API
 - ✅ Guaranteed stability
@@ -311,14 +321,14 @@ Risk level: 🔴 Medium-High
 
 **Cons:**
 - ❌ Quota limits (10,000 units/day)
-- ❌ No subtitles
-- ❌ Limited quality metrics
+- ❌ No subtitles or quality metrics
 - ❌ No trending access
 
 **When to use:**
 - Small-scale queries (<1,000 videos)
 - Need guaranteed uptime
 - Official data requirements
+- Don't need subtitles or quality metrics
 
 ### Alternative 3: Invidious API
 
