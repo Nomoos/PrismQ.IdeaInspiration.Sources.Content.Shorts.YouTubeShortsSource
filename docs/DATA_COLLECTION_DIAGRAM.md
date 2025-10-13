@@ -267,14 +267,14 @@ Legend:
 ┌──────────────────────────────────────────────────────────────────┐
 │                          yt-dlp ⭐                                │
 ├──────────────────────────────────────────────────────────────────┤
-│  Pros:                          │  Cons:                         │
-│  ✓ No quota limits             │  ✗ Slower (downloads metadata) │
-│  ✓ Comprehensive metadata      │  ✗ Unofficial (relies on web)  │
-│  ✓ Subtitles included          │  ✗ May break with YouTube      │
-│  ✓ Quality metrics             │     updates                    │
-│  ✓ Channel analytics           │                                │
-│  ✓ Engagement calculations     │                                │
-│  ✓ Format details              │                                │
+│  Provides ALL API fields PLUS: │  Cons:                         │
+│  ✓ Title, description, tags    │  ✗ Slower (downloads metadata) │
+│  ✓ Views, likes, comments      │  ✗ Unofficial (relies on web)  │
+│  ✓ Channel info, upload date   │  ✗ May break with YouTube      │
+│  ✓ Subtitles (full text)       │     updates                    │
+│  ✓ Quality (resolution, FPS)   │                                │
+│  ✓ No quota limits             │                                │
+│  ✓ Enhanced analytics          │                                │
 ├──────────────────────────────────────────────────────────────────┤
 │  Best for: Bulk collection, comprehensive analysis, trending     │
 └──────────────────────────────────────────────────────────────────┘
