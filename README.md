@@ -71,8 +71,12 @@ For comprehensive documentation, see:
 - **[docs/](docs/)** - User and developer documentation
   - [Contributing Guidelines](docs/CONTRIBUTING.md)
   - [Metrics Documentation](docs/METRICS.md)
-  - [Data Collection Analysis](docs/DATA_COLLECTION_ANALYSIS.md) - What data we collect and what's possible
-  - [Data Collection Summary](docs/DATA_COLLECTION_SUMMARY.md) - Quick reference guide
+  - **[📊 Data Collection Suite](docs/DATA_COLLECTION_INDEX.md)** - Complete guide to what data we collect
+    - [Guide](docs/DATA_COLLECTION_GUIDE.md) - Decision trees & FAQs
+    - [Summary](docs/DATA_COLLECTION_SUMMARY.md) - Quick reference
+    - [Analysis](docs/DATA_COLLECTION_ANALYSIS.md) - Comprehensive details
+    - [Diagram](docs/DATA_COLLECTION_DIAGRAM.md) - Visual representations
+    - [Field Reference](docs/DATA_FIELDS_REFERENCE.md) - Complete catalog
   - [Windows Quickstart Guide](docs/WINDOWS_QUICKSTART.md)
 - **[issues/](issues/)** - File-based issue tracking
   - [Issue Tracking Guide](issues/README.md)
