@@ -71,6 +71,8 @@ For comprehensive documentation, see:
 - **[docs/](docs/)** - User and developer documentation
   - [Contributing Guidelines](docs/CONTRIBUTING.md)
   - [Metrics Documentation](docs/METRICS.md)
+  - [Data Collection Analysis](docs/DATA_COLLECTION_ANALYSIS.md) - What data we collect and what's possible
+  - [Data Collection Summary](docs/DATA_COLLECTION_SUMMARY.md) - Quick reference guide
   - [Windows Quickstart Guide](docs/WINDOWS_QUICKSTART.md)
 - **[issues/](issues/)** - File-based issue tracking
   - [Issue Tracking Guide](issues/README.md)
