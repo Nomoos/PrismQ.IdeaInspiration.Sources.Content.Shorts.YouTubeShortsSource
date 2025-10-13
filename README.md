@@ -77,6 +77,7 @@ For comprehensive documentation, see:
     - [Analysis](docs/DATA_COLLECTION_ANALYSIS.md) - Comprehensive details
     - [Diagram](docs/DATA_COLLECTION_DIAGRAM.md) - Visual representations
     - [Field Reference](docs/DATA_FIELDS_REFERENCE.md) - Complete catalog
+  - [Scraping Best Practices](docs/SCRAPING_BEST_PRACTICES.md) - Safety, re-scraping, and alternatives
   - [Windows Quickstart Guide](docs/WINDOWS_QUICKSTART.md)
 - **[issues/](issues/)** - File-based issue tracking
   - [Issue Tracking Guide](issues/README.md)
