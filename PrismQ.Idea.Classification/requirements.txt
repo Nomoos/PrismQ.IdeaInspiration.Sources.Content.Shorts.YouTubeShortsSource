@@ -1,0 +1,16 @@
+# PrismQ.Idea.Classification Requirements
+#
+# This package has ZERO external dependencies for production use.
+# All functionality uses Python standard library only.
+
+# Development dependencies (optional)
+# Install with: pip install -e ".[dev]"
+
+# Testing
+pytest>=7.0
+pytest-cov>=4.0
+
+# Code quality
+black>=23.0
+flake8>=6.0
+mypy>=1.0
