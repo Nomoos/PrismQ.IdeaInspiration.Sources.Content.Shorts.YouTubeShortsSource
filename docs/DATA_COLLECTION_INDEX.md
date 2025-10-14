@@ -99,9 +99,8 @@ This documentation suite answers the question: **"What data we collecting now? W
 
 **Contents:**
 - Complete breakdown of current data collection
-- Every field available from YouTube API
-- Every field available from yt-dlp
-- Detailed quota calculations
+- Every field available via yt-dlp
+- Comprehensive metadata capabilities
 - Storage considerations
 - Implementation recommendations
 - Prioritized action items
