@@ -193,26 +193,34 @@ This document provides a comprehensive reference of all data fields available fo
 
 ## Quick Reference by Collection Method
 
-### YouTube API Only (Current Implementation)
+### Current Implementation (yt-dlp)
 ```
-✅ Basic engagement (views, likes, comments, favorites)
-✅ Video metadata (title, description, tags)
-✅ Channel info (ID, name)
+✅ Core metadata (title, description, tags)
+✅ Engagement (views, likes, comments, favorites)
+✅ Channel info (ID, name, subscribers, verification)
 ✅ Publishing info (date, category)
-❌ NO subtitles (text extraction)
-❌ NO quality metrics (resolution, FPS, aspect ratio)
-🟢 Can add: quality flags, status, topics (via API)
+✅ Subtitles (full text extraction)
+✅ Quality metrics (resolution, FPS, aspect ratio, codecs)
+✅ Analytics (engagement rate, views per day/hour)
+🟢 Can add: hashtags, music metadata, additional format details
 ```
 
-### yt-dlp Only (Enhanced Implementation) ⭐ Recommended
+### yt-dlp Collection Methods ⭐
 ```
-✅ All YouTube API fields (title, description, tags, views, likes, etc.)
-✅ PLUS subtitles (full text extraction)
-✅ PLUS quality metrics (resolution, FPS, aspect ratio, codecs)
-✅ PLUS engagement analytics (calculated metrics)
-✅ PLUS channel follower count
-✅ PLUS detailed format information
-🟢 Can add: hashtags, verification, bitrate, music metadata
+Channel Scraping:
+  ✅ Comprehensive metadata for specific channels
+  ✅ All fields listed above
+  ✅ Best for targeted collection
+
+Trending Scraping:
+  ✅ Discover viral content
+  ✅ Same comprehensive metadata
+  ✅ Best for trend analysis
+
+Keyword Scraping:
+  ✅ Flexible search by topics
+  ✅ Same comprehensive metadata
+  ✅ Best for broad collection
 ```
 
 ### Future GPU/ML Processing

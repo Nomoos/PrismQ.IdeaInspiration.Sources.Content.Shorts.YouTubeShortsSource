@@ -161,18 +161,15 @@ def periodic_rescrape(video_id, min_interval_days=7):
 
 ### Best Practices for Safe Scraping
 
-#### 1. Use yt-dlp (Not YouTube API for Heavy Scraping)
+#### 1. Use yt-dlp (Primary Collection Method)
 
-**Why yt-dlp is safer:**
-- No API quota (so no "hard limit" violations)
-- Uses same endpoints as regular YouTube viewing
-- Mimics browser behavior
-- Regularly updated to adapt to YouTube changes
-
-**YouTube API Risks:**
-- Hard quota limits (10,000 units/day)
-- Easier to track and throttle
-- Requires registration (traceable)
+**Why yt-dlp is the best choice:**
+- ✅ No quota limits - unlimited collection
+- ✅ Comprehensive metadata (40+ fields)
+- ✅ Uses same endpoints as regular YouTube viewing
+- ✅ Mimics browser behavior
+- ✅ Regularly updated to adapt to YouTube changes
+- ✅ Active community support
 
 #### 2. Implement Rate Limiting
 
@@ -299,36 +296,17 @@ Risk level: 🔴 Medium-High
 
 **Recommendation:** Use yt-dlp instead
 
-### Alternative 2: YouTube Data API v3
+### Alternative 2: youtube-dl
 
-**Status:** ✅ Official, stable
+**Status:** ⚠️ Legacy, less actively maintained
 
-**What it provides:**
-- ✅ Title, description, tags
-- ✅ Views, likes, comments, favorites
-- ✅ Channel info, upload date, categories
+**Why yt-dlp is better:**
+- Faster update cycle
+- Better YouTube compatibility
+- More active community
+- Same codebase, better maintained
 
-**What it's missing:**
-- ❌ Subtitles (no text extraction)
-- ❌ Quality metrics (no resolution, FPS, aspect ratio)
-- ❌ Enhanced analytics (calculated metrics)
-
-**Pros:**
-- ✅ Official Google API
-- ✅ Guaranteed stability
-- ✅ Fast for small queries
-- ✅ Well-documented
-
-**Cons:**
-- ❌ Quota limits (10,000 units/day)
-- ❌ No subtitles or quality metrics
-- ❌ No trending access
-
-**When to use:**
-- Small-scale queries (<1,000 videos)
-- Need guaranteed uptime
-- Official data requirements
-- Don't need subtitles or quality metrics
+**Recommendation:** Use yt-dlp instead of youtube-dl
 
 ### Alternative 3: Invidious API
 
@@ -400,10 +378,9 @@ https://www.youtube.com/feeds/videos.xml?channel_id=CHANNEL_ID
 
 | Tool | Metadata | Speed | Stability | Quotas | Risk | Recommendation |
 |------|----------|-------|-----------|--------|------|----------------|
-| **yt-dlp** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐ | ∞ | 🟢 Low | ✅ Best choice |
-| **YouTube API** | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | 10K/day | 🟢 None | Small queries |
+| **yt-dlp** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐ | ∞ | 🟢 Low | ✅ Primary choice |
 | **youtube-dl** | ⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐ | ∞ | 🟢 Low | ❌ Use yt-dlp |
-| **Invidious** | ⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐ | ∞ | 🟡 Medium | Experimental |
+| **Invidious** | ⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐ | ∞ | 🟡 Medium | ❌ Not recommended |
 | **pytube** | ⭐⭐ | ⭐⭐⭐ | ⭐⭐ | ∞ | 🟢 Low | ❌ Use yt-dlp |
 | **RSS Feeds** | ⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ∞ | 🟢 None | Monitoring only |
 
