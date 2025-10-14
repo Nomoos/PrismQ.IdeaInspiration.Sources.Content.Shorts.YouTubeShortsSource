@@ -303,9 +303,9 @@ This documentation suite answers the question: **"What data we collecting now? W
 
 This documentation suite is:
 - **Version**: 1.0.0
-- **Last Updated**: 2025-10-13
+- **Last Updated**: 2025-10-14
 - **Status**: ✅ Complete and current
-- **Next Review**: When new YouTube API features are released
+- **Next Review**: When new yt-dlp features are released or YouTube changes
 
 ## Document Statistics
 
