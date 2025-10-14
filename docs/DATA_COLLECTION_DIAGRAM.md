@@ -8,20 +8,19 @@
 │                    (3-minute vertical videos)                        │
 └───────────────────────────────┬─────────────────────────────────────┘
                                 │
-                                │ Collection Methods
+                                │ Collection Method
                                 │
-                ┌───────────────┴──────────────┐
-                │                              │
-                ▼                              ▼
-    ┌──────────────────────┐       ┌──────────────────────┐
-    │   YouTube API v3     │       │      yt-dlp          │
-    │    (Legacy)          │       │   (Recommended)      │
-    └──────────┬───────────┘       └──────────┬───────────┘
-               │                              │
-               │ 15 fields                    │ 40+ fields
-               │ 10K quota/day                │ No quota limits
-               │                              │
-               ▼                              ▼
+                                ▼
+                    ┌──────────────────────┐
+                    │      yt-dlp          │
+                    │   (Primary Method)   │
+                    └──────────┬───────────┘
+                               │
+                               │ 40+ comprehensive fields
+                               │ No quota limits
+                               │ Subtitles + quality metrics
+                               │
+                               ▼
     ┌──────────────────────────────────────────────────────┐
     │            UniversalMetrics Schema                    │
     │  ┌────────────────────────────────────────────────┐  │
@@ -248,38 +247,29 @@ Legend:
 └─────────────────────────────────────────────────────────────┘
 ```
 
-## Comparison: API vs yt-dlp
+## Collection Method: yt-dlp
 
 ```
 ┌──────────────────────────────────────────────────────────────────┐
-│                   YouTube Data API v3                            │
-├──────────────────────────────────────────────────────────────────┤
-│  Provides:                      │  Missing:                      │
-│  ✓ Title, description, tags    │  ✗ Subtitles (text)            │
-│  ✓ Views, likes, comments      │  ✗ Quality metrics (res/FPS)   │
-│  ✓ Channel info, upload date   │  ✗ Enhanced analytics          │
-│  ✓ Official & stable           │  ✗ 10,000 units/day limit      │
-│  ✓ Fast & reliable             │                                │
-├──────────────────────────────────────────────────────────────────┤
-│  Best for: Backward compatibility, specific queries              │
-└──────────────────────────────────────────────────────────────────┘
-
-┌──────────────────────────────────────────────────────────────────┐
 │                          yt-dlp ⭐                                │
+│                    Primary Collection Method                      │
 ├──────────────────────────────────────────────────────────────────┤
-│  Provides ALL API fields PLUS: │  Cons:                         │
-│  ✓ Title, description, tags    │  ✗ Slower (downloads metadata) │
-│  ✓ Views, likes, comments      │  ✗ Unofficial (relies on web)  │
-│  ✓ Channel info, upload date   │  ✗ May break with YouTube      │
-│  ✓ Subtitles (full text)       │     updates                    │
-│  ✓ Quality (resolution, FPS)   │                                │
-│  ✓ No quota limits             │                                │
-│  ✓ Enhanced analytics          │                                │
+│  Comprehensive Data Collection:                                  │
+│                                                                   │
+│  Core Metadata:                 Advanced Features:               │
+│  ✓ Title, description, tags    ✓ Subtitles (full text)          │
+│  ✓ Views, likes, comments      ✓ Quality (resolution, FPS)      │
+│  ✓ Channel info, upload date   ✓ Analytics (engagement, vpd)    │
+│  ✓ Categories, duration         ✓ Format details (codecs)        │
+│                                                                   │
+│  Benefits:                      Collection Methods:              │
+│  ✓ No quota limits             ✓ Channel scraping               │
+│  ✓ 40+ comprehensive fields    ✓ Trending discovery             │
+│  ✓ Actively maintained         ✓ Keyword search                 │
+│  ✓ Unlimited collection        ✓ Flexible & powerful            │
 ├──────────────────────────────────────────────────────────────────┤
-│  Best for: Bulk collection, comprehensive analysis, trending     │
+│  Recommended for: All data collection needs                      │
 └──────────────────────────────────────────────────────────────────┘
-
-Recommendation: Use yt-dlp for all new data collection
 ```
 
 ## Implementation Roadmap

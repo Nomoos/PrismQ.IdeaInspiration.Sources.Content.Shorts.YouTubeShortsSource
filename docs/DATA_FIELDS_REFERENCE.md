@@ -171,14 +171,15 @@ This document provides a comprehensive reference of all data fields available fo
 
 ### Currently Collected
 - **Total fields**: 40+ metrics in UniversalMetrics
-- **From YouTube API**: ~15-20 fields (title, description, tags, views, likes, comments, channel info, etc.)
-- **From yt-dlp only**: ~25 additional fields (subtitles, quality metrics, enhanced analytics)
+- **Collection method**: yt-dlp (primary)
+- **Core metadata**: Title, description, tags, views, likes, comments, channel info
+- **Enhanced data**: Subtitles (full text), quality metrics (resolution, FPS, aspect ratio)
+- **Analytics**: Engagement rate, views per day/hour, like-to-view ratios
 - **Calculated metrics**: ~10 derived fields
 
 ### Easy to Add (High Priority)
-- **No extra cost**: ~15 fields (already in API/yt-dlp responses)
-- **Low cost (+2 quota)**: ~5 fields (status information from API)
-- **Total potential**: 60+ fields
+- **No extra cost**: ~20 fields (already in yt-dlp responses)
+- **Total potential**: 60+ fields via yt-dlp
 
 ### Future Possibilities
 - **GPU-based analysis**: 20+ additional fields

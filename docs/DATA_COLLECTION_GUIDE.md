@@ -92,8 +92,7 @@ START: Need to collect YouTube Shorts data
 ```
 
 **Result:**
-- **Use yt-dlp** in 95% of cases
-- **Use API** only for backward compatibility or specific one-off queries
+- **Use yt-dlp** for all data collection needs
 
 ### "What Additional Data Should I Collect?"
 
@@ -241,28 +240,18 @@ START: Want to collect specific field
 
 **Recommendation:** Current + easy additions give good quality metrics. GPU analysis optional.
 
-### Scenario 4: "I need to respect quota limits"
+### Scenario 4: "I need unlimited data collection"
 
-**Problem:** YouTube API has 10,000 units/day limit
+**Solution: yt-dlp provides unlimited collection**
 
-**Solutions:**
+**Benefits:**
+- ✅ No quota limits or restrictions
+- ✅ Comprehensive metadata (40+ fields)
+- ✅ Subtitles and quality metrics
+- ✅ All collection methods (channel, trending, keyword)
+- ✅ Suitable for large-scale data mining
 
-1. **Switch to yt-dlp** ⭐ Best Solution
-   - No quota limits
-   - More data
-   - Recommended for all new implementations
-
-2. **Optimize API usage**
-   - Current: 3 units/video = 3,333 videos/day
-   - With status: 5 units/video = 2,000 videos/day
-   - With status+topics: 7 units/video = 1,428 videos/day
-
-3. **Hybrid approach**
-   - Use yt-dlp for bulk collection
-   - Use API for specific queries
-   - Best of both worlds
-
-**Recommendation:** Use yt-dlp for all collection. Keep API for backward compatibility only.
+**Recommendation:** yt-dlp is designed for unlimited, comprehensive data collection.
 
 ## Implementation Priority Matrix
 
@@ -337,29 +326,25 @@ SQLite can easily handle this! ✅
 
 ## FAQ
 
-### Q: Should I use YouTube API or yt-dlp?
+### Q: What data collection method should I use?
 
-**A:** Use yt-dlp for 95% of cases.
+**A:** Use yt-dlp for all data collection needs.
 
-**YouTube API provides:**
-- ✅ Title, description, tags
-- ✅ Views, likes, comments, favorites
-- ✅ Channel info, upload date
-- ❌ NO subtitles (text extraction)
-- ❌ NO quality metrics (resolution, FPS)
-- ❌ 10K quota/day limit
+**yt-dlp provides comprehensive data:**
+- ✅ Complete metadata: title, description, tags
+- ✅ Engagement: views, likes, comments, favorites
+- ✅ Channel info: name, ID, subscriber count, verification
+- ✅ Subtitles: full text extraction
+- ✅ Quality metrics: resolution, FPS, aspect ratio, codecs
+- ✅ Analytics: engagement rate, views per day/hour
+- ✅ Unlimited: no quota restrictions
+- ✅ Multiple methods: channel, trending, keyword scraping
 
-**yt-dlp provides:**
-- ✅ All YouTube API fields PLUS
-- ✅ Subtitles (full text extraction)
-- ✅ Quality metrics (resolution, FPS, aspect ratio, codecs)
-- ✅ Unlimited (no quota)
-- ✅ Better for bulk collection
-
-Use API only for:
-- Backward compatibility
-- Specific one-off queries
-- When yt-dlp is not available
+**Why yt-dlp:**
+- Comprehensive data (40+ fields)
+- No quota limits
+- Actively maintained
+- Best for bulk collection
 
 ### Q: What fields should I add first?
 
@@ -374,9 +359,12 @@ Use API only for:
 
 **A:** No. These require channel ownership and are not available through any public API.
 
-### Q: Can I get accurate dislike counts?
+### Q: What metrics are not available?
 
-**A:** No. YouTube hid dislikes in December 2021. You might get some values from old videos, but they're unreliable.
+**A:** Some metrics require channel ownership or have been removed by YouTube:
+- ❌ Accurate dislike counts (hidden by YouTube since Dec 2021)
+- ❌ Detailed analytics (watch time, retention - requires ownership)
+- ❌ Demographics and traffic sources (requires ownership)
 
 ### Q: How much will GPU analysis cost?
 

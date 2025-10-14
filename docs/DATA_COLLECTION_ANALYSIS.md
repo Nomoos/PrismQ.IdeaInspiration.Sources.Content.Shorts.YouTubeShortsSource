@@ -450,22 +450,15 @@ With the RTX 5090 GPU available, we could add:
 
 ## Implementation Impact
 
-### Quota Considerations (YouTube API)
+### Collection Capacity (yt-dlp)
 
-Current usage per video:
-- `search().list`: 100 units
-- `videos().list` with 3 parts: 3 units per video
+**yt-dlp collection method:**
+- **No quota limits**: Unlimited videos per day
+- **Comprehensive data**: 40+ fields per video
+- **Multiple methods**: Channel, trending, keyword scraping
+- **All features**: Subtitles, quality metrics, analytics
 
-Adding recommended fields:
-- `+status`: +2 units per video
-- `+topicDetails`: +2 units per video
-- Total per video: 7 units (was 3)
-
-Daily quota: 10,000 units
-- Current: ~3,333 videos per day
-- With additions: ~1,428 videos per day
-
-**Recommendation**: Use yt-dlp methods (no quota) for data mining, keep API method for specific queries.
+**Recommendation**: Use yt-dlp for all data collection needs.
 
 ### Storage Considerations
 
