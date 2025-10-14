@@ -218,23 +218,24 @@ This documentation suite answers the question: **"What data we collecting now? W
 ### With Easy Additions
 - **Total fields**: 60+
 - **Data per idea**: 3-8 KB
-- **API quota per video**: 5-7 units
-- **Daily capacity**: 1,400-2,000 videos
-- **Recommended**: Use yt-dlp (no quota) ⭐
+- **Daily capacity**: Unlimited ✅
+- **All via yt-dlp**: No quota restrictions
 
-## Collection Methods Comparison
+## Collection Method: yt-dlp
 
-| Aspect | YouTube API | yt-dlp |
-|--------|-------------|--------|
-| **Basic Fields** | ✅ Yes (title, description, tags, views, likes, comments) | ✅ Yes (all API fields + more) |
-| **Total Fields** | ~15-20 fields | 40+ enhanced fields |
-| **Quota** | 10K/day limit | Unlimited |
-| **Subtitles** | ❌ No | ✅ Yes (full text extraction) |
-| **Quality Metrics** | ❌ No (no resolution, FPS, aspect ratio) | ✅ Yes (resolution, FPS, aspect ratio, codecs) |
-| **Speed** | Fast | Slower |
-| **Reliability** | Very stable | Stable |
-| **Cost** | Free (quota limit) | Free |
-| **Recommended** | Legacy only | ✅ Yes |
+**yt-dlp** is the recommended and primary collection method:
+
+| Feature | Status |
+|---------|--------|
+| **Fields Collected** | 40+ comprehensive fields |
+| **Basic Metadata** | ✅ Title, description, tags, views, likes, comments |
+| **Subtitles** | ✅ Full text extraction |
+| **Quality Metrics** | ✅ Resolution, FPS, aspect ratio, codecs |
+| **Channel Info** | ✅ Subscriber count, verification status |
+| **Analytics** | ✅ Engagement rate, views per day/hour |
+| **Quota Limits** | ✅ None (unlimited) |
+| **Speed** | Moderate (comprehensive data extraction) |
+| **Reliability** | ✅ Stable and actively maintained |
 
 ## Implementation Roadmap
 

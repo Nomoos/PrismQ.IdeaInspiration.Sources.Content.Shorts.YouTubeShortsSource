@@ -13,12 +13,11 @@
 
 ### Collection Methods
 
-| Method | Pros | Cons | Recommended |
-|--------|------|------|-------------|
-| **YouTube API** | Reliable, structured | Quota limits, limited data | ❌ Legacy |
-| **yt-dlp (channel)** | Rich metadata, subtitles, no quota | Slower | ✅ Yes |
-| **yt-dlp (trending)** | Discover viral content | Limited to trending | ✅ Yes |
-| **yt-dlp (keyword)** | Flexible search | Limited to search results | ✅ Yes |
+| Method | Pros | Recommended |
+|--------|------|-------------|
+| **yt-dlp (channel)** | Rich metadata, subtitles, no quota, comprehensive data | ✅ Primary |
+| **yt-dlp (trending)** | Discover viral content, same rich metadata | ✅ Yes |
+| **yt-dlp (keyword)** | Flexible search, same rich metadata | ✅ Yes |
 
 ## What We Can Add Easily 🟢
 
@@ -74,43 +73,30 @@ Per idea:
 - **With additions**: 3-8 KB
 - **Storage for 100K ideas**: 300-800 MB (very manageable)
 
-## API Quota Impact
+## No Quota Restrictions
 
-Current per video: **3 units**
-With recommended additions: **7 units**
-
-Daily quota: **10,000 units**
-- Current capacity: ~3,333 videos/day
-- With additions: ~1,428 videos/day
-
-**💡 Solution**: Use yt-dlp for bulk collection (no quota limits)
+**yt-dlp collection:**
+- **No quota limits**: Unlimited videos per day
+- **No restrictions**: All fields available without API quotas
+- **Flexible**: Collect as much data as needed
 
 ## Quick Decision Guide
 
-### Should I use YouTube API or yt-dlp?
+### Collection Method: yt-dlp
 
-**What YouTube API provides:**
-- ✅ Basic fields: title, description, tags, views, likes, comments
-- ❌ NO subtitles (text extraction)
-- ❌ NO quality metrics (resolution, FPS, aspect ratio)
-- ❌ 10K quota/day limit
+**yt-dlp provides comprehensive data collection:**
+- ✅ Complete metadata: title, description, tags, views, likes, comments
+- ✅ Subtitles: full text extraction
+- ✅ Quality metrics: resolution, FPS, aspect ratio, codecs
+- ✅ Channel data: subscriber count, verification status
+- ✅ Analytics: engagement rate, views per day/hour
+- ✅ Unlimited: no quota restrictions
 
-**What yt-dlp provides:**
-- ✅ All YouTube API fields PLUS:
-- ✅ Subtitles (full text extraction)
-- ✅ Quality metrics (resolution, FPS, aspect ratio, codecs)
-- ✅ Unlimited (no quota)
-
-```
-Use YouTube API if:
-❌ You need to do it (maintained for compatibility only)
-
-Use yt-dlp if:
-✅ You want comprehensive metadata (subtitles, quality)
-✅ You want to avoid quota limits
-✅ You're doing bulk collection
-✅ You need channel or trending data
-```
+**Use yt-dlp for:**
+- ✅ All data collection needs
+- ✅ Bulk collection without limits
+- ✅ Channel, trending, and keyword scraping
+- ✅ Comprehensive metadata including subtitles
 
 ### What data should I add next?
 
