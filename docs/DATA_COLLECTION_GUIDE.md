@@ -40,9 +40,8 @@
 - API quota calculations
 
 **You'll learn:**
-- All available fields from YouTube API
 - All available fields from yt-dlp
-- Exact API costs and quota impact
+- Comprehensive metadata capabilities
 - Storage considerations
 - Implementation recommendations
 

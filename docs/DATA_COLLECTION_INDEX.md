@@ -34,14 +34,14 @@ This documentation suite answers the question: **"What data we collecting now? W
 #### ...understand the system architecture
 → View [Diagram](DATA_COLLECTION_DIAGRAM.md) § "Current Architecture"
 
-#### ...decide between API and yt-dlp
+#### ...understand yt-dlp collection
 → Check [Guide](DATA_COLLECTION_GUIDE.md) § "What Collection Method Should I Use?"
 
 #### ...plan an implementation
 → Read [Analysis](DATA_COLLECTION_ANALYSIS.md) § "Recommendations"
 
-#### ...calculate API quota impact
-→ See [Guide](DATA_COLLECTION_GUIDE.md) § "Budget Calculator"
+#### ...understand collection capacity
+→ See [Guide](DATA_COLLECTION_GUIDE.md) § "Collection Capacity"
 
 #### ...understand future possibilities
 → Explore [Analysis](DATA_COLLECTION_ANALYSIS.md) § "What's Possible with Advanced Techniques"
