@@ -79,42 +79,16 @@
 ```
 START: Need to collect YouTube Shorts data
   │
-  ├─> Do you have a YouTube API key?
-  │   │
-  │   ├─> NO ──────────────────────────────────────┐
-  │   │                                            │
-  │   └─> YES                                      │
-  │       │                                        │
-  │       ├─> Are you doing bulk collection?      │
-  │       │   │                                    │
-  │       │   ├─> YES ─────────────────────────┐  │
-  │       │   │                                 │  │
-  │       │   └─> NO                            │  │
-  │       │       │                             │  │
-  │       │       └─> Need subtitles?           │  │
-  │       │           │                         │  │
-  │       │           ├─> YES ────────────────┐ │  │
-  │       │           │                       │ │  │
-  │       │           └─> NO                  │ │  │
-  │       │               │                   │ │  │
-  │       │               └─> Need quality    │ │  │
-  │       │                   metrics?        │ │  │
-  │       │                   │               │ │  │
-  │       │                   ├─> YES ──────┐ │ │  │
-  │       │                   │             │ │ │  │
-  │       │                   └─> NO        │ │ │  │
-  │       │                       │         │ │ │  │
-  │       │                       ▼         │ │ │  │
-  │       │                  Use API        │ │ │  │
-  │       │                  (Legacy)       │ │ │  │
-  │       │                       │         │ │ │  │
-  │       └───────────────────────┴─────────┴─┴─┴──┘
-  │                                              │
-  └──────────────────────────────────────────────┘
-                                                 │
-                                                 ▼
-                                           Use yt-dlp ⭐
-                                         (Recommended)
+  └─> Use yt-dlp ⭐
+      │
+      ▼
+  Comprehensive data collection:
+  • Title, description, tags
+  • Views, likes, comments
+  • Subtitles (full text)
+  • Quality metrics (resolution, FPS)
+  • Channel info & analytics
+  • No quota limits
 ```
 
 **Result:**
