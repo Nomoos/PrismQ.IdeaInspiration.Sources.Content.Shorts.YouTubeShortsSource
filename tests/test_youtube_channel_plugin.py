@@ -2,7 +2,7 @@
 
 import pytest
 from unittest.mock import Mock, patch, MagicMock
-from src.sources.youtube_channel_plugin import YouTubeChannelPlugin
+from mod.sources.youtube_channel_plugin import YouTubeChannelPlugin
 from src.config import Config
 
 

@@ -3,7 +3,7 @@
 from typing import List, Dict, Any
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
-from src.sources import SourcePlugin
+from mod.sources import SourcePlugin
 
 
 class YouTubePlugin(SourcePlugin):

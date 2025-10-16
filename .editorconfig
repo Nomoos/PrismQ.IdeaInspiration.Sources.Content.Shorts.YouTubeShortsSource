@@ -1,0 +1,105 @@
+# EditorConfig is awesome: https://EditorConfig.org
+# Set UTF-8 as standard encoding across all editors and IDEs
+
+# Top-most EditorConfig file
+root = true
+
+# Default settings for all files
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 4
+
+# Python files
+[*.py]
+charset = utf-8
+end_of_line = lf
+indent_style = space
+indent_size = 4
+max_line_length = 100
+
+# Markdown files
+[*.md]
+charset = utf-8
+end_of_line = lf
+trim_trailing_whitespace = false  # Preserve trailing spaces in markdown (2 spaces = line break)
+
+# YAML files
+[*.{yml,yaml}]
+charset = utf-8
+end_of_line = lf
+indent_style = space
+indent_size = 2
+
+# JSON files
+[*.json]
+charset = utf-8
+end_of_line = lf
+indent_style = space
+indent_size = 2
+
+# TOML files (including pyproject.toml)
+[*.toml]
+charset = utf-8
+end_of_line = lf
+indent_style = space
+indent_size = 4
+
+# Configuration files
+[*.{cfg,ini}]
+charset = utf-8
+end_of_line = lf
+
+# Web files
+[*.{html,css,js,ts}]
+charset = utf-8
+end_of_line = lf
+indent_style = space
+indent_size = 2
+
+# Shell scripts
+[*.sh]
+charset = utf-8
+end_of_line = lf
+indent_style = space
+indent_size = 2
+
+# Windows batch files (require CRLF)
+[*.{bat,cmd}]
+charset = utf-8
+end_of_line = crlf
+indent_style = space
+indent_size = 2
+
+# PowerShell files (require CRLF on Windows)
+[*.ps1]
+charset = utf-8
+end_of_line = crlf
+indent_style = space
+indent_size = 4
+
+# Makefiles (require tabs)
+[Makefile]
+charset = utf-8
+end_of_line = lf
+indent_style = tab
+
+# Text files
+[*.txt]
+charset = utf-8
+end_of_line = lf
+
+# XML files
+[*.xml]
+charset = utf-8
+end_of_line = lf
+indent_style = space
+indent_size = 2
+
+# Documentation
+[{LICENSE,README,CHANGELOG,CONTRIBUTING}]
+charset = utf-8
+end_of_line = lf

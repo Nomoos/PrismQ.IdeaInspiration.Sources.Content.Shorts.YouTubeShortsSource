@@ -1,7 +1,7 @@
 """Test database security and input validation."""
 
 import pytest
-from src.database import Database
+from mod.database import Database
 
 
 def test_order_by_validation():

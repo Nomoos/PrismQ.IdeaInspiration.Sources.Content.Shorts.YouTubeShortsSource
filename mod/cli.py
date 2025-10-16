@@ -4,11 +4,11 @@ import click
 import sys
 from pathlib import Path
 from src.config import Config
-from src.database import Database
-from src.metrics import UniversalMetrics
-from src.sources.youtube_plugin import YouTubePlugin
-from src.sources.youtube_channel_plugin import YouTubeChannelPlugin
-from src.sources.youtube_trending_plugin import YouTubeTrendingPlugin
+from mod.database import Database
+from mod.metrics import UniversalMetrics
+from mod.sources.youtube_plugin import YouTubePlugin
+from mod.sources.youtube_channel_plugin import YouTubeChannelPlugin
+from mod.sources.youtube_trending_plugin import YouTubeTrendingPlugin
 
 
 @click.group()
