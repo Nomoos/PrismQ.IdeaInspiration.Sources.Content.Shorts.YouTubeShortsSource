@@ -90,10 +90,10 @@ pytest tests/test_database.py::test_function_name
 7. Move issue to `issues/done/`
 
 ### Extending YouTube Shorts Functionality
-1. Enhance the YouTube plugin in `src/sources/youtube_plugin.py`
+1. Enhance the YouTube plugin in `mod/sources/youtube_plugin.py`
 2. Update the `scrape()` method to add new capabilities
 3. Add any new configuration options to `src/config.py`
-4. Add factory method adjustments to `UniversalMetrics` if needed
+4. Add factory method adjustments to `UniversalMetrics` in `mod/metrics.py` if needed
 5. Add tests in `tests/`
 6. Update documentation in `docs/`
 
@@ -119,16 +119,16 @@ copy .env.example .env  # Windows
 ### Running the Application
 ```bash
 # Scrape YouTube Shorts
-python -m src.cli scrape
+python -m mod.cli scrape
 
 # List collected ideas
-python -m src.cli list
+python -m mod.cli list
 
 # View statistics
-python -m src.cli stats
+python -m mod.cli stats
 
 # Clear database
-python -m src.cli clear
+python -m mod.cli clear
 ```
 
 ### Common Debugging Tasks
@@ -142,7 +142,7 @@ python -c "from src.database import Database; db = Database(':memory:'); print('
 # Reset database
 rm ideas.db
 # or
-python -m src.cli clear
+python -m mod.cli clear
 ```
 
 ## Code Organization
@@ -164,10 +164,12 @@ PrismQ.Idea.Sources.Content.Shorts.YouTubeShortsSource/
 ```
 
 ### File Organization Guidelines
-- Keep source plugins in `src/sources/`
+- Keep infrastructure code in `src/` (config, logging, utilities)
+- Keep business logic and domain modules in `mod/` (CLI, database, sources, metrics)
 - Add tests in `tests/` with `test_` prefix
 - Update configuration in `src/config.py`
-- CLI commands in `src/cli.py`
+- CLI commands in `mod/cli.py`
+- Source plugins in `mod/sources/`
 
 ## Dependencies
 

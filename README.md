@@ -200,13 +200,13 @@ Uses yt-dlp to scrape comprehensive metadata from specific YouTube channels. No 
 
 ```bash
 # Scrape from a specific channel
-python -m src.cli scrape-channel --channel @channelname
+python -m mod.cli scrape-channel --channel @channelname
 
 # Scrape with story detection filtering
-python -m src.cli scrape-channel --channel @channelname --story-only
+python -m mod.cli scrape-channel --channel @channelname --story-only
 
 # Scrape a specific number of shorts
-python -m src.cli scrape-channel --channel @channelname --top 20
+python -m mod.cli scrape-channel --channel @channelname --top 20
 ```
 
 #### Trending Scraping (yt-dlp) ⭐ **Recommended**
@@ -214,10 +214,10 @@ Uses yt-dlp to scrape Shorts from YouTube trending page. No API key required.
 
 ```bash
 # Scrape from trending
-python -m src.cli scrape-trending
+python -m mod.cli scrape-trending
 
 # Scrape with story filtering
-python -m src.cli scrape-trending --story-only --top 15
+python -m mod.cli scrape-trending --story-only --top 15
 ```
 
 #### Keyword Scraping (yt-dlp) ⭐ **Recommended**
@@ -225,13 +225,13 @@ Uses yt-dlp to search and scrape Shorts by keywords. No API key required.
 
 ```bash
 # Scrape by keyword
-python -m src.cli scrape-keyword --keyword "startup ideas"
+python -m mod.cli scrape-keyword --keyword "startup ideas"
 
 # Scrape with more results
-python -m src.cli scrape-keyword --keyword "business tips" --top 20
+python -m mod.cli scrape-keyword --keyword "business tips" --top 20
 
 # Scrape story videos only
-python -m src.cli scrape-keyword --keyword "story time" --story-only
+python -m mod.cli scrape-keyword --keyword "story time" --story-only
 ```
 
 #### Search-Based Scraping (YouTube API) - Legacy
@@ -244,7 +244,7 @@ Uses YouTube Data API v3 to search for Shorts by keywords. **Not recommended for
 - Cannot access trending page
 
 ```bash
-python -m src.cli scrape
+python -m mod.cli scrape
 ```
 
 ---
@@ -269,22 +269,22 @@ Scrape YouTube Shorts from a specific channel using yt-dlp:
 
 ```bash
 # Basic usage with channel handle
-python -m src.cli scrape-channel --channel @channelname
+python -m mod.cli scrape-channel --channel @channelname
 
 # Using full channel URL
-python -m src.cli scrape-channel --channel https://www.youtube.com/@channelname
+python -m mod.cli scrape-channel --channel https://www.youtube.com/@channelname
 
 # Using channel ID
-python -m src.cli scrape-channel --channel UC1234567890
+python -m mod.cli scrape-channel --channel UC1234567890
 
 # Scrape specific number of shorts
-python -m src.cli scrape-channel --channel @channelname --top 20
+python -m mod.cli scrape-channel --channel @channelname --top 20
 
 # Filter for story videos only
-python -m src.cli scrape-channel --channel @channelname --story-only
+python -m mod.cli scrape-channel --channel @channelname --story-only
 
 # Combine options
-python -m src.cli scrape-channel --channel @channelname --top 15 --story-only
+python -m mod.cli scrape-channel --channel @channelname --top 15 --story-only
 ```
 
 **Channel scraping features:**
@@ -300,16 +300,16 @@ Scrape Shorts from YouTube trending page:
 
 ```bash
 # Basic usage
-python -m src.cli scrape-trending
+python -m mod.cli scrape-trending
 
 # Scrape more shorts
-python -m src.cli scrape-trending --top 20
+python -m mod.cli scrape-trending --top 20
 
 # Filter for story videos only
-python -m src.cli scrape-trending --story-only
+python -m mod.cli scrape-trending --story-only
 
 # Combine options
-python -m src.cli scrape-trending --top 15 --story-only
+python -m mod.cli scrape-trending --top 15 --story-only
 ```
 
 **Trending scraping features:**
@@ -323,16 +323,16 @@ Search and scrape Shorts by keywords:
 
 ```bash
 # Basic keyword search
-python -m src.cli scrape-keyword --keyword "startup ideas"
+python -m mod.cli scrape-keyword --keyword "startup ideas"
 
 # Search with more results
-python -m src.cli scrape-keyword --keyword "business tips" --top 20
+python -m mod.cli scrape-keyword --keyword "business tips" --top 20
 
 # Search for story content
-python -m src.cli scrape-keyword --keyword "story time" --story-only
+python -m mod.cli scrape-keyword --keyword "story time" --story-only
 
 # Combine options
-python -m src.cli scrape-keyword --keyword "tech news" --top 15 --story-only
+python -m mod.cli scrape-keyword --keyword "tech news" --top 15 --story-only
 ```
 
 **Keyword scraping features:**
@@ -349,10 +349,10 @@ python -m src.cli scrape-keyword --keyword "tech news" --top 15 --story-only
 
 ```bash
 # Basic API-based search (legacy)
-python -m src.cli scrape
+python -m mod.cli scrape
 
 # Use a custom .env file
-python -m src.cli scrape --env-file /path/to/.env
+python -m mod.cli scrape --env-file /path/to/.env
 ```
 
 **Limitations:**
@@ -374,31 +374,31 @@ python -m src.cli scrape --env-file /path/to/.env
 
 List the top ideas (default: 20):
 ```bash
-python -m src.cli list
+python -m mod.cli list
 ```
 
 Show more results:
 ```bash
-python -m src.cli list --limit 50
+python -m mod.cli list --limit 50
 ```
 
 Filter by source:
 ```bash
-python -m src.cli list --source youtube
+python -m mod.cli list --source youtube
 ```
 
 ### View Statistics
 
 View collection statistics:
 ```bash
-python -m src.cli stats
+python -m mod.cli stats
 ```
 
 ### Clear Database
 
 Clear all collected ideas:
 ```bash
-python -m src.cli clear
+python -m mod.cli clear
 ```
 
 ## Database Schema
@@ -454,22 +454,27 @@ pytest --cov=src --cov-report=html
 
 ```
 PrismQ.Idea.Sources.Content.Shorts.YouTubeShortsSource/
-├── src/         # Main application package
+├── src/                    # Core infrastructure package
+│   ├── __init__.py
+│   ├── config.py           # Configuration management
+│   ├── logging_config.py   # Centralized logging
+│   └── py.typed            # Type checking marker
+├── mod/                    # Business logic and domain modules
 │   ├── __init__.py
 │   ├── cli.py              # Command-line interface
-│   ├── config.py           # Configuration management
 │   ├── database.py         # Database operations
 │   ├── metrics.py          # Universal metrics system
-│   ├── scoring/            # Scoring engine
 │   └── sources/            # Source plugins
 │       ├── __init__.py     # Base plugin interface
-│       └── youtube_plugin.py
+│       ├── youtube_plugin.py
+│       ├── youtube_channel_plugin.py
+│       └── youtube_trending_plugin.py
 ├── tests/                  # Test suite
 │   ├── __init__.py
 │   ├── test_config.py
 │   ├── test_database.py
 │   ├── test_metrics.py
-│   └── test_scoring.py
+│   └── test_youtube_*.py
 ├── docs/                   # Documentation
 │   ├── README.md
 │   ├── CONTRIBUTING.md     # Contribution guidelines
@@ -488,9 +493,12 @@ PrismQ.Idea.Sources.Content.Shorts.YouTubeShortsSource/
 │   ├── README.md
 │   ├── KNOWN_ISSUES.md     # Common problems and solutions
 │   └── ROADMAP.md          # Project roadmap
+├── .editorconfig           # Editor configuration
 ├── .env.example            # Example configuration
+├── .gitattributes          # Git text file handling
 ├── .gitignore
 ├── LICENSE
+├── module.json             # Module metadata
 ├── pyproject.toml          # Project metadata
 ├── requirements.txt        # Dependencies
 └── README.md

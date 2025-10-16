@@ -10,7 +10,7 @@ import re
 from pathlib import Path
 from typing import List, Dict, Any, Optional
 from datetime import datetime
-from src.sources import SourcePlugin
+from mod.sources import SourcePlugin
 
 
 class YouTubeChannelPlugin(SourcePlugin):

@@ -1,7 +1,7 @@
 """Tests for YouTube plugin."""
 
 import pytest
-from src.sources.youtube_plugin import YouTubePlugin
+from mod.sources.youtube_plugin import YouTubePlugin
 
 
 class TestYouTubePluginShortDuration:
