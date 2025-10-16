@@ -33,17 +33,18 @@ dev = [
 ]
 
 [project.scripts]
-youtube-shorts-source = "src.cli:main"
+youtube-shorts-source = "mod.cli:main"
 
 [tool.setuptools]
-packages = ["src"]
+# Include both src/ (infrastructure) and mod/ (business logic)
+packages = ["src", "mod"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 python_files = "test_*.py"
 python_classes = "Test*"
 python_functions = "test_*"
-addopts = "-v --cov=src --cov-report=html --cov-report=term"
+addopts = "-v --cov=src --cov=mod --cov-report=html --cov-report=term"
 
 [tool.black]
 line-length = 100
