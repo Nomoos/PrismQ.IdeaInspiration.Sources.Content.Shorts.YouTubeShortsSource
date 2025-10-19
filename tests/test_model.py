@@ -384,3 +384,51 @@ class TestScoreDictionary:
         )
         
         assert record.get_score_dict() == updated_dict
+
+
+class TestProcessedField:
+    """Tests for the processed field."""
+    
+    def test_processed_field_defaults_to_false(self, temp_db_context):
+        """Test that processed field defaults to False on creation."""
+        record = temp_db_context.create(
+            source='youtube',
+            source_id='test_processed_1',
+            title='Test Processed Field'
+        )
+        
+        assert record is not None
+        assert record.processed is False
+    
+    def test_processed_field_in_to_dict(self, temp_db_context):
+        """Test that processed field is included in to_dict output."""
+        record = temp_db_context.create(
+            source='youtube',
+            source_id='test_processed_2',
+            title='Test Processed Dict'
+        )
+        
+        record_dict = record.to_dict()
+        assert 'processed' in record_dict
+        assert record_dict['processed'] is False
+    
+    def test_update_processed_field(self, temp_db_context):
+        """Test updating the processed field."""
+        # Create record
+        record = temp_db_context.create(
+            source='youtube',
+            source_id='test_processed_3',
+            title='Test Update Processed'
+        )
+        
+        assert record.processed is False
+        
+        # Update processed field
+        updated_record = temp_db_context.update(
+            source='youtube',
+            source_id='test_processed_3',
+            processed=True
+        )
+        
+        assert updated_record is not None
+        assert updated_record.processed is True

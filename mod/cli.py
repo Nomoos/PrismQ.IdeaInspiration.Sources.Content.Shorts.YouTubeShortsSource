@@ -3,7 +3,7 @@
 import click
 import sys
 from pathlib import Path
-from src.config import Config
+from mod.config import Config
 from mod.database import Database
 from mod.metrics import UniversalMetrics
 from mod.sources.youtube_plugin import YouTubePlugin

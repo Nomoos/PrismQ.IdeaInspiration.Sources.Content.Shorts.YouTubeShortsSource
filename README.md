@@ -519,12 +519,14 @@ pytest --cov=src --cov-report=html
 PrismQ.Idea.Sources.Content.Shorts.YouTubeShortsSource/
 ├── mod/                    # Main module package
 │   ├── cli.py              # Command-line interface
+│   ├── config.py           # Configuration management
+│   ├── logging_config.py   # Logging configuration
 │   ├── database.py         # Legacy database wrapper (backward compatible)
 │   ├── metrics.py          # Universal metrics system
 │   ├── Model/              # SQLAlchemy ORM model layer
 │   │   ├── __init__.py
 │   │   ├── base.py         # SQLAlchemy base configuration
-│   │   ├── youtube_shorts_source.py  # ORM model
+│   │   ├── youtube_shorts_source.py  # ORM model (with processed field)
 │   │   ├── db_context.py   # Database context with CRUD operations
 │   │   └── README.md       # Model documentation
 │   └── sources/            # Source plugins
@@ -532,10 +534,6 @@ PrismQ.Idea.Sources.Content.Shorts.YouTubeShortsSource/
 │       ├── youtube_plugin.py
 │       ├── youtube_channel_plugin.py
 │       └── youtube_trending_plugin.py
-├── src/                    # Configuration and utilities
-│   ├── __init__.py
-│   ├── config.py           # Configuration management
-│   └── logging_config.py   # Logging configuration
 ├── tests/                  # Unit and integration tests
 │   ├── test_model.py       # Model layer tests
 │   ├── test_database.py    # Legacy database tests

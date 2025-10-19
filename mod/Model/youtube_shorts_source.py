@@ -3,7 +3,7 @@
 from datetime import datetime, timezone
 from typing import Optional, Dict, Any
 import json
-from sqlalchemy import Column, Integer, String, Float, DateTime, Text, Index
+from sqlalchemy import Column, Integer, String, Float, DateTime, Text, Boolean, Index
 from sqlalchemy.orm import validates
 from mod.Model.base import Base
 
@@ -38,6 +38,9 @@ class YouTubeShortsSource(Base):
     score = Column(Float, nullable=True)
     score_dictionary = Column(Text, nullable=True)  # JSON string
     
+    # Processing status - False on creation, set to True by builder after transformation
+    processed = Column(Boolean, default=False, nullable=False, index=True)
+    
     # Timestamps
     created_at = Column(DateTime, default=utc_now, nullable=False)
     updated_at = Column(DateTime, default=utc_now, onupdate=utc_now, nullable=False)
@@ -47,6 +50,7 @@ class YouTubeShortsSource(Base):
         Index('ix_source_source_id', 'source', 'source_id', unique=True),
         Index('ix_score', 'score'),
         Index('ix_created_at', 'created_at'),
+        Index('ix_processed', 'processed'),
     )
     
     @validates('score_dictionary')
@@ -74,6 +78,7 @@ class YouTubeShortsSource(Base):
             'tags': self.tags,
             'score': self.score,
             'score_dictionary': self.score_dictionary,
+            'processed': self.processed,
             'created_at': self.created_at.isoformat() if self.created_at else None,
             'updated_at': self.updated_at.isoformat() if self.updated_at else None,
         }
