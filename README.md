@@ -71,6 +71,8 @@ For comprehensive documentation, see:
 - **[docs/](docs/)** - User and developer documentation
   - [Contributing Guidelines](docs/CONTRIBUTING.md)
   - [Metrics Documentation](docs/METRICS.md)
+  - **[🗄️ YouTube Data Model (YTB_DATA_MODEL.md)](docs/YTB_DATA_MODEL.md)** - Complete SQLite database schema and storage documentation
+  - [Model Implementation](docs/MODEL_IMPLEMENTATION.md) - SQLAlchemy ORM implementation details
   - **[📊 Data Collection Suite](docs/DATA_COLLECTION_INDEX.md)** - Complete guide to what data we collect
     - [Guide](docs/DATA_COLLECTION_GUIDE.md) - Decision trees & FAQs
     - [Summary](docs/DATA_COLLECTION_SUMMARY.md) - Quick reference
@@ -403,7 +405,15 @@ python -m src.cli clear
 
 ## Database Schema
 
-The application uses a **SQLAlchemy ORM-based model layer** for robust, type-safe database operations. Data is stored in SQLite with two table structures:
+The application uses a **SQLAlchemy ORM-based model layer** for robust, type-safe database operations. Data is stored in SQLite with two table structures.
+
+> **📚 For complete documentation**, see **[YouTube Data Model (YTB_DATA_MODEL.md)](docs/YTB_DATA_MODEL.md)** which includes:
+> - Complete schema documentation
+> - Field descriptions and constraints
+> - Data flow and transformation pipeline
+> - Query patterns and examples
+> - Performance optimization tips
+> - Migration and backup procedures
 
 ### Modern ORM Model (Recommended)
 Uses SQLAlchemy ORM with the `DBContext` class for CRUD operations:
@@ -458,7 +468,7 @@ db.close()
 
 **Table: `ideas`** (maintained for compatibility)
 
-See [mod/Model/README.md](mod/Model/README.md) for comprehensive documentation on the model layer, CRUD operations, and migration guides.
+See [mod/Model/README.md](mod/Model/README.md) for model layer documentation and [docs/YTB_DATA_MODEL.md](docs/YTB_DATA_MODEL.md) for complete database documentation.
 
 ### Database Initialization
 
