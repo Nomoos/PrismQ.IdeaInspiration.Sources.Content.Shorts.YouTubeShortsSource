@@ -1,13 +1,22 @@
-"""Database models and schema for PrismQ.Idea.Sources.Content.Shorts.YouTubeShortsSource."""
+"""Database models and schema for PrismQ.Idea.Sources.Content.Shorts.YouTubeShortsSource.
+
+This module provides backward compatibility with the original SQLite-based Database class
+while internally using the new SQLAlchemy ORM model layer.
+"""
 
 import sqlite3
 from typing import Optional, Dict, Any
 import json
 from pathlib import Path
+from mod.Model import DBContext
 
 
 class Database:
-    """Manages SQLite database operations for idea collection."""
+    """Manages SQLite database operations for idea collection.
+    
+    This class now wraps the new DBContext for backward compatibility
+    with existing code while using SQLAlchemy ORM internally.
+    """
 
     def __init__(self, db_path: str):
         """Initialize database connection.
@@ -17,6 +26,11 @@ class Database:
         """
         self.db_path = db_path
         self.connection = None
+        
+        # Use new DBContext internally
+        self.db_context = DBContext(db_path)
+        
+        # For backward compatibility, also maintain a raw SQLite connection
         self._init_db()
 
     def _init_db(self):
@@ -24,11 +38,12 @@ class Database:
         # Ensure directory exists
         Path(self.db_path).parent.mkdir(parents=True, exist_ok=True)
         
+        # Create raw SQLite connection for backward compatibility
         self.connection = sqlite3.connect(self.db_path)
         self.connection.row_factory = sqlite3.Row
-        cursor = self.connection.cursor()
         
-        # Create ideas table with all required fields
+        # Also create the old 'ideas' table for backward compatibility with tests
+        cursor = self.connection.cursor()
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS ideas (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -44,18 +59,6 @@ class Database:
                 UNIQUE(source, source_id)
             )
         """)
-        
-        # Create index for faster lookups
-        cursor.execute("""
-            CREATE INDEX IF NOT EXISTS idx_source_source_id 
-            ON ideas(source, source_id)
-        """)
-        
-        cursor.execute("""
-            CREATE INDEX IF NOT EXISTS idx_score 
-            ON ideas(score DESC)
-        """)
-        
         self.connection.commit()
 
     def insert_idea(self, source: str, source_id: str, title: str, 
@@ -76,27 +79,19 @@ class Database:
         Returns:
             True if inserted/updated, False otherwise
         """
-        cursor = self.connection.cursor()
-        
-        # Convert score_dictionary to JSON string
-        score_dict_str = json.dumps(score_dictionary) if score_dictionary else None
-        
         try:
-            cursor.execute("""
-                INSERT INTO ideas (source, source_id, title, description, tags, score, score_dictionary)
-                VALUES (?, ?, ?, ?, ?, ?, ?)
-                ON CONFLICT(source, source_id) DO UPDATE SET
-                    title = excluded.title,
-                    description = excluded.description,
-                    tags = excluded.tags,
-                    score = excluded.score,
-                    score_dictionary = excluded.score_dictionary,
-                    updated_at = CURRENT_TIMESTAMP
-            """, (source, source_id, title, description, tags, score, score_dict_str))
-            
-            self.connection.commit()
-            return True
-        except sqlite3.Error as e:
+            # Use new model's upsert method
+            result = self.db_context.upsert(
+                source=source,
+                source_id=source_id,
+                title=title,
+                description=description,
+                tags=tags,
+                score=score,
+                score_dictionary=score_dictionary
+            )
+            return result is not None
+        except Exception as e:
             print(f"Database error: {e}")
             return False
 
@@ -110,14 +105,9 @@ class Database:
         Returns:
             Dictionary with idea data or None if not found
         """
-        cursor = self.connection.cursor()
-        cursor.execute("""
-            SELECT * FROM ideas WHERE source = ? AND source_id = ?
-        """, (source, source_id))
-        
-        row = cursor.fetchone()
-        if row:
-            return dict(row)
+        record = self.db_context.read(source, source_id)
+        if record:
+            return record.to_dict()
         return None
 
     def get_all_ideas(self, limit: Optional[int] = None, 
@@ -131,52 +121,60 @@ class Database:
         Returns:
             List of idea dictionaries
         """
-        # Validate order_by to prevent SQL injection
-        # Only allow safe column names and ASC/DESC
-        allowed_columns = {'id', 'source', 'source_id', 'title', 'score', 'created_at', 'updated_at'}
-        allowed_directions = {'ASC', 'DESC', ''}
-        
-        # Check for SQL injection attempts (semicolons, comments, etc.)
-        if ';' in order_by or '--' in order_by or '/*' in order_by or 'DROP' in order_by.upper():
-            raise ValueError(f"Invalid order_by clause: potentially malicious input detected")
-        
-        # Parse order_by clause
-        order_parts = order_by.strip().split()
-        if len(order_parts) == 0:
-            order_by = 'score DESC'
-        elif len(order_parts) == 1:
-            column = order_parts[0].lower()
-            if column not in allowed_columns:
-                raise ValueError(f"Invalid order_by column: {column}")
-            order_by = f"{column} DESC"
-        elif len(order_parts) == 2:
-            column = order_parts[0].lower()
-            direction = order_parts[1].upper()
-            if column not in allowed_columns:
-                raise ValueError(f"Invalid order_by column: {column}")
-            if direction not in allowed_directions:
-                raise ValueError(f"Invalid order direction: {direction}")
-            order_by = f"{column} {direction}"
-        else:
-            # For complex cases, just use default for security
-            raise ValueError(f"Invalid order_by clause: too complex")
-        
-        cursor = self.connection.cursor()
-        query = f"SELECT * FROM ideas ORDER BY {order_by}"
-        
-        if limit:
-            # Validate limit is an integer
+        # Validate limit first
+        if limit is not None:
             if not isinstance(limit, int) or limit < 0:
                 raise ValueError(f"Invalid limit value: {limit}")
-            query += f" LIMIT {limit}"
         
-        cursor.execute(query)
-        return [dict(row) for row in cursor.fetchall()]
+        # Parse order_by to determine column and direction
+        parts = order_by.strip().split()
+        column = 'score'
+        ascending = False
+        
+        # Validate column and direction
+        allowed_columns = {'id', 'source', 'source_id', 'title', 'score', 'created_at', 'updated_at'}
+        
+        if len(parts) >= 1:
+            column = parts[0].lower()
+            if column not in allowed_columns:
+                raise ValueError(f"Invalid order_by column: {column}")
+        if len(parts) >= 2:
+            direction = parts[1].upper()
+            if direction not in {'ASC', 'DESC'}:
+                raise ValueError(f"Invalid order direction: {direction}")
+            ascending = direction == 'ASC'
+        
+        # Map old column names to model attributes
+        column_map = {
+            'id': 'id',
+            'source': 'source',
+            'source_id': 'source_id',
+            'title': 'title',
+            'score': 'score',
+            'created_at': 'created_at',
+            'updated_at': 'updated_at'
+        }
+        
+        # Use mapped column name or default to score
+        order_column = column_map.get(column, 'score')
+        
+        try:
+            records = self.db_context.list_all(
+                limit=limit,
+                order_by=order_column,
+                ascending=ascending
+            )
+            return [record.to_dict() for record in records]
+        except Exception as e:
+            print(f"Database error: {e}")
+            return []
 
     def close(self):
         """Close database connection."""
         if self.connection:
             self.connection.close()
+        if hasattr(self, 'db_context'):
+            self.db_context.close()
 
     def __enter__(self):
         """Context manager entry."""
@@ -185,3 +183,4 @@ class Database:
     def __exit__(self, exc_type, exc_val, exc_tb):
         """Context manager exit."""
         self.close()
+
