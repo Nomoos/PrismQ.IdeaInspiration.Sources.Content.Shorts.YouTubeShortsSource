@@ -23,7 +23,7 @@ The main table for storing YouTube Shorts data using SQLAlchemy ORM:
 
 ```sql
 CREATE TABLE youtube_shorts_source (
-    id INTEGER NOT NULL,
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
     source VARCHAR(100) NOT NULL,
     source_id VARCHAR(255) NOT NULL,
     title TEXT NOT NULL,
@@ -32,8 +32,7 @@ CREATE TABLE youtube_shorts_source (
     score FLOAT,
     score_dictionary TEXT,
     created_at DATETIME NOT NULL,
-    updated_at DATETIME NOT NULL,
-    CONSTRAINT pk_youtube_shorts_source PRIMARY KEY (id)
+    updated_at DATETIME NOT NULL
 );
 
 -- Indexes for performance
