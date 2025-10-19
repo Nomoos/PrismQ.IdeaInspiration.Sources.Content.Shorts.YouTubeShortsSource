@@ -11,6 +11,8 @@ This folder contains comprehensive documentation for PrismQ.Idea.Sources.Content
 ### Developer Documentation
 - **[Contributing Guidelines](CONTRIBUTING.md)**: How to contribute to the project
 - **[Metrics Documentation](METRICS.md)**: Universal metrics system
+- **[YouTube Data Model (YTB_DATA_MODEL.md)](YTB_DATA_MODEL.md)**: Complete documentation for SQLite database schema and data storage
+- **[Model Implementation](MODEL_IMPLEMENTATION.md)**: SQLAlchemy ORM implementation details
 
 ### Additional Resources
 - **[Known Issues](../issues/KNOWN_ISSUES.md)**: Common problems and solutions
