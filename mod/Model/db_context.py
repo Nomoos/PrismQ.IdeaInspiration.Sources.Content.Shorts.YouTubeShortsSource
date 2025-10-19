@@ -136,7 +136,8 @@ class DBContext:
                description: Optional[str] = None,
                tags: Optional[str] = None,
                score: Optional[float] = None,
-               score_dictionary: Optional[Dict[str, Any]] = None) -> Optional[YouTubeShortsSource]:
+               score_dictionary: Optional[Dict[str, Any]] = None,
+               processed: Optional[bool] = None) -> Optional[YouTubeShortsSource]:
         """Update an existing YouTube Shorts record.
         
         Args:
@@ -147,6 +148,7 @@ class DBContext:
             tags: New tags (optional)
             score: New score (optional)
             score_dictionary: New score dictionary (optional)
+            processed: New processed status (optional)
             
         Returns:
             Updated YouTubeShortsSource object or None if not found
@@ -168,6 +170,8 @@ class DBContext:
                     record.score = score
                 if score_dictionary is not None:
                     record.set_score_dict(score_dictionary)
+                if processed is not None:
+                    record.processed = processed
                 
                 session.commit()
                 session.refresh(record)
