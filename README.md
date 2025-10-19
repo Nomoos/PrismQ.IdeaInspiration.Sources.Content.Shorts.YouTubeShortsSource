@@ -403,23 +403,76 @@ python -m src.cli clear
 
 ## Database Schema
 
-The SQLite database uses the following schema:
+The application uses a **SQLAlchemy ORM-based model layer** for robust, type-safe database operations. Data is stored in SQLite with two table structures:
 
+### Modern ORM Model (Recommended)
+Uses SQLAlchemy ORM with the `DBContext` class for CRUD operations:
+
+```python
+from mod.Model import DBContext
+
+# Create and use database context
+with DBContext('ideas.db') as db:
+    # Upsert (insert or update)
+    record = db.upsert(
+        source='youtube',
+        source_id='abc123',
+        title='Video Title',
+        score=85.5,
+        score_dictionary={'views': 1000, 'likes': 50}
+    )
+    
+    # Read records
+    record = db.read('youtube', 'abc123')
+    records = db.list_all(limit=10, order_by='score')
+```
+
+**Table: `youtube_shorts_source`**
 ```sql
-CREATE TABLE ideas (
+CREATE TABLE youtube_shorts_source (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    source TEXT NOT NULL,
-    source_id TEXT NOT NULL,
+    source VARCHAR(100) NOT NULL,
+    source_id VARCHAR(255) NOT NULL,
     title TEXT NOT NULL,
     description TEXT,
     tags TEXT,
-    score REAL,
-    score_dictionary TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    score FLOAT,
+    score_dictionary TEXT,  -- JSON string
+    created_at DATETIME NOT NULL,
+    updated_at DATETIME NOT NULL,
     UNIQUE(source, source_id)
 );
 ```
+
+### Legacy Database Class (Backward Compatible)
+The original `Database` class now wraps the ORM model for backward compatibility:
+
+```python
+from mod.database import Database
+
+db = Database('ideas.db')
+db.insert_idea(source='youtube', source_id='abc123', title='Video')
+ideas = db.get_all_ideas(limit=10)
+db.close()
+```
+
+**Table: `ideas`** (maintained for compatibility)
+
+See [mod/Model/README.md](mod/Model/README.md) for comprehensive documentation on the model layer, CRUD operations, and migration guides.
+
+### Database Initialization
+
+Initialize the database schema using the init script:
+
+```bash
+# Initialize with default path
+python scripts/init_db.py
+
+# Initialize with custom path
+python scripts/init_db.py --db-path /path/to/database.db
+```
+
+The database is also initialized automatically when you first run any scraping command.
 
 ## Extending for Other Platforms
 
@@ -454,45 +507,42 @@ pytest --cov=src --cov-report=html
 
 ```
 PrismQ.Idea.Sources.Content.Shorts.YouTubeShortsSource/
-├── src/         # Main application package
-│   ├── __init__.py
+├── mod/                    # Main module package
 │   ├── cli.py              # Command-line interface
-│   ├── config.py           # Configuration management
-│   ├── database.py         # Database operations
+│   ├── database.py         # Legacy database wrapper (backward compatible)
 │   ├── metrics.py          # Universal metrics system
-│   ├── scoring/            # Scoring engine
+│   ├── Model/              # SQLAlchemy ORM model layer
+│   │   ├── __init__.py
+│   │   ├── base.py         # SQLAlchemy base configuration
+│   │   ├── youtube_shorts_source.py  # ORM model
+│   │   ├── db_context.py   # Database context with CRUD operations
+│   │   └── README.md       # Model documentation
 │   └── sources/            # Source plugins
 │       ├── __init__.py     # Base plugin interface
-│       └── youtube_plugin.py
-├── tests/                  # Test suite
+│       ├── youtube_plugin.py
+│       ├── youtube_channel_plugin.py
+│       └── youtube_trending_plugin.py
+├── src/                    # Configuration and utilities
 │   ├── __init__.py
+│   ├── config.py           # Configuration management
+│   └── logging_config.py   # Logging configuration
+├── tests/                  # Unit and integration tests
+│   ├── test_model.py       # Model layer tests
+│   ├── test_database.py    # Legacy database tests
 │   ├── test_config.py
-│   ├── test_database.py
-│   ├── test_metrics.py
-│   └── test_scoring.py
+│   └── test_metrics.py
+├── scripts/                # Setup and utility scripts
+│   ├── init_db.py          # Database initialization script
+│   ├── setup.bat           # Windows setup
+│   ├── setup.sh            # Linux/Mac setup
+│   └── quickstart.bat/sh   # Interactive quickstart
 ├── docs/                   # Documentation
-│   ├── README.md
 │   ├── CONTRIBUTING.md     # Contribution guidelines
 │   ├── METRICS.md          # Metrics documentation
 │   └── WINDOWS_QUICKSTART.md
-├── scripts/                # Setup and utility scripts
-│   ├── README.md
-│   ├── setup.bat           # Windows setup script
-│   ├── setup.sh            # Linux/Mac setup script
-│   ├── quickstart.bat      # Windows quickstart script
-│   └── quickstart.sh       # Linux/Mac quickstart script
 ├── issues/                 # File-based issue tracking
-│   ├── new/                # Newly reported issues
-│   ├── wip/                # Work in progress
-│   ├── done/               # Completed issues
-│   ├── README.md
-│   ├── KNOWN_ISSUES.md     # Common problems and solutions
-│   └── ROADMAP.md          # Project roadmap
 ├── .env.example            # Example configuration
-├── .gitignore
-├── LICENSE
-├── pyproject.toml          # Project metadata
-├── requirements.txt        # Dependencies
+├── requirements.txt        # Python dependencies
 └── README.md
 ```
 
