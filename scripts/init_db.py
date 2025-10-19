@@ -7,10 +7,10 @@ Similar to PrismQ.IdeaInspiration.Model initialization approach.
 import sys
 from pathlib import Path
 
-# Add parent directory to path to allow importing mod
+# Add parent directory to path to allow importing Model
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from mod.Model import DBContext
+from Model import DBContext
 
 
 def init_db(db_path: str = "ideas.db", verbose: bool = True):
@@ -35,7 +35,7 @@ def init_db(db_path: str = "ideas.db", verbose: bool = True):
             if verbose:
                 print("Database schema created successfully!")
                 print(f"Tables created:")
-                print("  - youtube_shorts_source")
+                print("  - youtube_video")
                 
                 # Show statistics
                 count = db_context.count()
