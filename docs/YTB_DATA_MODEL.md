@@ -31,6 +31,7 @@ CREATE TABLE youtube_shorts_source (
     tags TEXT,
     score FLOAT,
     score_dictionary TEXT,
+    processed BOOLEAN DEFAULT 0 NOT NULL,
     created_at DATETIME NOT NULL,
     updated_at DATETIME NOT NULL
 );
@@ -41,6 +42,7 @@ CREATE INDEX ix_score ON youtube_shorts_source (score);
 CREATE INDEX ix_youtube_shorts_source_source ON youtube_shorts_source (source);
 CREATE INDEX ix_created_at ON youtube_shorts_source (created_at);
 CREATE INDEX ix_youtube_shorts_source_source_id ON youtube_shorts_source (source_id);
+CREATE INDEX ix_processed ON youtube_shorts_source (processed);
 ```
 
 ### Legacy Table: `ideas`
@@ -124,14 +126,16 @@ class DBContext:
 | `tags` | TEXT | Yes | Comma-separated tags | `youtube_shorts,business,ideas` |
 | `score` | FLOAT | Yes | Calculated idea score | `85.5`, `92.3` |
 | `score_dictionary` | TEXT | Yes | JSON string of metrics | See [Score Dictionary Format](#score-dictionary-format) |
+| `processed` | BOOLEAN | No | Processing status flag (default: False) | `0` (False), `1` (True) |
 | `created_at` | DATETIME | No | Record creation timestamp (UTC) | `2025-01-15T10:30:00+00:00` |
 | `updated_at` | DATETIME | No | Last update timestamp (UTC) | `2025-01-15T12:45:00+00:00` |
 
 ### Field Constraints
 
 - **Unique Constraint**: `(source, source_id)` - Prevents duplicate entries for the same video
-- **Indexes**: Optimized for queries on `source`, `source_id`, `score`, and `created_at`
+- **Indexes**: Optimized for queries on `source`, `source_id`, `score`, `processed`, and `created_at`
 - **Validation**: `score_dictionary` must be valid JSON when set
+- **Processing Status**: `processed` field defaults to `False` on creation and is set to `True` by the builder after transformation
 
 ## Data Flow
 
