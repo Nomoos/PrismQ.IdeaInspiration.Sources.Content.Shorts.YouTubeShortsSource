@@ -38,6 +38,8 @@ scripts\setup.bat
 #### `init_db.py`
 Python script to initialize the database schema.
 
+**Note**: This script requires the mod directory structure to be properly set up. If you encounter import errors, run the full setup scripts (`setup.sh` or `setup.bat`) first.
+
 **Usage**:
 ```bash
 # Default location (ideas.db)
@@ -129,7 +131,7 @@ scripts\quickstart.bat
 chmod +x scripts/setup.sh
 ./scripts/setup.sh
 
-# 2. Initialize database (optional - can also use setup_db.sh at root)
+# 2. Initialize database (optional - can also run ./setup_db.sh from project root)
 python scripts/init_db.py
 
 # 3. Configure .env file with your YouTube API key
@@ -145,7 +147,7 @@ chmod +x scripts/quickstart.sh
 REM 1. Run setup
 scripts\setup.bat
 
-REM 2. Initialize database (optional - can also use setup_db.bat at root)
+REM 2. Initialize database (optional - can also run setup_db.bat from project root)
 python scripts\init_db.py
 
 REM 3. Configure .env file with your YouTube API key
