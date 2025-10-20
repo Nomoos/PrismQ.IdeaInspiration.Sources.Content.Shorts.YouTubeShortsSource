@@ -5,6 +5,7 @@ This folder contains comprehensive documentation for PrismQ.Idea.Sources.Content
 ## Available Documentation
 
 ### User Guides
+- **[Configuration Guide](CONFIGURATION.md)**: Comprehensive guide to configuration management and working directories
 - **[Windows Quickstart Guide](WINDOWS_QUICKSTART.md)**: Step-by-step setup for Windows users
 - **[Main README](../README.md)**: General documentation and usage guide
 
@@ -22,7 +23,7 @@ This folder contains comprehensive documentation for PrismQ.Idea.Sources.Content
 
 ### For Users
 - [Installation Instructions](../README.md#installation)
-- [Configuration Guide](../README.md#configuration)
+- [Configuration Guide](CONFIGURATION.md): Working directories, .env management, and settings
 - [CLI Usage](../README.md#usage)
 - [Troubleshooting](WINDOWS_QUICKSTART.md#troubleshooting)
 

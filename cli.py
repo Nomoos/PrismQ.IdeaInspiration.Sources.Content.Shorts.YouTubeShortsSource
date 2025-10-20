@@ -19,9 +19,11 @@ def main():
 
 
 @main.command()
-@click.option('--env-file', '-e', type=click.Path(exists=True), 
+@click.option('--env-file', '-e', type=click.Path(), 
               help='Path to .env file')
-def scrape(env_file):
+@click.option('--no-interactive', is_flag=True, 
+              help='Disable interactive prompts for missing configuration')
+def scrape(env_file, no_interactive):
     """Scrape ideas from YouTube Shorts (YouTube API - Legacy).
     
     ⚠️  NOT RECOMMENDED: Use scrape-channel, scrape-trending, or scrape-keyword instead.
@@ -39,7 +41,7 @@ def scrape(env_file):
         click.echo("   Benefits: No API limits, richer metadata, subtitles", err=True)
         click.echo("", err=True)
         # Load configuration
-        config = Config(env_file)
+        config = Config(env_file, interactive=not no_interactive)
         
         # Initialize database
         db = Database(config.database_path)
@@ -95,11 +97,13 @@ def scrape(env_file):
 
 
 @main.command('scrape-channel')
-@click.option('--env-file', '-e', type=click.Path(exists=True), 
+@click.option('--env-file', '-e', type=click.Path(), 
               help='Path to .env file')
 @click.option('--channel', '-c', help='YouTube channel URL, handle (@username), or ID')
 @click.option('--top', '-t', type=int, help='Number of shorts to scrape (default: config or 10)')
-def scrape_channel(env_file, channel, top):
+@click.option('--no-interactive', is_flag=True, 
+              help='Disable interactive prompts for missing configuration')
+def scrape_channel(env_file, channel, top, no_interactive):
     """Scrape ideas from a specific YouTube channel's Shorts using yt-dlp.
     
     This command uses yt-dlp to scrape comprehensive metadata from a YouTube
@@ -113,7 +117,7 @@ def scrape_channel(env_file, channel, top):
     """
     try:
         # Load configuration
-        config = Config(env_file)
+        config = Config(env_file, interactive=not no_interactive)
         
         # Initialize database
         db = Database(config.database_path)
@@ -188,10 +192,12 @@ def scrape_channel(env_file, channel, top):
 
 
 @main.command('scrape-trending')
-@click.option('--env-file', '-e', type=click.Path(exists=True), 
+@click.option('--env-file', '-e', type=click.Path(), 
               help='Path to .env file')
 @click.option('--top', '-t', type=int, help='Number of shorts to scrape (default: config or 10)')
-def scrape_trending(env_file, top):
+@click.option('--no-interactive', is_flag=True, 
+              help='Disable interactive prompts for missing configuration')
+def scrape_trending(env_file, top, no_interactive):
     """Scrape ideas from YouTube trending Shorts using yt-dlp.
     
     This command scrapes Shorts from the YouTube trending page without requiring
@@ -203,7 +209,7 @@ def scrape_trending(env_file, top):
     """
     try:
         # Load configuration
-        config = Config(env_file)
+        config = Config(env_file, interactive=not no_interactive)
         
         # Initialize database
         db = Database(config.database_path)
@@ -269,11 +275,13 @@ def scrape_trending(env_file, top):
 
 
 @main.command('scrape-keyword')
-@click.option('--env-file', '-e', type=click.Path(exists=True), 
+@click.option('--env-file', '-e', type=click.Path(), 
               help='Path to .env file')
 @click.option('--keyword', '-k', required=True, help='Search keyword')
 @click.option('--top', '-t', type=int, help='Number of shorts to scrape (default: config or 10)')
-def scrape_keyword(env_file, keyword, top):
+@click.option('--no-interactive', is_flag=True, 
+              help='Disable interactive prompts for missing configuration')
+def scrape_keyword(env_file, keyword, top, no_interactive):
     """Scrape ideas from YouTube by keyword search using yt-dlp.
     
     This command searches for Shorts using keywords without requiring an API key.
@@ -285,7 +293,7 @@ def scrape_keyword(env_file, keyword, top):
     """
     try:
         # Load configuration
-        config = Config(env_file)
+        config = Config(env_file, interactive=not no_interactive)
         
         # Initialize database
         db = Database(config.database_path)
@@ -352,16 +360,18 @@ def scrape_keyword(env_file, keyword, top):
 
 
 @main.command()
-@click.option('--env-file', '-e', type=click.Path(exists=True), 
+@click.option('--env-file', '-e', type=click.Path(), 
               help='Path to .env file')
 @click.option('--limit', '-l', type=int, default=20, 
               help='Maximum number of ideas to display')
 @click.option('--source', '-s', help='Filter by source')
-def list(env_file, limit, source):
+@click.option('--no-interactive', is_flag=True, 
+              help='Disable interactive prompts for missing configuration')
+def list(env_file, limit, source, no_interactive):
     """List collected ideas."""
     try:
         # Load configuration
-        config = Config(env_file)
+        config = Config(env_file, interactive=not no_interactive)
         
         # Open database
         db = Database(config.database_path)
@@ -400,13 +410,15 @@ def list(env_file, limit, source):
 
 
 @main.command()
-@click.option('--env-file', '-e', type=click.Path(exists=True), 
+@click.option('--env-file', '-e', type=click.Path(), 
               help='Path to .env file')
-def stats(env_file):
+@click.option('--no-interactive', is_flag=True, 
+              help='Disable interactive prompts for missing configuration')
+def stats(env_file, no_interactive):
     """Show statistics about collected ideas."""
     try:
         # Load configuration
-        config = Config(env_file)
+        config = Config(env_file, interactive=not no_interactive)
         
         # Open database
         db = Database(config.database_path)
@@ -443,14 +455,16 @@ def stats(env_file):
 
 
 @main.command()
-@click.option('--env-file', '-e', type=click.Path(exists=True), 
+@click.option('--env-file', '-e', type=click.Path(), 
               help='Path to .env file')
+@click.option('--no-interactive', is_flag=True, 
+              help='Disable interactive prompts for missing configuration')
 @click.confirmation_option(prompt='Are you sure you want to clear all ideas?')
-def clear(env_file):
+def clear(env_file, no_interactive):
     """Clear all ideas from the database."""
     try:
         # Load configuration
-        config = Config(env_file)
+        config = Config(env_file, interactive=not no_interactive)
         
         # Delete database file
         db_path = Path(config.database_path)

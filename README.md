@@ -81,7 +81,11 @@ mod/
   - Enhanced metrics (engagement analytics)
   - Source information
   
-- **Simple Configuration**: Single `.env` file for all settings
+- **Simple Configuration**: 
+  - Single `.env` file per working directory for all settings
+  - **Automatic working directory management** - Never manually specify directories
+  - Each directory maintains its own independent configuration
+  - Settings automatically persisted and remembered
 
 - **Interactive Mode**: Quickstart scripts with interactive configuration for easy setup
 
@@ -92,6 +96,7 @@ mod/
 For comprehensive documentation, see:
 
 - **[docs/](docs/)** - User and developer documentation
+  - **[⚙️ Configuration Guide](docs/CONFIGURATION.md)** - Working directories, .env management, and all settings
   - [Contributing Guidelines](docs/CONTRIBUTING.md)
   - [Metrics Documentation](docs/METRICS.md)
   - **[🗄️ YouTube Data Model (YTB_DATA_MODEL.md)](docs/YTB_DATA_MODEL.md)** - Complete SQLite database schema and storage documentation
