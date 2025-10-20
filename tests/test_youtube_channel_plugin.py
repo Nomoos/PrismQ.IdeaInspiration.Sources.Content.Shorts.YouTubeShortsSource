@@ -138,7 +138,6 @@ This is a test
     def test_metadata_to_idea_basic(self, tmp_path):
         """Test converting metadata to idea format."""
         config = Mock()
-        config.youtube_channel_story_only = False  # Disable story filtering for this test
         
         with patch.object(YouTubeChannelPlugin, '_check_ytdlp', return_value=True):
             plugin = YouTubeChannelPlugin(config)
@@ -174,7 +173,6 @@ This is a test
     def test_metadata_to_idea_with_engagement_calculation(self, tmp_path):
         """Test engagement rate calculation in metadata conversion."""
         config = Mock()
-        config.youtube_channel_story_only = False  # Disable story filtering for this test
         
         with patch.object(YouTubeChannelPlugin, '_check_ytdlp', return_value=True):
             plugin = YouTubeChannelPlugin(config)

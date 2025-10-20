@@ -36,7 +36,7 @@ def scrape(env_file):
         click.echo("   - scrape-channel: Scrape from specific channels", err=True)
         click.echo("   - scrape-trending: Scrape from trending page", err=True)
         click.echo("   - scrape-keyword: Search by keywords", err=True)
-        click.echo("   Benefits: No API limits, richer metadata, subtitles, story detection", err=True)
+        click.echo("   Benefits: No API limits, richer metadata, subtitles", err=True)
         click.echo("", err=True)
         # Load configuration
         config = Config(env_file)
