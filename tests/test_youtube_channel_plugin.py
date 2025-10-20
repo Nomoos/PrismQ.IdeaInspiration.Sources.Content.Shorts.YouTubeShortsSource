@@ -3,7 +3,7 @@
 import pytest
 from unittest.mock import Mock, patch, MagicMock
 from mod.sources.youtube_channel_plugin import YouTubeChannelPlugin
-from src.config import Config
+from mod.config import Config
 
 
 class TestYouTubeChannelPlugin:

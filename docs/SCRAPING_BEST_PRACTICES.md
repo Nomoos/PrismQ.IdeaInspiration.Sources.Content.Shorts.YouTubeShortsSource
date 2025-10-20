@@ -15,7 +15,7 @@ This document addresses common questions about YouTube Shorts scraping, includin
 The `views_per_day` metric is calculated as follows:
 
 ```python
-# From src/sources/youtube_channel_plugin.py (lines 297-307)
+# From mod/sources/youtube_channel_plugin.py (lines 297-307)
 views_per_day = 0.0
 upload_date_str = metadata.get('upload_date')  # Format: YYYYMMDD (e.g., "20231015")
 
@@ -82,7 +82,7 @@ python -m src.cli scrape-channel --channel @channelname --top 50
 
 **Database Behavior:**
 ```sql
--- From src/database.py
+-- From mod/database.py
 UNIQUE(source, source_id)
 ON CONFLICT(source, source_id) DO UPDATE SET
     -- Updates existing records instead of creating duplicates

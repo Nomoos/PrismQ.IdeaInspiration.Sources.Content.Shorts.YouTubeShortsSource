@@ -3,7 +3,7 @@
 import pytest
 import tempfile
 import os
-from src.config import Config
+from mod.config import Config
 
 
 @pytest.fixture

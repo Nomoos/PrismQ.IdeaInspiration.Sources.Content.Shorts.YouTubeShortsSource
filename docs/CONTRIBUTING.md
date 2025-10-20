@@ -171,16 +171,16 @@ def scrape(self) -> List[Dict[str, Any]]:
 
 ### File Organization
 
-- Keep source plugins in `src/sources/`
+- Keep source plugins in `mod/sources/`
 - Add tests in `tests/` with `test_` prefix
-- Update configuration in `src/config.py`
-- CLI commands in `src/cli.py`
+- Update configuration in `mod/config.py`
+- CLI commands in `mod/cli.py`
 
 ## Enhancing YouTube Shorts Functionality
 
 This repository focuses specifically on YouTube Shorts scraping. To enhance functionality:
 
-1. Update the YouTube plugin in `src/sources/youtube_plugin.py`
+1. Update the YouTube plugin in `mod/sources/youtube_plugin.py`
 
 2. Example enhancement:
    ```python
@@ -196,7 +196,7 @@ This repository focuses specifically on YouTube Shorts scraping. To enhance func
            pass
    ```
 
-3. Update `UniversalMetrics` factory method in `src/metrics.py` if needed:
+3. Update `UniversalMetrics` factory method in `mod/metrics.py` if needed:
    ```python
    @classmethod
    def from_youtube(cls, video_data: Dict[str, Any]) -> 'UniversalMetrics':
