@@ -1,26 +1,49 @@
-# PrismQ.Idea.Sources.Content.Shorts.YouTubeShortsSource
+# Business/Domain Modules (`mod/`)
 
-A PrismQ module for gathering idea inspirations from YouTube Shorts and storing them in a SQLite database for later analysis. Part of the PrismQ AI-powered content generation ecosystem.
+This directory contains business logic and domain-specific modules for the PrismQ YouTube Shorts Source application.
 
-## 🎯 Purpose
+## Purpose
 
-This module serves as a specialized YouTube Shorts scraping component of the PrismQ Ideas Sources ecosystem. It focuses on gathering video content inspiration from YouTube Shorts to fuel automated content generation pipelines.
+The `mod/` directory holds higher-level modules that implement:
+- YouTube content scraping plugins
+- Database operations for idea storage
+- Metrics tracking and analysis
+- CLI interface for user interaction
 
-### Related PrismQ Projects
+## Separation of Concerns
 
-- **[PrismQ.RepositoryTemplate](https://github.com/Nomoos/PrismQ.RepositoryTemplate)** - Template for PrismQ modules
-- **[StoryGenerator](https://github.com/Nomoos/StoryGenerator)** - Automated story and video generation pipeline
-- **Other PrismQ Idea Sources** - Specialized scrapers for different content types and platforms
+The repository follows a clear separation:
 
-## 💻 Target Platform
+- **`src/`** - Core Python package implementation (infrastructure)
+  - Configuration management (`config.py`)
+  - Logging infrastructure (`logging_config.py`)
+  - Core utilities and common functionality
+  - Package initialization
 
-This module is optimized for:
-- **Operating System**: Windows (primary), Linux (development support)
-- **GPU**: NVIDIA RTX 5090 (32GB VRAM) for AI workloads
-- **CPU**: AMD Ryzen processor (multi-core)
-- **RAM**: 64GB DDR5
-- **Python**: 3.10 or higher
+- **`mod/`** - Business/domain modules (this directory)
+  - CLI interface (`cli.py`)
+  - Database operations (`database.py`)
+  - Universal metrics system (`metrics.py`)
+  - YouTube scraping plugins (`sources/`)
+    - `youtube_plugin.py` - YouTube API-based scraping
+    - `youtube_channel_plugin.py` - Channel-based scraping with yt-dlp
+    - `youtube_trending_plugin.py` - Trending and keyword-based scraping
 
+<<<<<<< HEAD
+## Structure
+
+```
+mod/
+├── __init__.py                     # Module initialization
+├── cli.py                          # Command-line interface
+├── database.py                     # SQLite database operations
+├── metrics.py                      # Universal metrics schema
+└── sources/                        # Content source plugins
+    ├── __init__.py                 # Source plugin base class
+    ├── youtube_plugin.py           # YouTube API scraper
+    ├── youtube_channel_plugin.py   # YouTube channel scraper
+    └── youtube_trending_plugin.py  # Trending/keyword scraper
+=======
 > **Note for Linux users**: Limited Linux support is available for development purposes. macOS is not officially supported.
 
 ## Features
@@ -552,56 +575,21 @@ PrismQ.Idea.Sources.Content.Shorts.YouTubeShortsSource/
 ├── .env.example            # Example configuration
 ├── requirements.txt        # Python dependencies
 └── README.md
+>>>>>>> origin/main
 ```
 
-## Inspiration
+## Guidelines
 
-This project was inspired by [Nomoos/StoryGenerator](https://github.com/Nomoos/StoryGenerator) and adapted for idea collection and inspiration gathering.
+When modifying modules:
 
-## License
+1. **Single Responsibility**: Each module focuses on a specific concern
+2. **Dependency Management**: Depend on `src/` infrastructure (config, logging)
+3. **Testing**: Update corresponding tests in `tests/`
+4. **Documentation**: Keep docstrings and documentation up-to-date
+5. **Code Quality**: Follow PEP 8 and use type hints
 
-This project is proprietary software. See [LICENSE](LICENSE) file for details.
+## Related Documentation
 
-**All Rights Reserved** - Copyright (c) 2025 PrismQ
-
-## Contributing
-
-Contributions are welcome! Please see our [Contributing Guidelines](docs/CONTRIBUTING.md) for details on:
-
-- Code of Conduct
-- How to report bugs
-- How to suggest features
-- Development setup
-- Pull request process
-- Coding standards
-
-For quick reference:
-- **Bug Reports**: Open an issue on GitHub
-- **Feature Requests**: Open an issue on GitHub
-- **Questions**: Start a [discussion](https://github.com/Nomoos/PrismQ.Idea.Sources.Content.Shorts.YouTubeShortsSource/discussions)
-
-## Troubleshooting
-
-For detailed troubleshooting, see:
-- [Known Issues](issues/KNOWN_ISSUES.md) - Common problems and solutions
-- [Windows Quickstart Guide](docs/WINDOWS_QUICKSTART.md#troubleshooting) - Windows-specific help
-
-### Quick Solutions
-
-#### Windows-Specific Issues
-
-- **Module not found**: Make sure you're running commands from the project root directory
-- **Path issues**: Use forward slashes (/) or escaped backslashes (\\\\) in paths
-- **API errors**: Verify your YouTube API key in the `.env` file
-
-### Common Issues
-
-- **No ideas scraped**: Check your YouTube API credentials and internet connection
-- **Database locked**: Close any other processes accessing the database file
-- **Rate limiting**: YouTube API has rate limits; reduce `YOUTUBE_MAX_RESULTS` value if needed
-
-For more help, see the [full troubleshooting guide](issues/KNOWN_ISSUES.md).
-
-## Support
-
-For issues and questions, please open an issue on the GitHub repository.
+- Main README: `/README.md`
+- Contributing Guidelines: `/docs/CONTRIBUTING.md`
+- Copilot Instructions: `/.github/copilot-instructions.md`
