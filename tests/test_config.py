@@ -45,7 +45,7 @@ def test_config_defaults():
         # Create config without .env file
         config = Config("/nonexistent/.env")
         
-        assert config.database_path == "ideas.db"
+        assert config.database_path == "db.s3db"
         assert config.youtube_max_results == 50
     finally:
         # Restore environment variables

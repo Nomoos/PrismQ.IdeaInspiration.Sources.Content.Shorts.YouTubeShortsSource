@@ -23,7 +23,7 @@ class Config:
             load_dotenv(env_file)
         
         # Database configuration
-        self.database_path = os.getenv("DATABASE_PATH", "ideas.db")
+        self.database_path = os.getenv("DATABASE_PATH", "db.s3db")
         
         # YouTube API configuration (for search-based scraping)
         self.youtube_api_key = os.getenv("YOUTUBE_API_KEY", "")
