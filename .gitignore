@@ -68,6 +68,7 @@ out/
 
 # Database
 *.db
+*.s3db
 *.sqlite
 *.sqlite3
 *.db-shm

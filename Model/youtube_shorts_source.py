@@ -20,7 +20,7 @@ class YouTubeShortsSource(Base):
     metadata, metrics, and calculated scores.
     """
     
-    __tablename__ = 'youtube_shorts_source'
+    __tablename__ = 'YouTubeShortsSource'
     
     # Primary key
     id = Column(Integer, primary_key=True, autoincrement=True)

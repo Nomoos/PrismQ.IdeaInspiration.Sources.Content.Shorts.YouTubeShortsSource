@@ -17,7 +17,7 @@ class DBContext:
     SQLAlchemy ORM with proper session management and error handling.
     """
     
-    def __init__(self, db_path: str = "ideas.db"):
+    def __init__(self, db_path: str = "db.s3db"):
         """Initialize database context.
         
         Args:
