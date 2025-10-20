@@ -22,7 +22,7 @@ When you run the application, it automatically:
 ```bash
 # First run in a directory
 cd /my/project/folder
-python /path/to/cli.py stats
+youtube-shorts-source stats
 
 # The application creates /my/project/folder/.env with:
 # WORKING_DIRECTORY='/my/project/folder'
@@ -30,7 +30,7 @@ python /path/to/cli.py stats
 # ... other settings ...
 
 # Future runs in the same directory use the same .env
-python /path/to/cli.py scrape-trending --top 20
+youtube-shorts-source scrape-trending --top 20
 ```
 
 ## Configuration Options
@@ -65,7 +65,7 @@ In interactive mode, the application will:
 
 **Example:**
 ```bash
-python cli.py scrape-channel --channel @example
+youtube-shorts-source scrape-channel --channel @example
 # If YOUTUBE_CHANNEL_MAX_SHORTS is not set, you might be prompted:
 # Maximum shorts to scrape from channel (default: 10): 
 ```
@@ -79,7 +79,7 @@ Use the `--no-interactive` flag to:
 
 **Example:**
 ```bash
-python cli.py stats --no-interactive
+youtube-shorts-source stats --no-interactive
 ```
 
 ## Configuration File Format
@@ -115,13 +115,13 @@ You can run the application from different directories with independent configur
 ```bash
 # Project A
 cd /projects/project-a
-python /path/to/cli.py scrape-trending --top 5
+youtube-shorts-source scrape-trending --top 5
 # Uses /projects/project-a/.env
 # Database: /projects/project-a/db.s3db
 
 # Project B
 cd /projects/project-b
-python /path/to/cli.py scrape-trending --top 20
+youtube-shorts-source scrape-trending --top 20
 # Uses /projects/project-b/.env
 # Database: /projects/project-b/db.s3db
 ```
@@ -136,7 +136,7 @@ Each directory maintains:
 Override the default `.env` location using the `--env-file` option:
 
 ```bash
-python cli.py stats --env-file /path/to/custom.env
+youtube-shorts-source stats --env-file /path/to/custom.env
 ```
 
 When you specify a custom `.env` file:
@@ -152,7 +152,7 @@ Create a dedicated directory for each project or use case:
 ```bash
 mkdir youtube-trending-ideas
 cd youtube-trending-ideas
-python /path/to/cli.py scrape-trending
+youtube-shorts-source scrape-trending
 ```
 
 ### 2. Version Control
@@ -217,7 +217,7 @@ print(f'Working directory: {config.working_directory}')
 
 ```bash
 rm .env
-python cli.py stats --no-interactive
+youtube-shorts-source stats --no-interactive
 ```
 
 ## Advanced Usage
@@ -227,7 +227,7 @@ python cli.py stats --no-interactive
 Environment variables take precedence over `.env` file values:
 
 ```bash
-DATABASE_PATH=special.db python cli.py stats
+DATABASE_PATH=special.db youtube-shorts-source stats
 ```
 
 ### Programmatic Configuration
