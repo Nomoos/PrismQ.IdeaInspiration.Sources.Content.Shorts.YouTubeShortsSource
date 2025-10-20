@@ -13,14 +13,15 @@ class Config:
         """Initialize configuration.
         
         Args:
-            env_file: Path to .env file (default: .env in current directory)
+            env_file: Path to .env file (default: .env in nearest PrismQ directory)
             interactive: Whether to prompt for missing values (default: True)
         """
         # Determine working directory and .env file path
         if env_file is None:
-            # Use current working directory as the working directory
-            self.working_directory = str(Path.cwd())
-            env_file = Path.cwd() / ".env"
+            # Find nearest parent directory with "PrismQ" in its name
+            prismq_dir = self._find_prismq_directory()
+            self.working_directory = str(prismq_dir)
+            env_file = prismq_dir / ".env"
         else:
             # Use the directory of the provided env_file as working directory
             env_path = Path(env_file)
@@ -42,6 +43,22 @@ class Config:
         
         # Load configuration with interactive prompting for missing values
         self._load_configuration()
+    
+    def _find_prismq_directory(self) -> Path:
+        """Find the nearest parent directory with 'PrismQ' in its name.
+        
+        Returns:
+            Path to the nearest PrismQ directory, or current directory if none found
+        """
+        current_path = Path.cwd().absolute()
+        
+        # Check current directory and all parents
+        for path in [current_path] + list(current_path.parents):
+            if "PrismQ" in path.name:
+                return path
+        
+        # If no PrismQ directory found, use current directory as fallback
+        return current_path
     
     def _create_env_file(self):
         """Create a new .env file with default values."""

@@ -12,25 +12,49 @@ The application uses a **local .env file** in your working directory to store co
 
 When you run the application, it automatically:
 
-1. **Detects your current working directory** - Uses the directory where you run the command
-2. **Creates a .env file if needed** - Automatically creates `.env` in your working directory if it doesn't exist
+1. **Searches for PrismQ project directory** - Finds the nearest parent directory with "PrismQ" in its name
+2. **Creates a .env file at project root** - Automatically creates `.env` in the PrismQ project directory
 3. **Stores the working directory** - Saves `WORKING_DIRECTORY` in the `.env` file for reference
 4. **Remembers your settings** - Configuration is persisted across multiple runs
+
+### PrismQ Directory Search
+
+The application searches upward from your current directory to find the nearest parent directory that contains "PrismQ" in its name. This ensures that:
+
+- All subdirectories within a PrismQ project share the same configuration
+- You can run commands from anywhere within your project structure
+- Configuration and databases are centralized at the project root
+
+**Example directory structure:**
+```
+MyPrismQProject/              ← .env created here
+├── .env
+├── db.s3db
+├── scripts/
+│   └── processing/
+│       └── run_here/         ← Run from here
+└── data/
+```
+
+If no directory with "PrismQ" in the name is found, the application falls back to using the current directory.
 
 ### Example
 
 ```bash
-# First run in a directory
-cd /my/project/folder
+# First run in a PrismQ project subdirectory
+cd /projects/MyPrismQProject/scripts/processing
 python -m src.cli stats
 
-# The application creates /my/project/folder/.env with:
-# WORKING_DIRECTORY='/my/project/folder'
+# The application creates .env at the PrismQ project root:
+# /projects/MyPrismQProject/.env with:
+# WORKING_DIRECTORY='/projects/MyPrismQProject'
 # DATABASE_PATH=db.s3db
 # ... other settings ...
 
-# Future runs in the same directory use the same .env
+# Future runs from any subdirectory use the same .env
+cd /projects/MyPrismQProject/data
 python -m src.cli scrape-trending --top 20
+# Still uses /projects/MyPrismQProject/.env
 ```
 
 ## Configuration Options
@@ -108,28 +132,29 @@ YOUTUBE_TRENDING_MAX_SHORTS=10
 YOUTUBE_KEYWORD_MAX_SHORTS=10
 ```
 
-## Multiple Working Directories
+## Multiple PrismQ Projects
 
-You can run the application from different directories with independent configurations:
+You can run the application from different PrismQ projects with independent configurations:
 
 ```bash
-# Project A
-cd /projects/project-a
+# Project A - Any subdirectory within ProjectA
+cd /projects/MyPrismQProjectA/scripts
 python -m src.cli scrape-trending --top 5
-# Uses /projects/project-a/.env
-# Database: /projects/project-a/db.s3db
+# Uses /projects/MyPrismQProjectA/.env
+# Database: /projects/MyPrismQProjectA/db.s3db
 
-# Project B
-cd /projects/project-b
+# Project B - Any subdirectory within ProjectB
+cd /projects/AnotherPrismQProjectB/data/processing
 python -m src.cli scrape-trending --top 20
-# Uses /projects/project-b/.env
-# Database: /projects/project-b/db.s3db
+# Uses /projects/AnotherPrismQProjectB/.env
+# Database: /projects/AnotherPrismQProjectB/db.s3db
 ```
 
-Each directory maintains:
-- Its own `.env` file
+Each PrismQ project maintains:
+- Its own `.env` file at the project root
 - Its own database file (unless you specify an absolute path)
 - Its own configuration settings
+- Shared configuration across all subdirectories within the project
 
 ## Custom .env File Location
 
@@ -145,14 +170,20 @@ When you specify a custom `.env` file:
 
 ## Best Practices
 
-### 1. One Directory Per Project
+### 1. Use PrismQ in Project Names
 
-Create a dedicated directory for each project or use case:
+Create project directories with "PrismQ" in the name for automatic configuration management:
 
 ```bash
-mkdir youtube-trending-ideas
-cd youtube-trending-ideas
+mkdir MyPrismQTrendingIdeas
+cd MyPrismQTrendingIdeas
 python -m src.cli scrape-trending
+
+# Create subdirectories for organization
+mkdir scripts data output
+cd scripts
+python -m src.cli scrape-channel --channel @example
+# Still uses MyPrismQTrendingIdeas/.env
 ```
 
 ### 2. Version Control

@@ -116,20 +116,53 @@ def test_env_file_created_if_missing(temp_dir):
 
 
 def test_working_directory_from_cwd(temp_dir):
-    """Test that working directory defaults to current directory."""
+    """Test that working directory defaults to current directory when no PrismQ dir found."""
     # Save original cwd
     original_cwd = os.getcwd()
     
     try:
-        # Change to temp directory
+        # Change to temp directory (no PrismQ in path)
         os.chdir(temp_dir)
         
         # Create config without specifying env_file
         config = Config(interactive=False)
         
-        # Check that working directory is the temp directory
+        # Check that working directory is the temp directory (fallback)
         assert config.working_directory == temp_dir
         assert config.env_file == str(Path(temp_dir) / ".env")
+    finally:
+        # Restore original cwd
+        os.chdir(original_cwd)
+
+
+def test_working_directory_finds_prismq_parent():
+    """Test that working directory finds nearest parent with PrismQ in name."""
+    # Save original cwd
+    original_cwd = os.getcwd()
+    
+    try:
+        import tempfile
+        import shutil
+        
+        # Create a temporary directory structure with PrismQ in the name
+        base_temp = tempfile.mkdtemp()
+        prismq_dir = Path(base_temp) / "MyPrismQProject"
+        subdir = prismq_dir / "subdirectory" / "nested"
+        subdir.mkdir(parents=True, exist_ok=True)
+        
+        # Change to nested subdirectory
+        os.chdir(subdir)
+        
+        # Create config without specifying env_file
+        config = Config(interactive=False)
+        
+        # Check that working directory is the PrismQ parent directory
+        assert config.working_directory == str(prismq_dir)
+        assert config.env_file == str(prismq_dir / ".env")
+        assert (prismq_dir / ".env").exists()
+        
+        # Cleanup
+        shutil.rmtree(base_temp)
     finally:
         # Restore original cwd
         os.chdir(original_cwd)
