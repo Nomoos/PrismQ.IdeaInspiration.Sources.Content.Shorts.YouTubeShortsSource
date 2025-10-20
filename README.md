@@ -205,15 +205,12 @@ YOUTUBE_MAX_RESULTS=50
 # Example: https://www.youtube.com/@channelname or @channelname or UC1234567890
 YOUTUBE_CHANNEL_URL=
 YOUTUBE_CHANNEL_MAX_SHORTS=10
-YOUTUBE_CHANNEL_STORY_ONLY=false
 
 # YouTube Trending Configuration (for trending scraping with yt-dlp)
 YOUTUBE_TRENDING_MAX_SHORTS=10
-YOUTUBE_TRENDING_STORY_ONLY=false
 
 # YouTube Keyword Configuration (for keyword search with yt-dlp)
 YOUTUBE_KEYWORD_MAX_SHORTS=10
-YOUTUBE_KEYWORD_STORY_ONLY=false
 ```
 
 ### Scraping Modes
@@ -227,9 +224,6 @@ Uses yt-dlp to scrape comprehensive metadata from specific YouTube channels. No 
 # Scrape from a specific channel
 python -m src.cli scrape-channel --channel @channelname
 
-# Scrape with story detection filtering
-python -m src.cli scrape-channel --channel @channelname --story-only
-
 # Scrape a specific number of shorts
 python -m src.cli scrape-channel --channel @channelname --top 20
 ```
@@ -240,9 +234,6 @@ Uses yt-dlp to scrape Shorts from YouTube trending page. No API key required.
 ```bash
 # Scrape from trending
 python -m src.cli scrape-trending
-
-# Scrape with story filtering
-python -m src.cli scrape-trending --story-only --top 15
 ```
 
 #### Keyword Scraping (yt-dlp) ⭐ **Recommended**
@@ -254,9 +245,6 @@ python -m src.cli scrape-keyword --keyword "startup ideas"
 
 # Scrape with more results
 python -m src.cli scrape-keyword --keyword "business tips" --top 20
-
-# Scrape story videos only
-python -m src.cli scrape-keyword --keyword "story time" --story-only
 ```
 
 #### Search-Based Scraping (YouTube API) - Legacy
@@ -304,19 +292,12 @@ python -m src.cli scrape-channel --channel UC1234567890
 
 # Scrape specific number of shorts
 python -m src.cli scrape-channel --channel @channelname --top 20
-
-# Filter for story videos only
-python -m src.cli scrape-channel --channel @channelname --story-only
-
-# Combine options
-python -m src.cli scrape-channel --channel @channelname --top 15 --story-only
 ```
 
 **Channel scraping features:**
 - Extracts subtitles and converts to plain text
 - Captures video quality metrics (resolution, FPS, aspect ratio)
 - Calculates engagement metrics (views per day/hour)
-- Detects story videos with confidence scoring
 - Filters for true Shorts (≤3 min, vertical format)
 - No API quota limits
 
@@ -329,19 +310,12 @@ python -m src.cli scrape-trending
 
 # Scrape more shorts
 python -m src.cli scrape-trending --top 20
-
-# Filter for story videos only
-python -m src.cli scrape-trending --story-only
-
-# Combine options
-python -m src.cli scrape-trending --top 15 --story-only
 ```
 
 **Trending scraping features:**
 - No API key required
 - Discover viral and trending content
 - Same rich metadata as channel scraping
-- Story detection filtering available
 
 #### Keyword Scraping
 Search and scrape Shorts by keywords:
@@ -352,19 +326,12 @@ python -m src.cli scrape-keyword --keyword "startup ideas"
 
 # Search with more results
 python -m src.cli scrape-keyword --keyword "business tips" --top 20
-
-# Search for story content
-python -m src.cli scrape-keyword --keyword "story time" --story-only
-
-# Combine options
-python -m src.cli scrape-keyword --keyword "tech news" --top 15 --story-only
 ```
 
 **Keyword scraping features:**
 - Search any topic or niche
 - No API key required
 - Automatic Shorts filtering
-- Story detection filtering available
 - Same rich metadata as other yt-dlp modes
 
 ---
@@ -389,7 +356,6 @@ python -m src.cli scrape --env-file /path/to/.env
 **Why yt-dlp is better:**
 - ✅ No API quota limits
 - ✅ Richer metadata (subtitles, quality metrics, engagement analytics)
-- ✅ Story detection with confidence scoring
 - ✅ Works without API key
 - ✅ Direct trending and channel access
 

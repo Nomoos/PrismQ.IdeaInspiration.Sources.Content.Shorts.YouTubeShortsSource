@@ -414,10 +414,7 @@ class YouTubeTrendingPlugin(SourcePlugin):
                     'aspect_ratio': aspect_ratio,
                     'subtitle_text': metadata.get('subtitle_text'),
                     'subtitles_available': bool(metadata.get('subtitle_text')),
-                    'channel_follower_count': metadata.get('channel_follower_count'),
-                    'is_story_video': is_story,
-                    'story_confidence_score': confidence,
-                    'story_indicators': indicators
+                    'channel_follower_count': metadata.get('channel_follower_count')
                 }
             }
             
