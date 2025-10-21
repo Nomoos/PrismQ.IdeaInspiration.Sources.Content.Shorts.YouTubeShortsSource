@@ -7,10 +7,16 @@ Similar to PrismQ.IdeaInspiration.Model initialization approach.
 import sys
 from pathlib import Path
 
-# Add parent directory to path to allow importing mod.Model
-sys.path.insert(0, str(Path(__file__).parent.parent))
+# Add parent directory to path to allow importing Model
+repo_root = Path(__file__).parent.parent
+sys.path.insert(0, str(repo_root))
 
-from mod.Model import DBContext
+# Import directly from Model directory (works on Windows where symlinks may not work)
+try:
+    from mod.Model import DBContext
+except (ImportError, ModuleNotFoundError):
+    # Fallback: Import directly from Model directory if mod.Model symlink doesn't work
+    from Model.db_context import DBContext
 
 
 def init_db(db_path: str = "ideas.db", verbose: bool = True):
