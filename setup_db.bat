@@ -27,8 +27,11 @@ if not exist ".env" (
     ) else (
         echo [INFO] Creating new .env file...
         (
+            echo # Working Directory (automatically managed)
+            echo WORKING_DIRECTORY=
+            echo.
             echo # Database Configuration
-            echo DATABASE_PATH=ideas.db
+            echo DATABASE_PATH=db.s3db
             echo.
             echo # YouTube API Configuration
             echo YOUTUBE_API_KEY=your_youtube_api_key_here
@@ -50,7 +53,7 @@ if not exist ".env" (
 )
 
 REM Read DATABASE_PATH from .env if it exists
-set "DB_PATH=ideas.db"
+set "DB_PATH=db.s3db"
 for /f "tokens=1,2 delims==" %%a in ('findstr /i "^DATABASE_PATH=" .env 2^>nul') do (
     set "DB_PATH=%%b"
 )
@@ -83,24 +86,55 @@ echo [INFO] Using Python: %PYTHON_EXEC%
 %PYTHON_EXEC% --version
 echo.
 
-REM Get the current working directory (where user called the script from)
+REM Find the nearest parent directory with "PrismQ" in its name
+REM This matches the behavior of config.py
+set "PRISMQ_DIR="
+set "SEARCH_DIR=%CD%"
+
+:search_prismq
+REM Check if current search directory contains "PrismQ" in its name
+echo %SEARCH_DIR% | findstr /i "PrismQ" >nul
+if not errorlevel 1 (
+    set "PRISMQ_DIR=%SEARCH_DIR%"
+    goto found_prismq
+)
+
+REM Move to parent directory
+for %%i in ("%SEARCH_DIR%\..") do set "PARENT_DIR=%%~fi"
+
+REM Check if we've reached the root (parent is same as current)
+if "%SEARCH_DIR%"=="%PARENT_DIR%" goto no_prismq_found
+
+REM Continue searching in parent
+set "SEARCH_DIR=%PARENT_DIR%"
+goto search_prismq
+
+:no_prismq_found
+REM No PrismQ directory found, use current directory as fallback
 set "USER_WORK_DIR=%CD%"
-echo [INFO] Current working directory: %USER_WORK_DIR%
+echo [INFO] No PrismQ directory found in path. Using current directory as working directory.
+goto setup_db_path
+
+:found_prismq
+REM Found PrismQ directory, create working directory with _WD suffix
+for %%i in ("%PRISMQ_DIR%") do set "PRISMQ_NAME=%%~nxi"
+for %%i in ("%PRISMQ_DIR%\..") do set "PRISMQ_PARENT=%%~fi"
+set "USER_WORK_DIR=%PRISMQ_PARENT%\%PRISMQ_NAME%_WD"
+
+echo [INFO] Found PrismQ directory: %PRISMQ_DIR%
+echo [INFO] Working directory (with _WD suffix): %USER_WORK_DIR%
+
+:setup_db_path
 echo.
 
-REM Ask user where to create the database
-echo The database will be created in your current working directory.
-set /p "CONFIRM=Create %DB_PATH% in '%USER_WORK_DIR%'? (Y/N): "
-
-if /i not "%CONFIRM%"=="Y" (
-    echo.
-    set /p "CUSTOM_DIR=Enter the full path where you want to create %DB_PATH%: "
-    set "USER_WORK_DIR=!CUSTOM_DIR!"
+REM Create working directory if it doesn't exist
+if not exist "%USER_WORK_DIR%" (
+    echo [INFO] Creating working directory: %USER_WORK_DIR%
+    mkdir "%USER_WORK_DIR%"
 )
 
 REM Create the full database path
 set "FULL_DB_PATH=%USER_WORK_DIR%\%DB_PATH%"
-echo.
 echo [INFO] Database will be created at: %FULL_DB_PATH%
 echo.
 

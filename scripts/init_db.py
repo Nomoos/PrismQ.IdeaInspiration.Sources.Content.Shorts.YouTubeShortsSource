@@ -19,7 +19,7 @@ except (ImportError, ModuleNotFoundError):
     from Model.db_context import DBContext
 
 
-def init_db(db_path: str = "ideas.db", verbose: bool = True):
+def init_db(db_path: str = "db.s3db", verbose: bool = True):
     """Initialize the database schema.
     
     Args:
@@ -64,8 +64,8 @@ def main():
     )
     parser.add_argument(
         '--db-path',
-        default='ideas.db',
-        help='Path to SQLite database file (default: ideas.db)'
+        default='db.s3db',
+        help='Path to SQLite database file (default: db.s3db)'
     )
     parser.add_argument(
         '--quiet',

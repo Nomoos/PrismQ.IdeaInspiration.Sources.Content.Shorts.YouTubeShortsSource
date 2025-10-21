@@ -25,8 +25,11 @@ if [ ! -f ".env" ]; then
     else
         echo "[INFO] Creating new .env file..."
         cat > ".env" << 'EOF'
+# Working Directory (automatically managed)
+WORKING_DIRECTORY=
+
 # Database Configuration
-DATABASE_PATH=ideas.db
+DATABASE_PATH=db.s3db
 
 # YouTube API Configuration
 YOUTUBE_API_KEY=your_youtube_api_key_here
@@ -48,11 +51,11 @@ EOF
 fi
 
 # Read DATABASE_PATH from .env if it exists
-DB_PATH="ideas.db"
+DB_PATH="db.s3db"
 if [ -f ".env" ]; then
     DB_PATH=$(grep "^DATABASE_PATH=" .env | cut -d'=' -f2 | xargs)
     if [ -z "$DB_PATH" ]; then
-        DB_PATH="ideas.db"
+        DB_PATH="db.s3db"
     fi
 fi
 
@@ -76,24 +79,45 @@ echo "[INFO] Using Python: $PYTHON_EXEC"
 $PYTHON_EXEC --version
 echo
 
-# Get the current working directory (where user called the script from)
-USER_WORK_DIR="$(pwd)"
-echo "[INFO] Current working directory: $USER_WORK_DIR"
+# Find the nearest parent directory with "PrismQ" in its name
+# This matches the behavior of config.py
+PRISMQ_DIR=""
+SEARCH_DIR="$(pwd)"
+
+while [ "$SEARCH_DIR" != "/" ]; do
+    # Check if current search directory contains "PrismQ" in its name
+    if [[ "$(basename "$SEARCH_DIR")" == *"PrismQ"* ]]; then
+        PRISMQ_DIR="$SEARCH_DIR"
+        break
+    fi
+    # Move to parent directory
+    SEARCH_DIR="$(dirname "$SEARCH_DIR")"
+done
+
+if [ -z "$PRISMQ_DIR" ]; then
+    # No PrismQ directory found, use current directory as fallback
+    USER_WORK_DIR="$(pwd)"
+    echo "[INFO] No PrismQ directory found in path. Using current directory as working directory."
+else
+    # Found PrismQ directory, create working directory with _WD suffix
+    PRISMQ_NAME="$(basename "$PRISMQ_DIR")"
+    PRISMQ_PARENT="$(dirname "$PRISMQ_DIR")"
+    USER_WORK_DIR="$PRISMQ_PARENT/${PRISMQ_NAME}_WD"
+    
+    echo "[INFO] Found PrismQ directory: $PRISMQ_DIR"
+    echo "[INFO] Working directory (with _WD suffix): $USER_WORK_DIR"
+fi
+
 echo
 
-# Ask user where to create the database
-echo "The database will be created in your current working directory."
-read -p "Create $DB_PATH in '$USER_WORK_DIR'? (Y/N): " CONFIRM
-
-if [[ ! "$CONFIRM" =~ ^[Yy]$ ]]; then
-    echo
-    read -p "Enter the full path where you want to create $DB_PATH: " CUSTOM_DIR
-    USER_WORK_DIR="$CUSTOM_DIR"
+# Create working directory if it doesn't exist
+if [ ! -d "$USER_WORK_DIR" ]; then
+    echo "[INFO] Creating working directory: $USER_WORK_DIR"
+    mkdir -p "$USER_WORK_DIR"
 fi
 
 # Create the full database path
 FULL_DB_PATH="$USER_WORK_DIR/$DB_PATH"
-echo
 echo "[INFO] Database will be created at: $FULL_DB_PATH"
 echo
 
