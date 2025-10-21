@@ -1,6 +1,6 @@
 # Documentation
 
-This folder contains comprehensive documentation for PrismQ.Idea.Sources.Content.Shorts.YouTubeShortsSource.
+This folder contains comprehensive documentation for PrismQ.IdeaInspiration.Sources.Content.Shorts.YouTubeShortsSource.
 
 ## Available Documentation
 
@@ -39,7 +39,7 @@ This folder contains comprehensive documentation for PrismQ.Idea.Sources.Content
 
 ## Getting Help
 
-- **Questions**: Use [GitHub Discussions](https://github.com/Nomoos/PrismQ.Idea.Sources.Content.Shorts.YouTubeShortsSource/discussions)
+- **Questions**: Use [GitHub Discussions](https://github.com/Nomoos/PrismQ.IdeaInspiration.Sources.Content.Shorts.YouTubeShortsSource/discussions)
 - **Bug Reports**: Open an issue on GitHub
 - **Feature Requests**: Open an issue on GitHub
 

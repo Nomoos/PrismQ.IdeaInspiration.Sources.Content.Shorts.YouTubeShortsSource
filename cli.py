@@ -1,4 +1,4 @@
-"""Command-line interface for PrismQ.Idea.Sources.Content.Shorts.YouTubeShortsSource."""
+"""Command-line interface for PrismQ.IdeaInspiration.Sources.Content.Shorts.YouTubeShortsSource."""
 
 import click
 import sys

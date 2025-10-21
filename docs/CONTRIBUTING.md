@@ -1,4 +1,4 @@
-# Contributing to PrismQ.Idea.Sources.Content.Shorts.YouTubeShortsSource
+# Contributing to PrismQ.IdeaInspiration.Sources.Content.Shorts.YouTubeShortsSource
 
 Thank you for your interest in contributing to this PrismQ module!
 
@@ -75,8 +75,8 @@ Feature suggestions are welcome! Please use the feature request template and inc
 
 1. Clone your fork:
    ```bash
-   git clone https://github.com/YOUR-USERNAME/PrismQ.Idea.Sources.Content.Shorts.YouTubeShortsSource.git
-   cd PrismQ.Idea.Sources.Content.Shorts.YouTubeShortsSource
+   git clone https://github.com/YOUR-USERNAME/PrismQ.IdeaInspiration.Sources.Content.Shorts.YouTubeShortsSource.git
+   cd PrismQ.IdeaInspiration.Sources.Content.Shorts.YouTubeShortsSource
    ```
 
 2. Create and activate a virtual environment:
@@ -216,8 +216,8 @@ This repository focuses specifically on YouTube Shorts scraping. To enhance func
 ## Adding Support for Other Platforms
 
 To add support for other platforms (TikTok, Instagram Reels, etc.), create a new repository following the PrismQ Idea Sources taxonomy:
-- `PrismQ.Idea.Sources.Content.Shorts.TikTokSource`
-- `PrismQ.Idea.Sources.Content.Shorts.InstagramReelsSource`
+- `PrismQ.IdeaInspiration.Sources.Content.Shorts.TikTokSource`
+- `PrismQ.IdeaInspiration.Sources.Content.Shorts.InstagramReelsSource`
 - etc.
 
 See the [PrismQ.RepositoryTemplate](https://github.com/Nomoos/PrismQ.RepositoryTemplate) for module structure guidelines.
@@ -268,4 +268,4 @@ If you have questions about contributing, please:
 - Open a discussion in the GitHub Discussions tab
 - Reach out to the maintainers
 
-Thank you for contributing to PrismQ.Idea.Sources.Content.Shorts.YouTubeShortsSource! 🎉
+Thank you for contributing to PrismQ.IdeaInspiration.Sources.Content.Shorts.YouTubeShortsSource! 🎉

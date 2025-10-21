@@ -1,4 +1,4 @@
-"""Database models and schema for PrismQ.Idea.Sources.Content.Shorts.YouTubeShortsSource.
+"""Database models and schema for PrismQ.IdeaInspiration.Sources.Content.Shorts.YouTubeShortsSource.
 
 This module provides backward compatibility with the original SQLite-based Database class
 while internally using the new SQLAlchemy ORM model layer.
