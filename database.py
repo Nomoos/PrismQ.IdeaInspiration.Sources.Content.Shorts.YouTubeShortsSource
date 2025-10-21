@@ -5,6 +5,7 @@ while internally using the new SQLAlchemy ORM model layer.
 """
 
 import sqlite3
+import sys
 from typing import Optional, Dict, Any
 import json
 from pathlib import Path
@@ -18,20 +19,62 @@ class Database:
     with existing code while using SQLAlchemy ORM internally.
     """
 
-    def __init__(self, db_path: str):
+    def __init__(self, db_path: str, interactive: bool = True):
         """Initialize database connection.
         
         Args:
             db_path: Path to SQLite database file
+            interactive: Whether to prompt for confirmation before creating database
         """
         self.db_path = db_path
         self.connection = None
+        self._interactive = interactive
+        
+        # Check if database already exists
+        db_exists = Path(db_path).exists()
+        
+        # If database doesn't exist and we're in interactive mode, ask for confirmation
+        if not db_exists and self._interactive:
+            if not self._confirm_database_creation():
+                print("Database creation cancelled.")
+                sys.exit(0)
         
         # Use new DBContext internally
         self.db_context = DBContext(db_path)
         
         # For backward compatibility, also maintain a raw SQLite connection
         self._init_db()
+    
+    def _confirm_database_creation(self) -> bool:
+        """Prompt user for confirmation before creating database.
+        
+        Returns:
+            True if user confirms, False otherwise
+        """
+        db_path = Path(self.db_path).resolve()
+        db_dir = db_path.parent
+        db_name = db_path.name
+        
+        # Find nearest parent directory with "PrismQ" in its name
+        prismq_dir = None
+        for parent in [db_dir] + list(db_dir.parents):
+            if "PrismQ" in parent.name:
+                prismq_dir = parent
+                break
+        
+        if prismq_dir:
+            print(f"The database will be created in your current working directory.")
+            prompt = f"Create {db_name} in '{prismq_dir}'? (Y/N): "
+        else:
+            print(f"The database will be created in your current working directory.")
+            prompt = f"Create {db_name} in '{db_dir}'? (Y/N): "
+        
+        try:
+            response = input(prompt).strip().upper()
+            return response in ['Y', 'YES']
+        except (EOFError, KeyboardInterrupt):
+            print()
+            return False
 
     def _init_db(self):
         """Initialize database schema if it doesn't exist."""

@@ -13,15 +13,21 @@ class Config:
         """Initialize configuration.
         
         Args:
-            env_file: Path to .env file (default: .env in nearest PrismQ directory)
+            env_file: Path to .env file (default: .env in nearest PrismQ_WD directory)
             interactive: Whether to prompt for missing values (default: True)
         """
         # Determine working directory and .env file path
         if env_file is None:
             # Find nearest parent directory with "PrismQ" in its name
             prismq_dir = self._find_prismq_directory()
-            self.working_directory = str(prismq_dir)
-            env_file = prismq_dir / ".env"
+            # Only add _WD suffix if we found a PrismQ directory
+            if "PrismQ" in prismq_dir.name:
+                working_dir = prismq_dir.parent / (prismq_dir.name + "_WD")
+            else:
+                # If no PrismQ found, use current directory as-is
+                working_dir = prismq_dir
+            self.working_directory = str(working_dir)
+            env_file = working_dir / ".env"
         else:
             # Use the directory of the provided env_file as working directory
             env_path = Path(env_file)
@@ -133,12 +139,18 @@ class Config:
     def _load_configuration(self):
         """Load all configuration values with interactive prompting."""
         # Database configuration
-        self.database_path = self._get_or_prompt(
+        db_filename = self._get_or_prompt(
             "DATABASE_PATH",
             "Database file path",
             "db.s3db",
             required=False
         )
+        
+        # Make database path absolute relative to working directory
+        if not Path(db_filename).is_absolute():
+            self.database_path = str(Path(self.working_directory) / db_filename)
+        else:
+            self.database_path = db_filename
         
         # YouTube API configuration (for search-based scraping)
         self.youtube_api_key = self._get_or_prompt(

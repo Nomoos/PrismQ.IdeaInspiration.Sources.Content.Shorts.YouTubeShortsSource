@@ -6,7 +6,7 @@ from mod.database import Database
 
 def test_order_by_validation():
     """Test that order_by parameter is properly validated."""
-    db = Database(":memory:")
+    db = Database(":memory:", interactive=False)
     
     # Insert test data
     db.insert_idea(
@@ -40,7 +40,7 @@ def test_order_by_validation():
 
 def test_sql_injection_prevention():
     """Test that SQL injection is prevented in order_by parameter."""
-    db = Database(":memory:")
+    db = Database(":memory:", interactive=False)
     
     db.insert_idea(
         source="test",
@@ -70,7 +70,7 @@ def test_sql_injection_prevention():
 
 def test_limit_validation():
     """Test that limit parameter is properly validated."""
-    db = Database(":memory:")
+    db = Database(":memory:", interactive=False)
     
     db.insert_idea(
         source="test",
@@ -96,7 +96,7 @@ def test_limit_validation():
 
 def test_order_by_edge_cases():
     """Test edge cases in order_by parameter."""
-    db = Database(":memory:")
+    db = Database(":memory:", interactive=False)
     
     # Insert test data
     for i in range(3):

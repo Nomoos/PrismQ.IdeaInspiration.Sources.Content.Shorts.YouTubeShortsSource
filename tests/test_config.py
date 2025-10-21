@@ -38,7 +38,9 @@ def test_config_from_env_file(temp_env_file):
     """Test loading configuration from .env file."""
     config = Config(temp_env_file, interactive=False)
     
-    assert config.database_path == "test.db"
+    # Database path should now be absolute (relative to working directory)
+    assert config.database_path.endswith("test.db")
+    assert Path(config.database_path).is_absolute()
     assert config.youtube_api_key == "test_key"
     assert config.youtube_max_results == 25
 
@@ -60,7 +62,9 @@ def test_config_defaults():
             env_path = Path(tmpdir) / ".env"
             config = Config(str(env_path), interactive=False)
             
-            assert config.database_path == "db.s3db"
+            # Database path should now be absolute (relative to working directory)
+            assert config.database_path.endswith("db.s3db")
+            assert Path(config.database_path).is_absolute()
             assert config.youtube_max_results == 50
     finally:
         # Restore environment variables
@@ -136,7 +140,7 @@ def test_working_directory_from_cwd(temp_dir):
 
 
 def test_working_directory_finds_prismq_parent():
-    """Test that working directory finds nearest parent with PrismQ in name."""
+    """Test that working directory finds nearest parent with PrismQ in name and adds _WD suffix."""
     # Save original cwd
     original_cwd = os.getcwd()
     
@@ -156,10 +160,11 @@ def test_working_directory_finds_prismq_parent():
         # Create config without specifying env_file
         config = Config(interactive=False)
         
-        # Check that working directory is the PrismQ parent directory
-        assert config.working_directory == str(prismq_dir)
-        assert config.env_file == str(prismq_dir / ".env")
-        assert (prismq_dir / ".env").exists()
+        # Check that working directory is the PrismQ parent directory with _WD suffix
+        expected_working_dir = Path(base_temp) / "MyPrismQProject_WD"
+        assert config.working_directory == str(expected_working_dir)
+        assert config.env_file == str(expected_working_dir / ".env")
+        assert (expected_working_dir / ".env").exists()
         
         # Cleanup
         shutil.rmtree(base_temp)
@@ -197,7 +202,9 @@ def test_config_non_interactive_mode(temp_dir):
         config = Config(str(env_path), interactive=False)
         
         # Should use defaults without prompting
-        assert config.database_path == "db.s3db"
+        # Database path should now be absolute (relative to working directory)
+        assert config.database_path.endswith("db.s3db")
+        assert Path(config.database_path).is_absolute()
         assert config.youtube_max_results == 50
     finally:
         # Restore environment variables
@@ -218,7 +225,9 @@ def test_existing_env_values_preserved(temp_dir):
     config = Config(str(env_path), interactive=False)
     
     # Check that values are preserved
-    assert config.database_path == "custom.db"
+    # Database path should now be absolute (relative to working directory)
+    assert config.database_path.endswith("custom.db")
+    assert Path(config.database_path).is_absolute()
     assert config.youtube_max_results == 100
     
     # Check that working directory was added

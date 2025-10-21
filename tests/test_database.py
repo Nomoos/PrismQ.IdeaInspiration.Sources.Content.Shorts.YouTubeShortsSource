@@ -12,7 +12,7 @@ def temp_db():
     with tempfile.NamedTemporaryFile(mode='w', delete=False, suffix='.db') as f:
         db_path = f.name
     
-    db = Database(db_path)
+    db = Database(db_path, interactive=False)
     yield db
     
     db.close()
@@ -118,7 +118,7 @@ def test_context_manager(temp_db):
     db_path = temp_db.db_path
     temp_db.close()
     
-    with Database(db_path) as db:
+    with Database(db_path, interactive=False) as db:
         success = db.insert_idea(
             source='test',
             source_id='context',
@@ -129,7 +129,7 @@ def test_context_manager(temp_db):
     # Verify connection is closed
     # Note: We can't directly test if connection is closed in SQLite
     # but we can verify data was saved
-    db2 = Database(db_path)
+    db2 = Database(db_path, interactive=False)
     idea = db2.get_idea('test', 'context')
     assert idea is not None
     db2.close()
