@@ -140,7 +140,7 @@ def test_working_directory_from_cwd(temp_dir):
 
 
 def test_working_directory_finds_prismq_parent():
-    """Test that working directory finds nearest parent with PrismQ in name."""
+    """Test that working directory finds nearest parent with PrismQ in name and adds _WD suffix."""
     # Save original cwd
     original_cwd = os.getcwd()
     
@@ -160,10 +160,11 @@ def test_working_directory_finds_prismq_parent():
         # Create config without specifying env_file
         config = Config(interactive=False)
         
-        # Check that working directory is the PrismQ parent directory
-        assert config.working_directory == str(prismq_dir)
-        assert config.env_file == str(prismq_dir / ".env")
-        assert (prismq_dir / ".env").exists()
+        # Check that working directory is the PrismQ parent directory with _WD suffix
+        expected_working_dir = Path(base_temp) / "MyPrismQProject_WD"
+        assert config.working_directory == str(expected_working_dir)
+        assert config.env_file == str(expected_working_dir / ".env")
+        assert (expected_working_dir / ".env").exists()
         
         # Cleanup
         shutil.rmtree(base_temp)
