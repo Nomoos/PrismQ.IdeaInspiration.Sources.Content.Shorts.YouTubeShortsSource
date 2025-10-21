@@ -6,8 +6,8 @@ from contextlib import contextmanager
 from sqlalchemy import create_engine, desc, asc
 from sqlalchemy.orm import sessionmaker, Session
 from sqlalchemy.exc import IntegrityError
-from mod.Model.base import Base
-from mod.Model.youtube_shorts_source import YouTubeShortsSource
+from Model.base import Base
+from Model.youtube_shorts_source import YouTubeShortsSource
 
 
 class DBContext:
