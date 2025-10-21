@@ -44,7 +44,7 @@ def scrape(env_file, no_interactive):
         config = Config(env_file, interactive=not no_interactive)
         
         # Initialize database
-        db = Database(config.database_path)
+        db = Database(config.database_path, interactive=not no_interactive)
         
         # Initialize YouTube plugin
         try:
@@ -120,7 +120,7 @@ def scrape_channel(env_file, channel, top, no_interactive):
         config = Config(env_file, interactive=not no_interactive)
         
         # Initialize database
-        db = Database(config.database_path)
+        db = Database(config.database_path, interactive=not no_interactive)
         
         # Initialize YouTube channel plugin
         try:
@@ -212,7 +212,7 @@ def scrape_trending(env_file, top, no_interactive):
         config = Config(env_file, interactive=not no_interactive)
         
         # Initialize database
-        db = Database(config.database_path)
+        db = Database(config.database_path, interactive=not no_interactive)
         
         # Initialize YouTube trending plugin
         try:
@@ -296,7 +296,7 @@ def scrape_keyword(env_file, keyword, top, no_interactive):
         config = Config(env_file, interactive=not no_interactive)
         
         # Initialize database
-        db = Database(config.database_path)
+        db = Database(config.database_path, interactive=not no_interactive)
         
         # Initialize YouTube trending plugin (handles both trending and keyword)
         try:
@@ -374,7 +374,7 @@ def list(env_file, limit, source, no_interactive):
         config = Config(env_file, interactive=not no_interactive)
         
         # Open database
-        db = Database(config.database_path)
+        db = Database(config.database_path, interactive=not no_interactive)
         
         # Get ideas
         ideas = db.get_all_ideas(limit=limit)
@@ -421,7 +421,7 @@ def stats(env_file, no_interactive):
         config = Config(env_file, interactive=not no_interactive)
         
         # Open database
-        db = Database(config.database_path)
+        db = Database(config.database_path, interactive=not no_interactive)
         
         # Get all ideas
         ideas = db.get_all_ideas()

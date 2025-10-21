@@ -133,12 +133,18 @@ class Config:
     def _load_configuration(self):
         """Load all configuration values with interactive prompting."""
         # Database configuration
-        self.database_path = self._get_or_prompt(
+        db_filename = self._get_or_prompt(
             "DATABASE_PATH",
             "Database file path",
             "db.s3db",
             required=False
         )
+        
+        # Make database path absolute relative to working directory
+        if not Path(db_filename).is_absolute():
+            self.database_path = str(Path(self.working_directory) / db_filename)
+        else:
+            self.database_path = db_filename
         
         # YouTube API configuration (for search-based scraping)
         self.youtube_api_key = self._get_or_prompt(

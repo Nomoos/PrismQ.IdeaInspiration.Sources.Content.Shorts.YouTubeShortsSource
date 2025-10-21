@@ -38,7 +38,9 @@ def test_config_from_env_file(temp_env_file):
     """Test loading configuration from .env file."""
     config = Config(temp_env_file, interactive=False)
     
-    assert config.database_path == "test.db"
+    # Database path should now be absolute (relative to working directory)
+    assert config.database_path.endswith("test.db")
+    assert Path(config.database_path).is_absolute()
     assert config.youtube_api_key == "test_key"
     assert config.youtube_max_results == 25
 
@@ -60,7 +62,9 @@ def test_config_defaults():
             env_path = Path(tmpdir) / ".env"
             config = Config(str(env_path), interactive=False)
             
-            assert config.database_path == "db.s3db"
+            # Database path should now be absolute (relative to working directory)
+            assert config.database_path.endswith("db.s3db")
+            assert Path(config.database_path).is_absolute()
             assert config.youtube_max_results == 50
     finally:
         # Restore environment variables
@@ -197,7 +201,9 @@ def test_config_non_interactive_mode(temp_dir):
         config = Config(str(env_path), interactive=False)
         
         # Should use defaults without prompting
-        assert config.database_path == "db.s3db"
+        # Database path should now be absolute (relative to working directory)
+        assert config.database_path.endswith("db.s3db")
+        assert Path(config.database_path).is_absolute()
         assert config.youtube_max_results == 50
     finally:
         # Restore environment variables
@@ -218,7 +224,9 @@ def test_existing_env_values_preserved(temp_dir):
     config = Config(str(env_path), interactive=False)
     
     # Check that values are preserved
-    assert config.database_path == "custom.db"
+    # Database path should now be absolute (relative to working directory)
+    assert config.database_path.endswith("custom.db")
+    assert Path(config.database_path).is_absolute()
     assert config.youtube_max_results == 100
     
     # Check that working directory was added
