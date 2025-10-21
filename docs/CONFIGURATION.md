@@ -19,21 +19,24 @@ When you run the application, it automatically:
 
 ### PrismQ Directory Search
 
-The application searches upward from your current directory to find the nearest parent directory that contains "PrismQ" in its name. This ensures that:
+The application searches upward from your current directory to find the nearest parent directory that contains "PrismQ" in its name. When found, it creates a separate working directory with the `_WD` suffix. This ensures that:
 
 - All subdirectories within a PrismQ project share the same configuration
 - You can run commands from anywhere within your project structure
-- Configuration and databases are centralized at the project root
+- Configuration and databases are kept separate from the source code in a dedicated working directory
+- The project root remains clean and focused on code
 
 **Example directory structure:**
 ```
-MyPrismQProject/              ← .env created here
-├── .env
-├── db.s3db
+MyPrismQProject/              ← Source code repository
 ├── scripts/
 │   └── processing/
 │       └── run_here/         ← Run from here
 └── data/
+
+MyPrismQProject_WD/           ← Working directory (auto-created)
+├── .env                      ← Configuration file
+└── db.s3db                   ← Database file
 ```
 
 If no directory with "PrismQ" in the name is found, the application falls back to using the current directory.
@@ -45,16 +48,16 @@ If no directory with "PrismQ" in the name is found, the application falls back t
 cd /projects/MyPrismQProject/scripts/processing
 python -m src.cli stats
 
-# The application creates .env at the PrismQ project root:
-# /projects/MyPrismQProject/.env with:
-# WORKING_DIRECTORY='/projects/MyPrismQProject'
+# The application creates working directory with _WD suffix:
+# /projects/MyPrismQProject_WD/.env with:
+# WORKING_DIRECTORY='/projects/MyPrismQProject_WD'
 # DATABASE_PATH=db.s3db
 # ... other settings ...
 
 # Future runs from any subdirectory use the same .env
 cd /projects/MyPrismQProject/data
 python -m src.cli scrape-trending --top 20
-# Still uses /projects/MyPrismQProject/.env
+# Still uses /projects/MyPrismQProject_WD/.env
 ```
 
 ## Configuration Options
@@ -140,14 +143,14 @@ You can run the application from different PrismQ projects with independent conf
 # Project A - Any subdirectory within ProjectA
 cd /projects/MyPrismQProjectA/scripts
 python -m src.cli scrape-trending --top 5
-# Uses /projects/MyPrismQProjectA/.env
-# Database: /projects/MyPrismQProjectA/db.s3db
+# Uses /projects/MyPrismQProjectA_WD/.env
+# Database: /projects/MyPrismQProjectA_WD/db.s3db
 
 # Project B - Any subdirectory within ProjectB
 cd /projects/AnotherPrismQProjectB/data/processing
 python -m src.cli scrape-trending --top 20
-# Uses /projects/AnotherPrismQProjectB/.env
-# Database: /projects/AnotherPrismQProjectB/db.s3db
+# Uses /projects/AnotherPrismQProjectB_WD/.env
+# Database: /projects/AnotherPrismQProjectB_WD/db.s3db
 ```
 
 Each PrismQ project maintains:
