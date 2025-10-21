@@ -17,50 +17,6 @@ cd /d "%SCRIPT_DIR%"
 REM Set default Python executable
 set "PYTHON_EXEC=python"
 
-REM Check if .env file exists, if not, create from example
-if not exist ".env" (
-    echo [INFO] .env file not found.
-    if exist ".env.example" (
-        echo [INFO] Creating .env from .env.example...
-        copy ".env.example" ".env" >nul
-        echo [INFO] .env file created.
-    ) else (
-        echo [INFO] Creating new .env file...
-        (
-            echo # Working Directory (automatically managed)
-            echo WORKING_DIRECTORY=
-            echo.
-            echo # Database Configuration
-            echo DATABASE_PATH=db.s3db
-            echo.
-            echo # YouTube API Configuration
-            echo YOUTUBE_API_KEY=your_youtube_api_key_here
-            echo YOUTUBE_MAX_RESULTS=50
-            echo.
-            echo # YouTube Channel Configuration
-            echo YOUTUBE_CHANNEL_URL=
-            echo YOUTUBE_CHANNEL_MAX_SHORTS=10
-            echo.
-            echo # YouTube Trending Configuration
-            echo YOUTUBE_TRENDING_MAX_SHORTS=10
-            echo.
-            echo # YouTube Keyword Configuration
-            echo YOUTUBE_KEYWORD_MAX_SHORTS=10
-        ) > ".env"
-        echo [INFO] .env file created with default values.
-    )
-    echo.
-)
-
-REM Read DATABASE_PATH from .env if it exists
-set "DB_PATH=db.s3db"
-for /f "tokens=1,2 delims==" %%a in ('findstr /i "^DATABASE_PATH=" .env 2^>nul') do (
-    set "DB_PATH=%%b"
-)
-
-REM Remove any leading/trailing spaces
-set "DB_PATH=%DB_PATH: =%"
-
 REM Check if Python executable exists
 %PYTHON_EXEC% --version >nul 2>&1
 if errorlevel 1 (
@@ -133,8 +89,54 @@ if not exist "%USER_WORK_DIR%" (
     mkdir "%USER_WORK_DIR%"
 )
 
+REM Check if .env file exists in working directory, if not, create from example
+set "WORK_DIR_ENV=%USER_WORK_DIR%\.env"
+if not exist "%WORK_DIR_ENV%" (
+    echo [INFO] .env file not found in working directory.
+    if exist "%SCRIPT_DIR%.env.example" (
+        echo [INFO] Creating .env from .env.example...
+        copy "%SCRIPT_DIR%.env.example" "%WORK_DIR_ENV%" >nul
+        echo [INFO] .env file created in working directory.
+    ) else (
+        echo [INFO] Creating new .env file in working directory...
+        (
+            echo # Working Directory (automatically managed)
+            echo WORKING_DIRECTORY=%USER_WORK_DIR%
+            echo.
+            echo # Database Configuration
+            echo DATABASE_PATH=db.s3db
+            echo.
+            echo # YouTube API Configuration
+            echo YOUTUBE_API_KEY=your_youtube_api_key_here
+            echo YOUTUBE_MAX_RESULTS=50
+            echo.
+            echo # YouTube Channel Configuration
+            echo YOUTUBE_CHANNEL_URL=
+            echo YOUTUBE_CHANNEL_MAX_SHORTS=10
+            echo.
+            echo # YouTube Trending Configuration
+            echo YOUTUBE_TRENDING_MAX_SHORTS=10
+            echo.
+            echo # YouTube Keyword Configuration
+            echo YOUTUBE_KEYWORD_MAX_SHORTS=10
+        ) > "%WORK_DIR_ENV%"
+        echo [INFO] .env file created in working directory with default values.
+    )
+    echo.
+)
+
+REM Read DATABASE_PATH from .env in working directory if it exists
+set "DB_PATH=db.s3db"
+for /f "tokens=1,2 delims==" %%a in ('findstr /i "^DATABASE_PATH=" "%WORK_DIR_ENV%" 2^>nul') do (
+    set "DB_PATH=%%b"
+)
+
+REM Remove any leading/trailing spaces
+set "DB_PATH=%DB_PATH: =%"
+
 REM Create the full database path
 set "FULL_DB_PATH=%USER_WORK_DIR%\%DB_PATH%"
+echo [INFO] .env location: %WORK_DIR_ENV%
 echo [INFO] Database will be created at: %FULL_DB_PATH%
 echo.
 

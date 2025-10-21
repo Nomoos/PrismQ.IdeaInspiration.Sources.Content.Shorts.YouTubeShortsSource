@@ -15,50 +15,6 @@ cd "$SCRIPT_DIR"
 # Set default Python executable
 PYTHON_EXEC="python3"
 
-# Check if .env file exists, if not, create from example
-if [ ! -f ".env" ]; then
-    echo "[INFO] .env file not found."
-    if [ -f ".env.example" ]; then
-        echo "[INFO] Creating .env from .env.example..."
-        cp ".env.example" ".env"
-        echo "[INFO] .env file created."
-    else
-        echo "[INFO] Creating new .env file..."
-        cat > ".env" << 'EOF'
-# Working Directory (automatically managed)
-WORKING_DIRECTORY=
-
-# Database Configuration
-DATABASE_PATH=db.s3db
-
-# YouTube API Configuration
-YOUTUBE_API_KEY=your_youtube_api_key_here
-YOUTUBE_MAX_RESULTS=50
-
-# YouTube Channel Configuration
-YOUTUBE_CHANNEL_URL=
-YOUTUBE_CHANNEL_MAX_SHORTS=10
-
-# YouTube Trending Configuration
-YOUTUBE_TRENDING_MAX_SHORTS=10
-
-# YouTube Keyword Configuration
-YOUTUBE_KEYWORD_MAX_SHORTS=10
-EOF
-        echo "[INFO] .env file created with default values."
-    fi
-    echo
-fi
-
-# Read DATABASE_PATH from .env if it exists
-DB_PATH="db.s3db"
-if [ -f ".env" ]; then
-    DB_PATH=$(grep "^DATABASE_PATH=" .env | cut -d'=' -f2 | xargs)
-    if [ -z "$DB_PATH" ]; then
-        DB_PATH="db.s3db"
-    fi
-fi
-
 # Check if Python executable exists
 if ! command -v $PYTHON_EXEC &> /dev/null; then
     echo
@@ -116,8 +72,54 @@ if [ ! -d "$USER_WORK_DIR" ]; then
     mkdir -p "$USER_WORK_DIR"
 fi
 
+# Check if .env file exists in working directory, if not, create from example
+WORK_DIR_ENV="$USER_WORK_DIR/.env"
+if [ ! -f "$WORK_DIR_ENV" ]; then
+    echo "[INFO] .env file not found in working directory."
+    if [ -f "$SCRIPT_DIR/.env.example" ]; then
+        echo "[INFO] Creating .env from .env.example..."
+        cp "$SCRIPT_DIR/.env.example" "$WORK_DIR_ENV"
+        echo "[INFO] .env file created in working directory."
+    else
+        echo "[INFO] Creating new .env file in working directory..."
+        cat > "$WORK_DIR_ENV" << EOF
+# Working Directory (automatically managed)
+WORKING_DIRECTORY=$USER_WORK_DIR
+
+# Database Configuration
+DATABASE_PATH=db.s3db
+
+# YouTube API Configuration
+YOUTUBE_API_KEY=your_youtube_api_key_here
+YOUTUBE_MAX_RESULTS=50
+
+# YouTube Channel Configuration
+YOUTUBE_CHANNEL_URL=
+YOUTUBE_CHANNEL_MAX_SHORTS=10
+
+# YouTube Trending Configuration
+YOUTUBE_TRENDING_MAX_SHORTS=10
+
+# YouTube Keyword Configuration
+YOUTUBE_KEYWORD_MAX_SHORTS=10
+EOF
+        echo "[INFO] .env file created in working directory with default values."
+    fi
+    echo
+fi
+
+# Read DATABASE_PATH from .env in working directory if it exists
+DB_PATH="db.s3db"
+if [ -f "$WORK_DIR_ENV" ]; then
+    DB_PATH=$(grep "^DATABASE_PATH=" "$WORK_DIR_ENV" | cut -d'=' -f2 | xargs)
+    if [ -z "$DB_PATH" ]; then
+        DB_PATH="db.s3db"
+    fi
+fi
+
 # Create the full database path
 FULL_DB_PATH="$USER_WORK_DIR/$DB_PATH"
+echo "[INFO] .env location: $WORK_DIR_ENV"
 echo "[INFO] Database will be created at: $FULL_DB_PATH"
 echo
 
