@@ -1,6 +1,6 @@
 # Setup and Quickstart Scripts
 
-This folder contains installation and quickstart scripts for PrismQ.Idea.Sources.Content.Shorts.YouTubeShortsSource.
+This folder contains installation and quickstart scripts for PrismQ.IdeaInspiration.Sources.Content.Shorts.YouTubeShortsSource.
 
 ## Available Scripts
 

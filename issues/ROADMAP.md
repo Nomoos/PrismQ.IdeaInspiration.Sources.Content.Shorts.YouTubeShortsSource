@@ -1,6 +1,6 @@
 # Project Roadmap
 
-This document outlines planned features and improvements for PrismQ.Idea.Sources.Content.Shorts.YouTubeShortsSource.
+This document outlines planned features and improvements for PrismQ.IdeaInspiration.Sources.Content.Shorts.YouTubeShortsSource.
 
 ## Current Version: 1.0.0
 
@@ -94,15 +94,15 @@ Want to work on a feature from this roadmap?
 Have suggestions for the roadmap? 
 
 - Open an issue on GitHub
-- Start a [discussion](https://github.com/Nomoos/PrismQ.Idea.Sources.Content.Shorts.YouTubeShortsSource/discussions)
+- Start a [discussion](https://github.com/Nomoos/PrismQ.IdeaInspiration.Sources.Content.Shorts.YouTubeShortsSource/discussions)
 - Comment on existing roadmap items
 
 ## Related Modules
 
 For other content sources, see the PrismQ Idea Sources ecosystem:
-- **PrismQ.Idea.Sources.Content.Shorts.TikTokSource** - TikTok videos
-- **PrismQ.Idea.Sources.Content.Shorts.InstagramReelsSource** - Instagram Reels
-- **PrismQ.Idea.Sources.Content.Forums.RedditSource** - Reddit posts
+- **PrismQ.IdeaInspiration.Sources.Content.Shorts.TikTokSource** - TikTok videos
+- **PrismQ.IdeaInspiration.Sources.Content.Shorts.InstagramReelsSource** - Instagram Reels
+- **PrismQ.IdeaInspiration.Sources.Content.Forums.RedditSource** - Reddit posts
 - Other specialized modules
 
 ---

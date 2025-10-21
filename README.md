@@ -131,8 +131,8 @@ For comprehensive documentation, see:
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/Nomoos/PrismQ.Idea.Sources.Content.Shorts.YouTubeShortsSource.git
-   cd PrismQ.Idea.Sources.Content.Shorts.YouTubeShortsSource
+   git clone https://github.com/Nomoos/PrismQ.IdeaInspiration.Sources.Content.Shorts.YouTubeShortsSource.git
+   cd PrismQ.IdeaInspiration.Sources.Content.Shorts.YouTubeShortsSource
    ```
 
 2. **Run setup**:
@@ -154,8 +154,8 @@ The quickstart script will guide you through:
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/Nomoos/PrismQ.Idea.Sources.Content.Shorts.YouTubeShortsSource.git
-   cd PrismQ.Idea.Sources.Content.Shorts.YouTubeShortsSource
+   git clone https://github.com/Nomoos/PrismQ.IdeaInspiration.Sources.Content.Shorts.YouTubeShortsSource.git
+   cd PrismQ.IdeaInspiration.Sources.Content.Shorts.YouTubeShortsSource
    ```
 
 2. **Run setup**:
@@ -174,8 +174,8 @@ The quickstart script will guide you through:
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/Nomoos/PrismQ.Idea.Sources.Content.Shorts.YouTubeShortsSource.git
-   cd PrismQ.Idea.Sources.Content.Shorts.YouTubeShortsSource
+   git clone https://github.com/Nomoos/PrismQ.IdeaInspiration.Sources.Content.Shorts.YouTubeShortsSource.git
+   cd PrismQ.IdeaInspiration.Sources.Content.Shorts.YouTubeShortsSource
    ```
 
 2. **Install dependencies**:
@@ -483,8 +483,8 @@ The database is also initialized automatically when you first run any scraping c
 This repository is part of the PrismQ Idea Sources taxonomy. To add support for other platforms:
 
 1. Create a new repository following the naming pattern:
-   - `PrismQ.Idea.Sources.Content.Shorts.TikTokSource`
-   - `PrismQ.Idea.Sources.Content.Forums.RedditSource`
+   - `PrismQ.IdeaInspiration.Sources.Content.Shorts.TikTokSource`
+   - `PrismQ.IdeaInspiration.Sources.Content.Forums.RedditSource`
    - etc.
 
 2. Implement the `SourcePlugin` interface
@@ -510,7 +510,7 @@ pytest --cov=src --cov-report=html
 ### Project Structure
 
 ```
-PrismQ.Idea.Sources.Content.Shorts.YouTubeShortsSource/
+PrismQ.IdeaInspiration.Sources.Content.Shorts.YouTubeShortsSource/
 ├── mod/                    # Main module package
 │   ├── cli.py              # Command-line interface
 │   ├── config.py           # Configuration management

@@ -1,4 +1,4 @@
-"""Configuration management for PrismQ.Idea.Sources.Content.Shorts.YouTubeShortsSource."""
+"""Configuration management for PrismQ.IdeaInspiration.Sources.Content.Shorts.YouTubeShortsSource."""
 
 import os
 from pathlib import Path

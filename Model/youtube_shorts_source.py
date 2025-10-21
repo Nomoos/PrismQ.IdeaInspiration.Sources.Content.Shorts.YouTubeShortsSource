@@ -5,7 +5,7 @@ from typing import Optional, Dict, Any
 import json
 from sqlalchemy import Column, Integer, String, Float, DateTime, Text, Boolean, Index
 from sqlalchemy.orm import validates
-from mod.Model.base import Base
+from Model.base import Base
 
 
 def utc_now():

@@ -2,7 +2,7 @@
 
 ## Overview
 
-PrismQ.Idea.Sources.Content.Shorts.YouTubeShortsSource uses a **universal metrics schema** that standardizes data collection from YouTube Shorts. This schema is designed to be compatible with other PrismQ Idea Sources modules for cross-platform analysis:
+PrismQ.IdeaInspiration.Sources.Content.Shorts.YouTubeShortsSource uses a **universal metrics schema** that standardizes data collection from YouTube Shorts. This schema is designed to be compatible with other PrismQ Idea Sources modules for cross-platform analysis:
 - YouTube Shorts (this module)
 - TikTok (separate module)
 - Instagram Reels (separate module)
@@ -127,9 +127,9 @@ Uses the full YouTube API response to extract:
 
 ### Other Platforms (Separate Modules)
 Other PrismQ Idea Sources modules implement similar patterns:
-- `PrismQ.Idea.Sources.Content.Forums.RedditSource` - Reddit posts
-- `PrismQ.Idea.Sources.Content.Shorts.TikTokSource` - TikTok videos
-- `PrismQ.Idea.Sources.Content.Shorts.InstagramReelsSource` - Instagram Reels
+- `PrismQ.IdeaInspiration.Sources.Content.Forums.RedditSource` - Reddit posts
+- `PrismQ.IdeaInspiration.Sources.Content.Shorts.TikTokSource` - TikTok videos
+- `PrismQ.IdeaInspiration.Sources.Content.Shorts.InstagramReelsSource` - Instagram Reels
 - etc.
 
 Each module implements the universal metrics schema for cross-platform compatibility.
@@ -158,7 +158,7 @@ Each module implements the universal metrics schema for cross-platform compatibi
 
 To add support for new platforms, create separate repositories following the PrismQ Idea Sources taxonomy:
 
-1. Create a new repository (e.g., `PrismQ.Idea.Sources.Content.Shorts.TikTokSource`)
+1. Create a new repository (e.g., `PrismQ.IdeaInspiration.Sources.Content.Shorts.TikTokSource`)
 2. Implement a `from_<platform>()` class method in `UniversalMetrics`
 3. Map platform-specific fields to universal schema
 4. Store any unique platform data in `platform_specific` field
