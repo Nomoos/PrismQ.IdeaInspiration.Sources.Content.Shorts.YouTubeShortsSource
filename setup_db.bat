@@ -83,22 +83,18 @@ echo [INFO] Working directory (with _WD suffix): %USER_WORK_DIR%
 :setup_db_path
 echo.
 
-REM Create working directory if it doesn't exist
-if not exist "%USER_WORK_DIR%" (
-    echo [INFO] Creating working directory: %USER_WORK_DIR%
-    mkdir "%USER_WORK_DIR%"
-)
+REM Check if .env file exists in PrismQ directory (not working directory)
+set "PRISMQ_ENV=%PRISMQ_DIR%\.env"
+if "%PRISMQ_DIR%"=="" set "PRISMQ_ENV=%CD%\.env"
 
-REM Check if .env file exists in working directory, if not, create from example
-set "WORK_DIR_ENV=%USER_WORK_DIR%\.env"
-if not exist "%WORK_DIR_ENV%" (
-    echo [INFO] .env file not found in working directory.
+if not exist "%PRISMQ_ENV%" (
+    echo [INFO] .env file not found in PrismQ directory.
     if exist "%SCRIPT_DIR%.env.example" (
         echo [INFO] Creating .env from .env.example...
-        copy "%SCRIPT_DIR%.env.example" "%WORK_DIR_ENV%" >nul
-        echo [INFO] .env file created in working directory.
+        copy "%SCRIPT_DIR%.env.example" "%PRISMQ_ENV%" >nul
+        echo [INFO] .env file created in PrismQ directory.
     ) else (
-        echo [INFO] Creating new .env file in working directory...
+        echo [INFO] Creating new .env file in PrismQ directory...
         (
             echo # Working Directory (automatically managed)
             echo WORKING_DIRECTORY=%USER_WORK_DIR%
@@ -119,15 +115,65 @@ if not exist "%WORK_DIR_ENV%" (
             echo.
             echo # YouTube Keyword Configuration
             echo YOUTUBE_KEYWORD_MAX_SHORTS=10
-        ) > "%WORK_DIR_ENV%"
-        echo [INFO] .env file created in working directory with default values.
+        ) > "%PRISMQ_ENV%"
+        echo [INFO] .env file created in PrismQ directory with default values.
     )
     echo.
 )
 
-REM Read DATABASE_PATH from .env in working directory if it exists
+REM Read WORKING_DIRECTORY from .env if it exists
+set "ENV_WORK_DIR="
+for /f "tokens=1,2 delims==" %%a in ('findstr /i "^WORKING_DIRECTORY=" "%PRISMQ_ENV%" 2^>nul') do (
+    set "ENV_WORK_DIR=%%b"
+)
+
+REM Remove any leading/trailing spaces and quotes
+set "ENV_WORK_DIR=%ENV_WORK_DIR: =%"
+set "ENV_WORK_DIR=%ENV_WORK_DIR:"=%"
+
+REM If WORKING_DIRECTORY is not set in .env, ask user interactively
+if "%ENV_WORK_DIR%"=="" (
+    echo [INFO] WORKING_DIRECTORY not found in .env file.
+    echo [INFO] Default working directory: %USER_WORK_DIR%
+    set /p "CONFIRM_WORK_DIR=Use default working directory '%USER_WORK_DIR%'? (Y/N): "
+    
+    if /i "!CONFIRM_WORK_DIR!"=="Y" (
+        set "ENV_WORK_DIR=%USER_WORK_DIR%"
+        echo [INFO] Adding WORKING_DIRECTORY to .env file...
+        REM Add WORKING_DIRECTORY to .env
+        powershell -Command "(Get-Content '%PRISMQ_ENV%') -replace '^WORKING_DIRECTORY=.*$', 'WORKING_DIRECTORY=%USER_WORK_DIR%' | Set-Content '%PRISMQ_ENV%'" 2>nul || (
+            echo # Working Directory (automatically managed) >> "%PRISMQ_ENV%"
+            echo WORKING_DIRECTORY=%USER_WORK_DIR% >> "%PRISMQ_ENV%"
+        )
+    ) else (
+        echo.
+        set /p "CUSTOM_WORK_DIR=Enter the working directory path: "
+        set "ENV_WORK_DIR=!CUSTOM_WORK_DIR!"
+        echo [INFO] Adding WORKING_DIRECTORY to .env file...
+        REM Add WORKING_DIRECTORY to .env
+        powershell -Command "(Get-Content '%PRISMQ_ENV%') -replace '^WORKING_DIRECTORY=.*$', 'WORKING_DIRECTORY=!CUSTOM_WORK_DIR!' | Set-Content '%PRISMQ_ENV%'" 2>nul || (
+            echo # Working Directory (automatically managed) >> "%PRISMQ_ENV%"
+            echo WORKING_DIRECTORY=!CUSTOM_WORK_DIR! >> "%PRISMQ_ENV%"
+        )
+    )
+    echo.
+)
+
+REM Use WORKING_DIRECTORY from .env if it exists, otherwise use default
+if not "%ENV_WORK_DIR%"=="" (
+    set "USER_WORK_DIR=%ENV_WORK_DIR%"
+    echo [INFO] Using working directory from .env: %USER_WORK_DIR%
+)
+
+REM Create working directory if it doesn't exist
+if not exist "%USER_WORK_DIR%" (
+    echo [INFO] Creating working directory: %USER_WORK_DIR%
+    mkdir "%USER_WORK_DIR%"
+)
+
+REM Read DATABASE_PATH from .env if it exists
 set "DB_PATH=db.s3db"
-for /f "tokens=1,2 delims==" %%a in ('findstr /i "^DATABASE_PATH=" "%WORK_DIR_ENV%" 2^>nul') do (
+for /f "tokens=1,2 delims==" %%a in ('findstr /i "^DATABASE_PATH=" "%PRISMQ_ENV%" 2^>nul') do (
     set "DB_PATH=%%b"
 )
 
@@ -136,7 +182,7 @@ set "DB_PATH=%DB_PATH: =%"
 
 REM Create the full database path
 set "FULL_DB_PATH=%USER_WORK_DIR%\%DB_PATH%"
-echo [INFO] .env location: %WORK_DIR_ENV%
+echo [INFO] .env location: %PRISMQ_ENV%
 echo [INFO] Database will be created at: %FULL_DB_PATH%
 echo.
 
