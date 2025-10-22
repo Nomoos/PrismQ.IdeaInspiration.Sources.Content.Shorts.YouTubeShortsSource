@@ -1,51 +1,8 @@
-# Business/Domain Modules (`mod/`)
+# PrismQ YouTube Shorts Source
 
-This directory contains business logic and domain-specific modules for the PrismQ YouTube Shorts Source application.
+A powerful tool for scraping YouTube Shorts content with comprehensive metadata extraction and universal metrics collection.
 
-## Purpose
-
-The `mod/` directory holds higher-level modules that implement:
-- YouTube content scraping plugins
-- Database operations for idea storage
-- Metrics tracking and analysis
-- CLI interface for user interaction
-
-## Separation of Concerns
-
-The repository follows a clear separation:
-
-- **`src/`** - Core Python package implementation (infrastructure)
-  - Configuration management (`config.py`)
-  - Logging infrastructure (`logging_config.py`)
-  - Core utilities and common functionality
-  - Package initialization
-
-- **`mod/`** - Business/domain modules (this directory)
-  - CLI interface (`cli.py`)
-  - Database operations (`database.py`)
-  - Universal metrics system (`metrics.py`)
-  - YouTube scraping plugins (`sources/`)
-    - `youtube_plugin.py` - YouTube API-based scraping
-    - `youtube_channel_plugin.py` - Channel-based scraping with yt-dlp
-    - `youtube_trending_plugin.py` - Trending and keyword-based scraping
-
-<<<<<<< HEAD
-## Structure
-
-```
-mod/
-├── __init__.py                     # Module initialization
-├── cli.py                          # Command-line interface
-├── database.py                     # SQLite database operations
-├── metrics.py                      # Universal metrics schema
-└── sources/                        # Content source plugins
-    ├── __init__.py                 # Source plugin base class
-    ├── youtube_plugin.py           # YouTube API scraper
-    ├── youtube_channel_plugin.py   # YouTube channel scraper
-    └── youtube_trending_plugin.py  # Trending/keyword scraper
-=======
-> **Note for Linux users**: Limited Linux support is available for development purposes. macOS is not officially supported.
-
+> **Platform Support**: Optimized for Windows with NVIDIA RTX GPUs. Limited Linux support available for development.
 ## Features
 
 - **YouTube Shorts Scraping**: Multiple powerful scraping modes
@@ -546,7 +503,6 @@ PrismQ.IdeaInspiration.Sources.Content.Shorts.YouTubeShortsSource/
 ├── .env.example            # Example configuration
 ├── requirements.txt        # Python dependencies
 └── README.md
->>>>>>> origin/main
 ```
 
 ## Guidelines
