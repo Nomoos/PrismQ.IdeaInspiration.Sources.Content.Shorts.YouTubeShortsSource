@@ -5,25 +5,28 @@ This directory contains business logic and domain-specific modules for the Prism
 ## Purpose
 
 The `mod/` directory holds higher-level modules that implement:
-- YouTube content scraping plugins
 - Database operations for idea storage
 - Metrics tracking and analysis
-- CLI interface for user interaction
+- YouTube content scraping plugins
 
 ## Separation of Concerns
 
 The repository follows a clear separation:
 
-- **Root Level** - Core implementation files (symlinked from mod/)
+- **Root Level** - Core implementation files
+  - CLI interface (`cli.py`)
   - Configuration management (`config.py`)
   - Logging infrastructure (`logging_config.py`)
-  - CLI interface (`cli.py`)
   - Database operations (`database.py`)
   - Universal metrics system (`metrics.py`)
 
 - **`mod/`** - Business/domain modules (this directory)
-  - Symlinks to root-level implementation files for module-style access
-  - YouTube scraping plugins (`sources/`)
+  - Symlinks to some root-level files for module-style access
+  - `config.py` -> symlink to ../config.py
+  - `database.py` -> symlink to ../database.py
+  - `metrics.py` -> symlink to ../metrics.py
+  - `Model` -> symlink to ../Model (ORM model layer)
+  - `sources` -> symlink to ../sources (YouTube scraping plugins)
     - `youtube_plugin.py` - YouTube API-based scraping
     - `youtube_channel_plugin.py` - Channel-based scraping with yt-dlp
     - `youtube_trending_plugin.py` - Trending and keyword-based scraping
@@ -33,7 +36,6 @@ The repository follows a clear separation:
 ```
 mod/
 ├── __init__.py                     # Module initialization
-├── cli.py -> ../cli.py             # Symlink to CLI interface
 ├── config.py -> ../config.py       # Symlink to configuration
 ├── database.py -> ../database.py   # Symlink to database operations
 ├── metrics.py -> ../metrics.py     # Symlink to metrics system
