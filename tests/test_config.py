@@ -175,13 +175,13 @@ def test_working_directory_finds_prismq_parent():
 
 def test_working_directory_finds_topmost_prismq():
     """Test that working directory finds topmost/root PrismQ directory, not nested ones."""
+    import tempfile
+    import shutil
+    
     # Save original cwd
     original_cwd = os.getcwd()
     
     try:
-        import tempfile
-        import shutil
-        
         # Create a temporary directory structure with multiple PrismQ directories
         base_temp = tempfile.mkdtemp()
         root_prismq = Path(base_temp) / "PrismQ"  # Root PrismQ directory

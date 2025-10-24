@@ -43,7 +43,9 @@ echo [INFO] Using Python: %PYTHON_EXEC%
 echo.
 
 REM Find the topmost/root parent directory with "PrismQ" in its name
-REM This matches the behavior of config.py - continues searching to find the highest-level PrismQ directory
+REM Strategy: Search upward from current directory to root, updating PRISMQ_DIR each time
+REM we find a directory with "PrismQ" in its name. Since we search upward (child -> parent),
+REM the last match found will be the topmost/root PrismQ directory.
 set "PRISMQ_DIR="
 set "SEARCH_DIR=%CD%"
 
@@ -51,7 +53,8 @@ set "SEARCH_DIR=%CD%"
 REM Check if current search directory contains "PrismQ" in its name
 echo %SEARCH_DIR% | findstr /i "PrismQ" >nul
 if not errorlevel 1 (
-    REM Found a PrismQ directory, but keep searching for higher-level ones
+    REM Found a PrismQ directory - save it and keep searching upward
+    REM As we continue upward, we'll overwrite this if we find a higher-level PrismQ directory
     set "PRISMQ_DIR=%SEARCH_DIR%"
 )
 
@@ -66,7 +69,7 @@ set "SEARCH_DIR=%PARENT_DIR%"
 goto search_prismq
 
 :search_complete
-REM Check if we found any PrismQ directory
+REM At this point, PRISMQ_DIR contains the topmost PrismQ directory (or is empty if none found)
 if "%PRISMQ_DIR%"=="" goto no_prismq_found
 goto found_prismq
 

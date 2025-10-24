@@ -36,19 +36,24 @@ $PYTHON_EXEC --version
 echo
 
 # Find the topmost/root parent directory with "PrismQ" in its name
-# This matches the behavior of config.py - continues searching to find the highest-level PrismQ directory
+# Strategy: Search upward from current directory to root, updating PRISMQ_DIR each time
+# we find a directory with "PrismQ" in its name. Since we search upward (child -> parent),
+# the last match found will be the topmost/root PrismQ directory.
 PRISMQ_DIR=""
 SEARCH_DIR="$(pwd)"
 
 while [ "$SEARCH_DIR" != "/" ]; do
     # Check if current search directory contains "PrismQ" in its name
     if [[ "$(basename "$SEARCH_DIR")" == *"PrismQ"* ]]; then
-        # Found a PrismQ directory, but keep searching for higher-level ones
+        # Found a PrismQ directory - save it and keep searching upward
+        # As we continue upward, we'll overwrite this if we find a higher-level PrismQ directory
         PRISMQ_DIR="$SEARCH_DIR"
     fi
     # Move to parent directory
     SEARCH_DIR="$(dirname "$SEARCH_DIR")"
 done
+
+# At this point, PRISMQ_DIR contains the topmost PrismQ directory (or is empty if none found)
 
 if [ -z "$PRISMQ_DIR" ]; then
     # No PrismQ directory found, use current directory as fallback
