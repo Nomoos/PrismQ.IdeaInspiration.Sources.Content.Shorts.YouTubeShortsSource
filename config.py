@@ -13,7 +13,7 @@ class Config:
         """Initialize configuration.
         
         Args:
-            env_file: Path to .env file (default: .env in nearest PrismQ_WD directory)
+            env_file: Path to .env file (default: .env in topmost PrismQ directory)
             interactive: Whether to prompt for missing values (default: True)
         """
         # Determine working directory and .env file path
@@ -51,20 +51,26 @@ class Config:
         self._load_configuration()
     
     def _find_prismq_directory(self) -> Path:
-        """Find the nearest parent directory with 'PrismQ' in its name.
+        """Find the topmost/root parent directory with 'PrismQ' in its name.
+        
+        This searches upward from the current directory and returns the highest-level
+        directory containing 'PrismQ' in its name. This ensures that .env files are
+        centralized at the root PrismQ directory, not in subdirectories or modules.
         
         Returns:
-            Path to the nearest PrismQ directory, or current directory if none found
+            Path to the topmost PrismQ directory, or current directory if none found
         """
         current_path = Path.cwd().absolute()
+        prismq_dir = None
         
-        # Check current directory and all parents
+        # Check current directory and all parents, continuing to find the topmost match
         for path in [current_path] + list(current_path.parents):
             if "PrismQ" in path.name:
-                return path
+                prismq_dir = path
+                # Continue searching - don't break early
         
-        # If no PrismQ directory found, use current directory as fallback
-        return current_path
+        # Return the topmost PrismQ directory found, or current directory as fallback
+        return prismq_dir if prismq_dir else current_path
     
     def _create_env_file(self):
         """Create a new .env file with default values."""

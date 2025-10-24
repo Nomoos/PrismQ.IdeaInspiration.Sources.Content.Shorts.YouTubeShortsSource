@@ -42,8 +42,8 @@ echo [INFO] Using Python: %PYTHON_EXEC%
 %PYTHON_EXEC% --version
 echo.
 
-REM Find the nearest parent directory with "PrismQ" in its name
-REM This matches the behavior of config.py
+REM Find the topmost/root parent directory with "PrismQ" in its name
+REM This matches the behavior of config.py - continues searching to find the highest-level PrismQ directory
 set "PRISMQ_DIR="
 set "SEARCH_DIR=%CD%"
 
@@ -51,19 +51,24 @@ set "SEARCH_DIR=%CD%"
 REM Check if current search directory contains "PrismQ" in its name
 echo %SEARCH_DIR% | findstr /i "PrismQ" >nul
 if not errorlevel 1 (
+    REM Found a PrismQ directory, but keep searching for higher-level ones
     set "PRISMQ_DIR=%SEARCH_DIR%"
-    goto found_prismq
 )
 
 REM Move to parent directory
 for %%i in ("%SEARCH_DIR%\..") do set "PARENT_DIR=%%~fi"
 
 REM Check if we've reached the root (parent is same as current)
-if "%SEARCH_DIR%"=="%PARENT_DIR%" goto no_prismq_found
+if "%SEARCH_DIR%"=="%PARENT_DIR%" goto search_complete
 
 REM Continue searching in parent
 set "SEARCH_DIR=%PARENT_DIR%"
 goto search_prismq
+
+:search_complete
+REM Check if we found any PrismQ directory
+if "%PRISMQ_DIR%"=="" goto no_prismq_found
+goto found_prismq
 
 :no_prismq_found
 REM No PrismQ directory found, use current directory as fallback

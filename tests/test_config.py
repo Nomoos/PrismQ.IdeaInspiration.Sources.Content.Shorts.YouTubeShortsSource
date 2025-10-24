@@ -173,6 +173,42 @@ def test_working_directory_finds_prismq_parent():
         os.chdir(original_cwd)
 
 
+def test_working_directory_finds_topmost_prismq():
+    """Test that working directory finds topmost/root PrismQ directory, not nested ones."""
+    # Save original cwd
+    original_cwd = os.getcwd()
+    
+    try:
+        import tempfile
+        import shutil
+        
+        # Create a temporary directory structure with multiple PrismQ directories
+        base_temp = tempfile.mkdtemp()
+        root_prismq = Path(base_temp) / "PrismQ"  # Root PrismQ directory
+        # Nested module with PrismQ in name (simulating the real structure)
+        nested_prismq = root_prismq / "IdeaInspiration" / "Sources" / "Content" / "Shorts" / "YouTubeShortsSource"
+        nested_prismq.mkdir(parents=True, exist_ok=True)
+        
+        # Change to nested module directory
+        os.chdir(nested_prismq)
+        
+        # Create config without specifying env_file
+        config = Config(interactive=False)
+        
+        # Check that working directory uses the ROOT PrismQ directory, not the nested one
+        expected_working_dir = Path(base_temp) / "PrismQ_WD"
+        assert config.working_directory == str(expected_working_dir), \
+            f"Expected {expected_working_dir}, got {config.working_directory}"
+        assert config.env_file == str(expected_working_dir / ".env")
+        assert (expected_working_dir / ".env").exists()
+        
+        # Cleanup
+        shutil.rmtree(base_temp)
+    finally:
+        # Restore original cwd
+        os.chdir(original_cwd)
+
+
 def test_working_directory_from_env_file_path(temp_dir):
     """Test that working directory is derived from env_file path."""
     env_path = Path(temp_dir) / "subdir" / ".env"

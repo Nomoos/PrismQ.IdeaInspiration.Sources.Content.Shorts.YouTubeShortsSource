@@ -35,16 +35,16 @@ echo "[INFO] Using Python: $PYTHON_EXEC"
 $PYTHON_EXEC --version
 echo
 
-# Find the nearest parent directory with "PrismQ" in its name
-# This matches the behavior of config.py
+# Find the topmost/root parent directory with "PrismQ" in its name
+# This matches the behavior of config.py - continues searching to find the highest-level PrismQ directory
 PRISMQ_DIR=""
 SEARCH_DIR="$(pwd)"
 
 while [ "$SEARCH_DIR" != "/" ]; do
     # Check if current search directory contains "PrismQ" in its name
     if [[ "$(basename "$SEARCH_DIR")" == *"PrismQ"* ]]; then
+        # Found a PrismQ directory, but keep searching for higher-level ones
         PRISMQ_DIR="$SEARCH_DIR"
-        break
     fi
     # Move to parent directory
     SEARCH_DIR="$(dirname "$SEARCH_DIR")"
