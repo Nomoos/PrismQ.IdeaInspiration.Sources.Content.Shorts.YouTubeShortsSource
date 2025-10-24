@@ -162,7 +162,7 @@ if "%ENV_WORK_DIR%"=="" (
 REM Use WORKING_DIRECTORY from .env if it exists, otherwise use default
 if not "%ENV_WORK_DIR%"=="" (
     set "USER_WORK_DIR=%ENV_WORK_DIR%"
-    echo [INFO] Using working directory from .env: %USER_WORK_DIR%
+    echo [INFO] Using working directory from .env: !USER_WORK_DIR!
 )
 
 REM Create working directory if it doesn't exist
