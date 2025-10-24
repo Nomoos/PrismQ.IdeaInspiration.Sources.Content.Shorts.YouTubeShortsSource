@@ -42,17 +42,19 @@ echo [INFO] Using Python: %PYTHON_EXEC%
 %PYTHON_EXEC% --version
 echo.
 
-REM Find the topmost/root parent directory with "PrismQ" in its name
+REM Find the topmost/root parent directory with exact name "PrismQ"
 REM Strategy: Search upward from current directory to root, updating PRISMQ_DIR each time
-REM we find a directory with "PrismQ" in its name. Since we search upward (child -> parent),
+REM we find a directory with the exact name "PrismQ". Since we search upward (child -> parent),
 REM the last match found will be the topmost/root PrismQ directory.
 set "PRISMQ_DIR="
 set "SEARCH_DIR=%CD%"
 
 :search_prismq
-REM Check if current search directory contains "PrismQ" in its name
-echo %SEARCH_DIR% | findstr /i "PrismQ" >nul
-if not errorlevel 1 (
+REM Get just the directory name (not full path)
+for %%i in ("%SEARCH_DIR%") do set "DIR_NAME=%%~nxi"
+
+REM Check if current directory has exact name "PrismQ"
+if /i "%DIR_NAME%"=="PrismQ" (
     REM Found a PrismQ directory - save it and keep searching upward
     REM As we continue upward, we'll overwrite this if we find a higher-level PrismQ directory
     set "PRISMQ_DIR=%SEARCH_DIR%"
@@ -80,13 +82,12 @@ echo [INFO] No PrismQ directory found in path. Using current directory as workin
 goto setup_db_path
 
 :found_prismq
-REM Found PrismQ directory, create working directory with _WD suffix
-for %%i in ("%PRISMQ_DIR%") do set "PRISMQ_NAME=%%~nxi"
+REM Found PrismQ directory, create working directory with exact name "PrismQ_WD"
 for %%i in ("%PRISMQ_DIR%\..") do set "PRISMQ_PARENT=%%~fi"
-set "USER_WORK_DIR=%PRISMQ_PARENT%\%PRISMQ_NAME%_WD"
+set "USER_WORK_DIR=%PRISMQ_PARENT%\PrismQ_WD"
 
 echo [INFO] Found PrismQ directory: %PRISMQ_DIR%
-echo [INFO] Working directory (with _WD suffix): %USER_WORK_DIR%
+echo [INFO] Working directory: %USER_WORK_DIR%
 
 :setup_db_path
 echo.
