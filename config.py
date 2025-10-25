@@ -13,16 +13,16 @@ class Config:
         """Initialize configuration.
         
         Args:
-            env_file: Path to .env file (default: .env in nearest PrismQ_WD directory)
+            env_file: Path to .env file (default: .env in topmost PrismQ directory)
             interactive: Whether to prompt for missing values (default: True)
         """
         # Determine working directory and .env file path
         if env_file is None:
-            # Find nearest parent directory with "PrismQ" in its name
+            # Find topmost parent directory with exact name "PrismQ"
             prismq_dir = self._find_prismq_directory()
             # Only add _WD suffix if we found a PrismQ directory
-            if "PrismQ" in prismq_dir.name:
-                working_dir = prismq_dir.parent / (prismq_dir.name + "_WD")
+            if prismq_dir.name == "PrismQ":
+                working_dir = prismq_dir.parent / "PrismQ_WD"
             else:
                 # If no PrismQ found, use current directory as-is
                 working_dir = prismq_dir
@@ -51,20 +51,26 @@ class Config:
         self._load_configuration()
     
     def _find_prismq_directory(self) -> Path:
-        """Find the nearest parent directory with 'PrismQ' in its name.
+        """Find the topmost/root parent directory with exact name 'PrismQ'.
+        
+        This searches upward from the current directory and returns the highest-level
+        directory with the exact name 'PrismQ'. This ensures that .env files are
+        centralized at the root PrismQ directory, not in subdirectories or modules.
         
         Returns:
-            Path to the nearest PrismQ directory, or current directory if none found
+            Path to the topmost PrismQ directory, or current directory if none found
         """
         current_path = Path.cwd().absolute()
+        prismq_dir = None
         
-        # Check current directory and all parents
+        # Check current directory and all parents, continuing to find the topmost match
         for path in [current_path] + list(current_path.parents):
-            if "PrismQ" in path.name:
-                return path
+            if path.name == "PrismQ":
+                prismq_dir = path
+                # Continue searching - don't break early
         
-        # If no PrismQ directory found, use current directory as fallback
-        return current_path
+        # Return the topmost PrismQ directory found, or current directory as fallback
+        return prismq_dir if prismq_dir else current_path
     
     def _create_env_file(self):
         """Create a new .env file with default values."""

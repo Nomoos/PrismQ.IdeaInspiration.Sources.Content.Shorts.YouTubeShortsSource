@@ -35,33 +35,37 @@ echo "[INFO] Using Python: $PYTHON_EXEC"
 $PYTHON_EXEC --version
 echo
 
-# Find the nearest parent directory with "PrismQ" in its name
-# This matches the behavior of config.py
+# Find the topmost/root parent directory with exact name "PrismQ"
+# Strategy: Search upward from current directory to root, updating PRISMQ_DIR each time
+# we find a directory with the exact name "PrismQ". Since we search upward (child -> parent),
+# the last match found will be the topmost/root PrismQ directory.
 PRISMQ_DIR=""
 SEARCH_DIR="$(pwd)"
 
 while [ "$SEARCH_DIR" != "/" ]; do
-    # Check if current search directory contains "PrismQ" in its name
-    if [[ "$(basename "$SEARCH_DIR")" == *"PrismQ"* ]]; then
+    # Check if current directory has exact name "PrismQ"
+    if [ "$(basename "$SEARCH_DIR")" = "PrismQ" ]; then
+        # Found a PrismQ directory - save it and keep searching upward
+        # As we continue upward, we'll overwrite this if we find a higher-level PrismQ directory
         PRISMQ_DIR="$SEARCH_DIR"
-        break
     fi
     # Move to parent directory
     SEARCH_DIR="$(dirname "$SEARCH_DIR")"
 done
+
+# At this point, PRISMQ_DIR contains the topmost PrismQ directory (or is empty if none found)
 
 if [ -z "$PRISMQ_DIR" ]; then
     # No PrismQ directory found, use current directory as fallback
     USER_WORK_DIR="$(pwd)"
     echo "[INFO] No PrismQ directory found in path. Using current directory as working directory."
 else
-    # Found PrismQ directory, create working directory with _WD suffix
-    PRISMQ_NAME="$(basename "$PRISMQ_DIR")"
+    # Found PrismQ directory, create working directory with exact name "PrismQ_WD"
     PRISMQ_PARENT="$(dirname "$PRISMQ_DIR")"
-    USER_WORK_DIR="$PRISMQ_PARENT/${PRISMQ_NAME}_WD"
+    USER_WORK_DIR="$PRISMQ_PARENT/PrismQ_WD"
     
     echo "[INFO] Found PrismQ directory: $PRISMQ_DIR"
-    echo "[INFO] Working directory (with _WD suffix): $USER_WORK_DIR"
+    echo "[INFO] Working directory: $USER_WORK_DIR"
 fi
 
 echo

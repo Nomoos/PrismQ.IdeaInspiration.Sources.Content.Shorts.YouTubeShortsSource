@@ -12,14 +12,14 @@ The application uses a **local .env file** in your working directory to store co
 
 When you run the application, it automatically:
 
-1. **Searches for PrismQ project directory** - Finds the nearest parent directory with "PrismQ" in its name
-2. **Creates a .env file at project root** - Automatically creates `.env` in the PrismQ project directory
+1. **Searches for PrismQ project directory** - Finds the topmost/root parent directory with the exact name "PrismQ"
+2. **Creates a .env file at project root** - Automatically creates `.env` in the "PrismQ_WD" working directory
 3. **Stores the working directory** - Saves `WORKING_DIRECTORY` in the `.env` file for reference
 4. **Remembers your settings** - Configuration is persisted across multiple runs
 
 ### PrismQ Directory Search
 
-The application searches upward from your current directory to find the nearest parent directory that contains "PrismQ" in its name. When found, it creates a separate working directory with the `_WD` suffix. This ensures that:
+The application searches upward from your current directory to find the **topmost/root parent directory** with the exact name **"PrismQ"**. When found, it creates a separate working directory with the exact name **"PrismQ_WD"**. This ensures that:
 
 - All subdirectories within a PrismQ project share the same configuration
 - You can run commands from anywhere within your project structure
@@ -28,36 +28,36 @@ The application searches upward from your current directory to find the nearest 
 
 **Example directory structure:**
 ```
-MyPrismQProject/              ← Source code repository
+PrismQ/                        ← Source code repository (exact name "PrismQ")
 ├── scripts/
 │   └── processing/
 │       └── run_here/         ← Run from here
 └── data/
 
-MyPrismQProject_WD/           ← Working directory (auto-created)
+PrismQ_WD/                    ← Working directory (exact name "PrismQ_WD")
 ├── .env                      ← Configuration file
 └── db.s3db                   ← Database file
 ```
 
-If no directory with "PrismQ" in the name is found, the application falls back to using the current directory.
+If no directory with the exact name "PrismQ" is found, the application falls back to using the current directory.
 
 ### Example
 
 ```bash
 # First run in a PrismQ project subdirectory
-cd /projects/MyPrismQProject/scripts/processing
+cd /projects/PrismQ/scripts/processing
 python -m src.cli stats
 
-# The application creates working directory with _WD suffix:
-# /projects/MyPrismQProject_WD/.env with:
-# WORKING_DIRECTORY='/projects/MyPrismQProject_WD'
+# The application creates working directory with exact name "PrismQ_WD":
+# /projects/PrismQ_WD/.env with:
+# WORKING_DIRECTORY='/projects/PrismQ_WD'
 # DATABASE_PATH=db.s3db
 # ... other settings ...
 
 # Future runs from any subdirectory use the same .env
-cd /projects/MyPrismQProject/data
+cd /projects/PrismQ/data
 python -m src.cli scrape-trending --top 20
-# Still uses /projects/MyPrismQProject_WD/.env
+# Still uses /projects/PrismQ_WD/.env
 ```
 
 ## Configuration Options
@@ -137,27 +137,27 @@ YOUTUBE_KEYWORD_MAX_SHORTS=10
 
 ## Multiple PrismQ Projects
 
-You can run the application from different PrismQ projects with independent configurations:
+You can have multiple PrismQ installations, each with the exact directory name "PrismQ" in different locations:
 
 ```bash
-# Project A - Any subdirectory within ProjectA
-cd /projects/MyPrismQProjectA/scripts
+# Project A - Uses PrismQ directory in location A
+cd /projects/location_a/PrismQ/scripts
 python -m src.cli scrape-trending --top 5
-# Uses /projects/MyPrismQProjectA_WD/.env
-# Database: /projects/MyPrismQProjectA_WD/db.s3db
+# Uses /projects/location_a/PrismQ_WD/.env
+# Database: /projects/location_a/PrismQ_WD/db.s3db
 
-# Project B - Any subdirectory within ProjectB
-cd /projects/AnotherPrismQProjectB/data/processing
+# Project B - Uses PrismQ directory in location B
+cd /home/user/projects/PrismQ/data/processing
 python -m src.cli scrape-trending --top 20
-# Uses /projects/AnotherPrismQProjectB_WD/.env
-# Database: /projects/AnotherPrismQProjectB_WD/db.s3db
+# Uses /home/user/projects/PrismQ_WD/.env
+# Database: /home/user/projects/PrismQ_WD/db.s3db
 ```
 
-Each PrismQ project maintains:
-- Its own `.env` file at the project root
+Each PrismQ installation maintains:
+- Its own `.env` file in the corresponding `PrismQ_WD` directory
 - Its own database file (unless you specify an absolute path)
 - Its own configuration settings
-- Shared configuration across all subdirectories within the project
+- Shared configuration across all subdirectories within that PrismQ installation
 
 ## Custom .env File Location
 
@@ -173,20 +173,20 @@ When you specify a custom `.env` file:
 
 ## Best Practices
 
-### 1. Use PrismQ in Project Names
+### 1. Use Exact "PrismQ" Directory Name
 
-Create project directories with "PrismQ" in the name for automatic configuration management:
+The root directory must be named exactly "PrismQ" for automatic configuration management:
 
 ```bash
-mkdir MyPrismQTrendingIdeas
-cd MyPrismQTrendingIdeas
+mkdir PrismQ
+cd PrismQ
 python -m src.cli scrape-trending
 
 # Create subdirectories for organization
 mkdir scripts data output
 cd scripts
 python -m src.cli scrape-channel --channel @example
-# Still uses MyPrismQTrendingIdeas/.env
+# Uses PrismQ_WD/.env
 ```
 
 ### 2. Version Control
