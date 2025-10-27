@@ -48,6 +48,14 @@ A powerful tool for scraping YouTube Shorts content with comprehensive metadata 
 
 - **Windows Compatible**: Designed to work seamlessly on Windows systems
 
+- **IdeaInspiration Processor**: Transform scraped data to standardized format
+  - Converts YouTubeShortsSource records to IdeaInspiration model
+  - Compatible with [PrismQ.IdeaInspiration.Model](https://github.com/Nomoos/PrismQ.IdeaInspiration.Model)
+  - Intelligent metadata mapping for cross-platform compatibility
+  - Batch processing support with progress tracking
+  - JSON export capability for downstream processing
+  - See [processor/README.md](processor/README.md) for complete documentation
+
 ## Documentation
 
 For comprehensive documentation, see:
@@ -323,6 +331,32 @@ python -m src.cli scrape --env-file /path/to/.env
 
 ---
 
+### Process to IdeaInspiration Format
+
+Transform scraped YouTube Shorts records to the standardized IdeaInspiration model:
+
+```bash
+# Process all unprocessed records
+python -m cli process
+
+# Process limited number of records
+python -m cli process --limit 10
+
+# Export processed ideas to JSON
+python -m cli process --output processed_ideas.json
+```
+
+**What it does:**
+- Converts YouTubeShortsSource records to IdeaInspiration format
+- Extracts subtitles as content for text analysis
+- Maps YouTube metadata to universal format
+- Marks records as `processed=True` to prevent reprocessing
+- Compatible with PrismQ.IdeaInspiration.Scoring and Classification modules
+
+See [processor/README.md](processor/README.md) for detailed documentation and Python API usage.
+
+---
+
 ### List Ideas
 
 List the top ideas (default: 20):
@@ -469,7 +503,7 @@ pytest --cov=src --cov-report=html
 ```
 PrismQ.IdeaInspiration.Sources.Content.Shorts.YouTubeShortsSource/
 ├── mod/                    # Main module package
-│   ├── cli.py              # Command-line interface
+│   ├── cli.py              # Command-line interface (with process command)
 │   ├── config.py           # Configuration management
 │   ├── logging_config.py   # Logging configuration
 │   ├── database.py         # Legacy database wrapper (backward compatible)
@@ -485,9 +519,14 @@ PrismQ.IdeaInspiration.Sources.Content.Shorts.YouTubeShortsSource/
 │       ├── youtube_plugin.py
 │       ├── youtube_channel_plugin.py
 │       └── youtube_trending_plugin.py
+├── processor/              # IdeaInspiration transformation module
+│   ├── __init__.py
+│   ├── idea_processor.py   # Core transformation logic
+│   └── README.md           # Processor documentation
 ├── tests/                  # Unit and integration tests
 │   ├── test_model.py       # Model layer tests
 │   ├── test_database.py    # Legacy database tests
+│   ├── test_processor.py   # Processor transformation tests
 │   ├── test_config.py
 │   └── test_metrics.py
 ├── scripts/                # Setup and utility scripts

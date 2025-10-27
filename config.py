@@ -144,19 +144,27 @@ class Config:
     
     def _load_configuration(self):
         """Load all configuration values with interactive prompting."""
-        # Database configuration
-        db_filename = self._get_or_prompt(
-            "DATABASE_PATH",
-            "Database file path",
-            "db.s3db",
+        # Database configuration - DATABASE_URL takes precedence
+        database_url = self._get_or_prompt(
+            "DATABASE_URL",
+            "Database URL (e.g., sqlite:///db.s3db)",
+            f"sqlite:///{Path(self.working_directory) / 'db.s3db'}",
             required=False
         )
         
-        # Make database path absolute relative to working directory
-        if not Path(db_filename).is_absolute():
-            self.database_path = str(Path(self.working_directory) / db_filename)
+        # Store the DATABASE_URL
+        self.database_url = database_url
+        
+        # For backward compatibility, extract database_path from SQLite URLs
+        if database_url.startswith("sqlite:///"):
+            db_path = database_url.replace("sqlite:///", "")
+            if not Path(db_path).is_absolute():
+                self.database_path = str(Path(self.working_directory) / db_path)
+            else:
+                self.database_path = db_path
         else:
-            self.database_path = db_filename
+            # For non-SQLite databases, use working directory as fallback
+            self.database_path = str(Path(self.working_directory) / "db.s3db")
         
         # YouTube API configuration (for search-based scraping)
         self.youtube_api_key = self._get_or_prompt(

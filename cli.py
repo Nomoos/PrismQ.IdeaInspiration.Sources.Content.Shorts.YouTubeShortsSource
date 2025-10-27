@@ -2,6 +2,7 @@
 
 import click
 import sys
+import json
 from pathlib import Path
 from mod.config import Config
 from mod.database import Database
@@ -9,6 +10,8 @@ from mod.metrics import UniversalMetrics
 from mod.sources.youtube_plugin import YouTubePlugin
 from mod.sources.youtube_channel_plugin import YouTubeChannelPlugin
 from mod.sources.youtube_trending_plugin import YouTubeTrendingPlugin
+import db_utils
+from processor.idea_processor import IdeaProcessor
 
 
 @click.group()
@@ -448,6 +451,93 @@ def stats(env_file, no_interactive):
             percentage = (count / total) * 100
             click.echo(f"  {source.capitalize()}: {count} ({percentage:.1f}%)")
         click.echo()
+        
+    except Exception as e:
+        click.echo(f"Error: {e}", err=True)
+        sys.exit(1)
+
+
+@main.command()
+@click.option('--env-file', '-e', type=click.Path(), 
+              help='Path to .env file')
+@click.option('--no-interactive', is_flag=True, 
+              help='Disable interactive prompts for missing configuration')
+@click.option('--limit', '-l', type=int, default=None,
+              help='Maximum number of records to process (default: all unprocessed)')
+@click.option('--output', '-o', type=click.Path(),
+              help='Optional output file path to save processed ideas as JSON')
+def process(env_file, no_interactive, limit, output):
+    """Process unprocessed YouTube Shorts records to IdeaInspiration format.
+    
+    This command transforms YouTubeShortsSource records into the standardized
+    IdeaInspiration model format as defined in PrismQ.IdeaInspiration.Model.
+    
+    The transformation includes:
+    - Converting YouTube-specific metadata to universal format
+    - Extracting subtitles as content
+    - Mapping tags to keywords
+    - Building standardized metadata dictionary
+    - Setting source_type to VIDEO
+    
+    Records are marked as processed=True after successful transformation.
+    """
+    try:
+        # Load configuration
+        config = Config(env_file, interactive=not no_interactive)
+        
+        # Initialize database
+        db_utils.init_database(config.database_url)
+        
+        click.echo("Processing unprocessed YouTube Shorts records...")
+        click.echo()
+        
+        # Get unprocessed records
+        unprocessed_records = db_utils.get_unprocessed_records(config.database_url, limit=limit)
+        total_unprocessed = len(unprocessed_records)
+        
+        if total_unprocessed == 0:
+            click.echo("No unprocessed records found.")
+            return
+        
+        click.echo(f"Found {total_unprocessed} unprocessed record(s)")
+        click.echo()
+        
+        # Process records
+        processed_count = 0
+        failed_count = 0
+        processed_ideas = []
+        
+        for record in unprocessed_records:
+            try:
+                # Transform to IdeaInspiration
+                idea = IdeaProcessor.process(record)
+                
+                # Mark as processed
+                db_utils.mark_as_processed(config.database_url, record['id'])
+                
+                processed_count += 1
+                processed_ideas.append(idea.to_dict())
+                
+                click.echo(f"✓ Processed: {record['title'][:60]}...")
+                
+            except Exception as e:
+                failed_count += 1
+                click.echo(f"✗ Failed: {record['title'][:60]}... - {e}", err=True)
+        
+        click.echo()
+        click.echo("=" * 60)
+        click.echo(f"Processing complete!")
+        click.echo(f"Total processed: {processed_count}")
+        if failed_count > 0:
+            click.echo(f"Total failed: {failed_count}")
+        click.echo(f"Database: {config.database_url}")
+        
+        # Save to output file if specified
+        if output and processed_ideas:
+            output_path = Path(output)
+            with open(output_path, 'w', encoding='utf-8') as f:
+                json.dump(processed_ideas, f, indent=2, ensure_ascii=False)
+            click.echo(f"Saved processed ideas to: {output}")
         
     except Exception as e:
         click.echo(f"Error: {e}", err=True)
