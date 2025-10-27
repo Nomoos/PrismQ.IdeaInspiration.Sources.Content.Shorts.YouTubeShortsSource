@@ -112,7 +112,7 @@ class IdeaProcessor:
         """Transform YouTubeShortsSource record to IdeaInspiration.
         
         Args:
-            youtube_shorts_record: YouTubeShortsSource database record
+            youtube_shorts_record: YouTubeShortsSource database record (dict or object)
             
         Returns:
             IdeaInspiration instance
@@ -123,14 +123,40 @@ class IdeaProcessor:
         if not youtube_shorts_record:
             raise ValueError("Record cannot be None")
         
-        if not youtube_shorts_record.title:
+        # Support both dict and object access patterns
+        def get_field(record, field):
+            if isinstance(record, dict):
+                return record.get(field)
+            else:
+                return getattr(record, field, None)
+        
+        title = get_field(youtube_shorts_record, 'title')
+        source_id = get_field(youtube_shorts_record, 'source_id')
+        
+        if not title:
             raise ValueError("Record must have a title")
         
-        if not youtube_shorts_record.source_id:
+        if not source_id:
             raise ValueError("Record must have a source_id")
         
         # Parse score_dictionary to extract metadata
-        score_dict = youtube_shorts_record.get_score_dict() or {}
+        score_dictionary = get_field(youtube_shorts_record, 'score_dictionary')
+        if isinstance(youtube_shorts_record, dict):
+            # For dict, parse JSON if it's a string
+            if isinstance(score_dictionary, str):
+                import json
+                try:
+                    score_dict = json.loads(score_dictionary) if score_dictionary else {}
+                except json.JSONDecodeError:
+                    score_dict = {}
+            else:
+                score_dict = score_dictionary or {}
+        else:
+            # For ORM objects, call get_score_dict method if available
+            if hasattr(youtube_shorts_record, 'get_score_dict'):
+                score_dict = youtube_shorts_record.get_score_dict() or {}
+            else:
+                score_dict = {}
         
         # Extract subtitle/transcription text from enhanced_metrics
         content = ""
@@ -140,31 +166,35 @@ class IdeaProcessor:
         
         # Extract keywords from tags (comma-separated string)
         keywords = []
-        if youtube_shorts_record.tags:
-            keywords = [tag.strip() for tag in youtube_shorts_record.tags.split(',') if tag.strip()]
+        tags = get_field(youtube_shorts_record, 'tags')
+        if tags:
+            keywords = [tag.strip() for tag in tags.split(',') if tag.strip()]
         
         # Build metadata dictionary (string key-value pairs for SQLite compatibility)
         metadata = IdeaProcessor._build_metadata(youtube_shorts_record, score_dict)
         
         # Extract source information
-        source_url = IdeaProcessor._build_source_url(youtube_shorts_record.source_id)
+        source_url = IdeaProcessor._build_source_url(source_id)
         source_created_by = IdeaProcessor._extract_channel_name(score_dict)
         source_created_at = IdeaProcessor._extract_upload_date(score_dict)
         
         # Calculate score (use existing score or convert to int)
+        record_score = get_field(youtube_shorts_record, 'score')
         score = None
-        if youtube_shorts_record.score is not None:
+        if record_score is not None:
             # Round to nearest integer for IdeaInspiration model
-            score = int(round(youtube_shorts_record.score))
+            score = int(round(record_score))
+        
+        description = get_field(youtube_shorts_record, 'description')
         
         return IdeaInspiration(
-            title=youtube_shorts_record.title,
-            description=youtube_shorts_record.description or "",
+            title=title,
+            description=description or "",
             content=content,
             keywords=keywords,
             source_type=ContentType.VIDEO,  # YouTube Shorts are video content
             metadata=metadata,
-            source_id=youtube_shorts_record.source_id,
+            source_id=source_id,
             source_url=source_url,
             source_created_by=source_created_by,
             source_created_at=source_created_at,
@@ -176,7 +206,7 @@ class IdeaProcessor:
         """Build metadata dictionary from record and score dictionary.
         
         Args:
-            record: YouTubeShortsSource record
+            record: YouTubeShortsSource record (dict or object)
             score_dict: Parsed score dictionary
             
         Returns:

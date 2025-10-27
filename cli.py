@@ -10,7 +10,7 @@ from mod.metrics import UniversalMetrics
 from mod.sources.youtube_plugin import YouTubePlugin
 from mod.sources.youtube_channel_plugin import YouTubeChannelPlugin
 from mod.sources.youtube_trending_plugin import YouTubeTrendingPlugin
-from mod.Model.db_context import DBContext
+import db_utils
 from processor.idea_processor import IdeaProcessor
 
 
@@ -485,22 +485,15 @@ def process(env_file, no_interactive, limit, output):
         # Load configuration
         config = Config(env_file, interactive=not no_interactive)
         
-        # Initialize database context
-        db = DBContext(config.database_path)
+        # Initialize database
+        db_utils.init_database(config.database_url)
         
         click.echo("Processing unprocessed YouTube Shorts records...")
         click.echo()
         
         # Get unprocessed records
-        with db.get_session() as session:
-            from Model.youtube_shorts_source import YouTubeShortsSource
-            query = session.query(YouTubeShortsSource).filter_by(processed=False)
-            
-            if limit:
-                query = query.limit(limit)
-            
-            unprocessed_records = query.all()
-            total_unprocessed = len(unprocessed_records)
+        unprocessed_records = db_utils.get_unprocessed_records(config.database_url, limit=limit)
+        total_unprocessed = len(unprocessed_records)
         
         if total_unprocessed == 0:
             click.echo("No unprocessed records found.")
@@ -520,21 +513,16 @@ def process(env_file, no_interactive, limit, output):
                 idea = IdeaProcessor.process(record)
                 
                 # Mark as processed
-                with db.get_session() as session:
-                    from Model.youtube_shorts_source import YouTubeShortsSource
-                    db_record = session.query(YouTubeShortsSource).filter_by(id=record.id).first()
-                    if db_record:
-                        db_record.processed = True
-                        session.commit()
+                db_utils.mark_as_processed(config.database_url, record['id'])
                 
                 processed_count += 1
                 processed_ideas.append(idea.to_dict())
                 
-                click.echo(f"✓ Processed: {record.title[:60]}...")
+                click.echo(f"✓ Processed: {record['title'][:60]}...")
                 
             except Exception as e:
                 failed_count += 1
-                click.echo(f"✗ Failed: {record.title[:60]}... - {e}", err=True)
+                click.echo(f"✗ Failed: {record['title'][:60]}... - {e}", err=True)
         
         click.echo()
         click.echo("=" * 60)
@@ -542,7 +530,7 @@ def process(env_file, no_interactive, limit, output):
         click.echo(f"Total processed: {processed_count}")
         if failed_count > 0:
             click.echo(f"Total failed: {failed_count}")
-        click.echo(f"Database: {config.database_path}")
+        click.echo(f"Database: {config.database_url}")
         
         # Save to output file if specified
         if output and processed_ideas:
